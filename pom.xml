@@ -26,6 +26,8 @@
         <module>common</module>
         <module>oss</module>
         <module>push</module>
+        <module>dao</module>
+        <module>service</module>
     </modules>
 
     <dependencies>
@@ -84,5 +86,16 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/libs-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>

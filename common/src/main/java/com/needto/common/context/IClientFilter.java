@@ -5,11 +5,11 @@ import com.needto.common.entity.Target;
 import com.needto.common.filter.CommonFilter;
 import com.needto.common.utils.ResponseUtil;
 import com.sun.javafx.util.Utils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
