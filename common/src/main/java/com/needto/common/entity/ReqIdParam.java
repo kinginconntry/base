@@ -1,6 +1,5 @@
 package com.needto.common.entity;
 
-import com.needto.common.dao.common.FieldUpdate;
 
 import java.util.List;
 

@@ -1,8 +1,6 @@
 package com.needto.services.dynamictoken;
 
 import com.needto.common.data.Constant;
-import com.needto.common.services.dynamictoken.DynamicSignService;
-import com.needto.common.utils.RequestUtil;
 import feign.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

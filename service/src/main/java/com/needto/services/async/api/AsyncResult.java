@@ -1,11 +1,10 @@
 package com.needto.services.async.api;
 
-import java.io.Serializable;
 
 /**
  * @author Administrator
  */
-public class AsyncResult<T> implements Serializable {
+public class AsyncResult<T>{
 
     /**
      * 结果数据

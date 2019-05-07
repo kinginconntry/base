@@ -1,6 +1,6 @@
 package com.needto.services.serialnum;
 
-import com.needto.common.cache.redis.RedisCache;
+import com.needto.cache.redis.RedisCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package com.needto.services.group;
 
-import com.needto.common.dao.models.BaseEntity;
 import com.needto.common.entity.Dict;
 import com.needto.common.entity.Itree;
 import com.needto.common.entity.Target;
+import com.needto.dao.models.BaseEntity;
 
 /**
  * 分组实体

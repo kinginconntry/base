@@ -1,7 +1,5 @@
 package com.needto.common.entity;
 
-import com.needto.common.dao.common.CommonQuery;
-import com.needto.common.dao.common.FieldOrder;
 
 import java.util.List;
 
@@ -48,17 +46,6 @@ public class Query extends RequestParam{
      */
     public List<String> fields;
 
-
-
-    public CommonQuery getQuery(){
-        CommonQuery query = new CommonQuery();
-        query.limit = this.getLimit();
-        query.skip = this.getSkip();
-        query.orders = this.orders;
-        query.fields = this.fields;
-        query.filters = this.filters;
-        return query;
-    }
 
     public Integer getSkip() {
         if(this.page != null && this.size != null){

@@ -1,8 +1,6 @@
 package com.needto.services.async.api;
 
 import com.needto.common.entity.Result;
-import com.needto.common.services.async.api.AsyncApiResultService;
-import com.needto.common.services.async.api.AsyncResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -1,7 +1,6 @@
 package com.needto.common.utils;
 
 import com.csvreader.CsvWriter;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -12,6 +11,7 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +106,7 @@ public class ExportUtils {
         if(StringUtils.isEmpty(format)){
             format = DEFAULT_DATEFORMAT;
         }
-        return DateFormatUtils.format(date, format);
+        return new SimpleDateFormat(format).format(date);
     }
 
     /**

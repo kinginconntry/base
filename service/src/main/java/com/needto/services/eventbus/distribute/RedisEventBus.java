@@ -1,6 +1,5 @@
 package com.needto.services.eventbus.distribute;
 
-import com.needto.common.services.eventbus.distribute.IRedisMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class RedisEventBus {
      * @param channel
      * @param msg
      */
-    public void sendMsg(String channel, com.needto.common.services.eventbus.distribute.IRedisMessage msg){
+    public void sendMsg(String channel, IRedisMessage msg){
         redisTemplate.convertAndSend(channel, msg);
     }
 

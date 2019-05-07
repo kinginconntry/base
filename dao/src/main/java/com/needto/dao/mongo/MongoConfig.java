@@ -1,4 +1,4 @@
-package com.needto.common.dao.mongo;
+package com.needto.dao.mongo;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -17,6 +17,8 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
  */
 @Configuration
 public class MongoConfig {
+
+    @SuppressWarnings("all")
     @Bean
     public MappingMongoConverter mappingMongoConverter(MongoDbFactory factory, MongoMappingContext context, BeanFactory beanFactory) {
         DbRefResolver dbRefResolver = new DefaultDbRefResolver(factory);

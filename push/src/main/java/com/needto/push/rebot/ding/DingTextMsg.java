@@ -1,7 +1,5 @@
 package com.needto.push.rebot.ding;
 
-import com.needto.common.services.rebot.ding.At;
-import com.needto.common.services.rebot.ding.DingMsg;
 
 import java.util.List;
 

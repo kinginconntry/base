@@ -1,4 +1,4 @@
-package com.needto.common.dao.mongo;
+package com.needto.dao.mongo;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;

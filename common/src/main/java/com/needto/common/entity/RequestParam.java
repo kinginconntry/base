@@ -1,7 +1,5 @@
 package com.needto.common.entity;
 
-import com.needto.common.dao.common.FieldFilter;
-
 import java.util.List;
 
 /**

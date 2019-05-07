@@ -1,4 +1,4 @@
-package com.needto.common.dao.common;
+package com.needto.dao.common;
 
 import java.util.List;
 

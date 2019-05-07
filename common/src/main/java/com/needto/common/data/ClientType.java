@@ -1,6 +1,7 @@
 package com.needto.common.data;
 
-import org.apache.commons.lang.StringUtils;
+
+import org.springframework.util.StringUtils;
 
 /**
  * @author Administrator

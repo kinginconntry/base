@@ -1,6 +1,5 @@
 package com.needto.services.notice;
 
-import com.needto.common.services.notice.TextMsg;
 
 /**
  * @author Administrator

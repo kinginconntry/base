@@ -1,12 +1,13 @@
-package com.needto.common.dao.mongo;
+package com.needto.dao.mongo;
 
-import com.needto.common.dao.common.CommonQuery;
-import com.needto.common.dao.common.FieldFilter;
-import com.needto.common.dao.common.FieldOrder;
-import com.needto.common.dao.common.FieldUpdate;
-import com.needto.common.dao.models.BaseEntity;
+import com.needto.common.entity.FieldFilter;
+import com.needto.common.entity.FieldUpdate;
 import com.needto.common.utils.Assert;
 import com.needto.common.utils.Utils;
+import com.needto.dao.common.CommonQuery;
+import com.needto.common.entity.FieldOrder;
+import com.needto.dao.common.Op;
+import com.needto.dao.models.BaseEntity;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
@@ -60,53 +61,6 @@ public class MongoQueryUtils {
         }else{
             throw new IllegalArgumentException("id is illegal");
         }
-    }
-
-    /**
-     * 支持的mongo操作
-     */
-    public enum MongoOp {
-
-        /**
-         * 大于
-         */
-        GT,
-        /**
-         * 大于等于
-         */
-        GTE,
-        /**
-         * 小于
-         */
-        LT,
-        /**
-         * 小于等于
-         */
-        LTE,
-        /**
-         * 存在
-         */
-        EXISTS,
-        /**
-         * 在...之中
-         */
-        IN,
-        /**
-         * 不在...中
-         */
-        NIN,
-        /**
-         * 正则
-         */
-        REGEX,
-        /**
-         * 不等于
-         */
-        NE,
-        /**
-         *
-         */
-        EQ
     }
 
     public static Sort getSorts(List<FieldOrder> orders) {
@@ -209,26 +163,26 @@ public class MongoQueryUtils {
                 Object value = getValue(fieldFilter.getField(), fieldFilter.getValue());
 
                 if(StringUtils.isEmpty(fieldFilter.getOp())){
-                    fieldFilter.setOp(MongoOp.EQ.name());
+                    fieldFilter.setOp(Op.EQ.name());
                 }
                 String op = fieldFilter.getOp();
-                if(Utils.equals(MongoOp.LT.name(), op)){
+                if(Utils.equals(Op.LT.name(), op)){
                     criteria.and(field).lt(value);
-                }else if(Utils.equals(MongoOp.LTE.name(), op)){
+                }else if(Utils.equals(Op.LTE.name(), op)){
                     criteria.and(field).lte(value);
-                }else if(Utils.equals(MongoOp.GT.name(), op)){
+                }else if(Utils.equals(Op.GT.name(), op)){
                     criteria.and(field).gt(value);
-                }else if(Utils.equals(MongoOp.GTE.name(), op)){
+                }else if(Utils.equals(Op.GTE.name(), op)){
                     criteria.and(field).gte(value);
-                }else if(Utils.equals(MongoOp.REGEX.name(), op)){
+                }else if(Utils.equals(Op.REGEX.name(), op)){
                     criteria.and(field).regex(Utils.nullToString(value));
-                }else if(Utils.equals(MongoOp.IN.name(), op)){
+                }else if(Utils.equals(Op.IN.name(), op)){
                     criteria.and(field).in((Collection)value);
-                }else if(Utils.equals(MongoOp.NE.name(), op)){
+                }else if(Utils.equals(Op.NE.name(), op)){
                     criteria.and(field).ne(value);
-                }else if(Utils.equals(MongoOp.NIN.name(), op)){
+                }else if(Utils.equals(Op.NIN.name(), op)){
                     criteria.and(field).nin((Collection)value);
-                }else if(Utils.equals(MongoOp.EXISTS.name(), op)){
+                }else if(Utils.equals(Op.EXISTS.name(), op)){
                     criteria.and(field).exists((Boolean) value);
                 }else{
                     criteria.and(field).is(value);

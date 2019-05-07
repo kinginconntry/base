@@ -1,5 +1,9 @@
-package com.needto.common.dao.common;
+package com.needto.dao.common;
 
+
+import com.needto.common.entity.FieldFilter;
+import com.needto.common.entity.FieldUpdate;
+import com.needto.common.entity.FieldOrder;
 
 import java.util.Collection;
 import java.util.List;

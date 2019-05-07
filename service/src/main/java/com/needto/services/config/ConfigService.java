@@ -1,13 +1,11 @@
 package com.needto.services.config;
 
 import com.google.common.collect.Lists;
-import com.needto.common.dao.common.CommonDao;
-import com.needto.common.dao.common.FieldFilter;
+import com.needto.common.entity.FieldFilter;
 import com.needto.common.entity.Target;
 import com.needto.common.exception.ValidateException;
-import com.needto.common.services.config.Config;
-import com.needto.common.services.config.ConfigCat;
 import com.needto.common.utils.Assert;
+import com.needto.dao.common.CommonDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,7 @@ public class ConfigService {
     @Autowired
     private CommonDao mongoDao;
 
-    public <T extends com.needto.common.services.config.Config> T saveConfig(T config){
+    public <T extends Config> T saveConfig(T config){
         if(StringUtils.isEmpty(config.getCatId())){
             throw new ValidateException("NO_CATID", "");
         }
@@ -39,28 +37,28 @@ public class ConfigService {
         if(StringUtils.isEmpty(config.getKey())){
             throw new ValidateException("NO_KEY", "");
         }
-        if(this.findConfigCatByKey(config.getCatId(), com.needto.common.services.config.ConfigCat.class) == null){
+        if(this.findConfigCatByKey(config.getCatId(), ConfigCat.class) == null){
             throw new ValidateException("NO_CAT", "");
         }
         if(this.findConfigByKey(config.getCatId(), config.getKey(), config.getClass()) != null){
             throw new ValidateException("EXISTED", "");
         }
-        return mongoDao.save(config, com.needto.common.services.config.Config.TABLE);
+        return mongoDao.save(config, Config.TABLE);
     }
 
-    public <T extends com.needto.common.services.config.Config> T findConfigByKey(String catId, String key, Class<T> objClass){
+    public <T extends Config> T findConfigByKey(String catId, String key, Class<T> objClass){
         if(StringUtils.isEmpty(catId) || StringUtils.isEmpty(key)){
             return null;
         }
         List<FieldFilter> fieldFilters = Lists.newArrayList(new FieldFilter("catId", catId), new FieldFilter("key", key));
-        return this.mongoDao.findOne(fieldFilters, objClass, com.needto.common.services.config.Config.TABLE);
+        return this.mongoDao.findOne(fieldFilters, objClass, Config.TABLE);
     }
 
-    public <T extends com.needto.common.services.config.Config> List<T> findConfigs(String catId, Class<T> objClass){
+    public <T extends Config> List<T> findConfigs(String catId, Class<T> objClass){
         if(StringUtils.isEmpty(catId)){
             return new ArrayList<>(0);
         }
-        return this.mongoDao.find(FieldFilter.single("catId", catId), objClass, com.needto.common.services.config.Config.TABLE);
+        return this.mongoDao.find(FieldFilter.single("catId", catId), objClass, Config.TABLE);
     }
 
     public long deleteConfigByKey(String catId, String key){
@@ -68,27 +66,27 @@ public class ConfigService {
             return 0L;
         }
         List<FieldFilter> fieldFilters = Lists.newArrayList(new FieldFilter("catId", catId), new FieldFilter("key", key));
-        return this.mongoDao.delete(fieldFilters, com.needto.common.services.config.Config.TABLE);
+        return this.mongoDao.delete(fieldFilters, Config.TABLE);
     }
 
-    public <T extends com.needto.common.services.config.ConfigCat> T saveConfigCat(T configCat){
+    public <T extends ConfigCat> T saveConfigCat(T configCat){
         if(StringUtils.isEmpty(configCat.getName())){
             throw new ValidateException("NO_NAME", "");
         }
         if(this.findConfigCatByKey(configCat.getId(), configCat.getClass()) != null){
             throw new ValidateException("EXISTED", "");
         }
-        return mongoDao.save(configCat, com.needto.common.services.config.ConfigCat.TABLE);
+        return mongoDao.save(configCat, ConfigCat.TABLE);
     }
 
-    public <T extends com.needto.common.services.config.ConfigCat> T findConfigCatByKey(String id, Class<T> objClass){
+    public <T extends ConfigCat> T findConfigCatByKey(String id, Class<T> objClass){
         if(StringUtils.isEmpty(id)){
             return null;
         }
-        return this.mongoDao.findById(id, objClass, com.needto.common.services.config.Config.TABLE);
+        return this.mongoDao.findById(id, objClass, Config.TABLE);
     }
 
-    public <T extends com.needto.common.services.config.ConfigCat> List<T> findConfigCats(Target belongto, Class<T> objClass){
+    public <T extends ConfigCat> List<T> findConfigCats(Target belongto, Class<T> objClass){
         Assert.validateNull(belongto);
         Assert.validateStringEmpty(belongto.getGuid());
         Assert.validateStringEmpty(belongto.getType());

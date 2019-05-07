@@ -4,8 +4,6 @@ import com.google.common.collect.Lists;
 import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Result;
 import com.needto.common.entity.Target;
-import com.needto.common.services.keyvalue.IKeyValueService;
-import com.needto.common.services.keyvalue.KeyValue;
 import com.needto.common.utils.RequestUtil;
 import com.needto.common.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,22 +33,22 @@ public class DefaultKeyValueApi {
     /**
      * key生成器
      */
-    private final Map<String, com.needto.common.services.keyvalue.IKeyValueService> MAP = new HashMap<>();
+    private final Map<String, IKeyValueService> MAP = new HashMap<>();
 
     /**
      * 授权的keyvalue（包含非授权的）
      */
-    private final Map<String, com.needto.common.services.keyvalue.KeyValue> AUTH_KEY_VALUE_MAP = new HashMap<>();
+    private final Map<String, KeyValue> AUTH_KEY_VALUE_MAP = new HashMap<>();
     /**
      * 非授权的keyvalue
      */
-    private final Map<String, com.needto.common.services.keyvalue.KeyValue> NO_AUTH_KEY_VALUE_MAP = new HashMap<>();
+    private final Map<String, KeyValue> NO_AUTH_KEY_VALUE_MAP = new HashMap<>();
 
     @PostConstruct
     public void init(){
-        Map<String, com.needto.common.services.keyvalue.IKeyValueService> temp = applicationContext.getBeansOfType(com.needto.common.services.keyvalue.IKeyValueService.class);
+        Map<String, IKeyValueService> temp = applicationContext.getBeansOfType(IKeyValueService.class);
         temp.forEach((k, v) -> {
-            com.needto.common.services.keyvalue.KeyValue keyValue = v.getName();
+            KeyValue keyValue = v.getName();
             MAP.put(keyValue.getKey(), v);
             if(!v.isAuth()){
                 NO_AUTH_KEY_VALUE_MAP.put(keyValue.getKey(), keyValue);
@@ -60,16 +58,16 @@ public class DefaultKeyValueApi {
         });
     }
 
-    public List<com.needto.common.services.keyvalue.KeyValue> getKeys(boolean isAuth){
+    public List<KeyValue> getKeys(boolean isAuth){
         return Lists.newArrayList(isAuth ? AUTH_KEY_VALUE_MAP.values() : NO_AUTH_KEY_VALUE_MAP.values());
     }
 
-    public Map<String, List<com.needto.common.services.keyvalue.KeyValue>> getKeyValues(Target target, List<String> sourceList, boolean isAuth){
-        Map<String, List<com.needto.common.services.keyvalue.KeyValue>> map = new HashMap<>();
+    public Map<String, List<KeyValue>> getKeyValues(Target target, List<String> sourceList, boolean isAuth){
+        Map<String, List<KeyValue>> map = new HashMap<>();
         if(!CollectionUtils.isEmpty(sourceList)){
             if(isAuth){
                 for(String key : sourceList){
-                    com.needto.common.services.keyvalue.IKeyValueService iKeyValueService = MAP.get(key);
+                    IKeyValueService iKeyValueService = MAP.get(key);
                     if(iKeyValueService != null){
                         map.put(key, iKeyValueService.getValue(target));
                     }
@@ -97,7 +95,7 @@ public class DefaultKeyValueApi {
      */
     @RequestMapping(value = {"/app/keyvalue/keys", "/admin/keyvalue/keys", "/sys/keyvalue/keys", "/web/keyvalue/keys"})
     @ResponseBody
-    public Result<List<com.needto.common.services.keyvalue.KeyValue>> getKeys(HttpServletRequest request){
+    public Result<List<KeyValue>> getKeys(HttpServletRequest request){
         if(RequestUtil.urlType(request.getRequestURI(), "/web")){
             return Result.forSuccess(getKeys(false));
         }else{

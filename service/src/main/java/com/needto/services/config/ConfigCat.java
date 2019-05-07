@@ -1,7 +1,7 @@
 package com.needto.services.config;
 
-import com.needto.common.dao.models.BaseEntity;
 import com.needto.common.entity.Target;
+import com.needto.dao.models.BaseEntity;
 
 /**
  * @author Administrator

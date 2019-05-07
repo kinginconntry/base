@@ -1,6 +1,5 @@
 package com.needto.common.data;
 
-import com.needto.common.context.GlobalEnv;
 
 /**
  * @author Administrator

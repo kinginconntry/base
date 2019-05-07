@@ -1,12 +1,16 @@
-package com.needto.common.dao.mongo;
+package com.needto.dao.mongo;
 
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import com.needto.common.dao.common.*;
-import com.needto.common.dao.models.BaseEntity;
+import com.needto.common.entity.FieldFilter;
+import com.needto.common.entity.FieldUpdate;
+import com.needto.dao.common.CommonDao;
+import com.needto.dao.common.CommonQuery;
+import com.needto.common.entity.FieldOrder;
+import com.needto.dao.common.PageDataResult;
+import com.needto.dao.models.BaseEntity;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;

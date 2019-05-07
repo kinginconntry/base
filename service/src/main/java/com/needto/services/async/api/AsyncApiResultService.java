@@ -1,9 +1,8 @@
 package com.needto.services.async.api;
 
-import com.needto.common.cache.redis.RedisCache;
+import com.needto.cache.redis.RedisCache;
 import com.needto.common.exception.LogicException;
 import com.needto.common.exception.ValidateException;
-import com.needto.common.services.async.api.AsyncResult;
 import com.needto.common.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,10 +32,10 @@ public class AsyncApiResultService {
      * @param <T>
      * @return
      */
-    public <T> com.needto.common.services.async.api.AsyncResult<T> getResult(String guid){
+    public <T> AsyncResult<T> getResult(String guid){
         Assert.validateStringEmpty(guid, "guid can not be null");
         String key = this.getKey(guid);
-        com.needto.common.services.async.api.AsyncResult<T> res = redisCache.get(key);
+        AsyncResult<T> res = redisCache.get(key);
         if(res == null){
             throw new LogicException("NO_ASYNC_TASK", "");
         }
@@ -49,12 +48,12 @@ public class AsyncApiResultService {
      * @param <T>
      * @return
      */
-    public synchronized <T> com.needto.common.services.async.api.AsyncResult<T> incPercent(String guid, int inc, Long expire){
+    public synchronized <T> AsyncResult<T> incPercent(String guid, int inc, Long expire){
         Assert.validateStringEmpty(guid, "guid can not be null");
         if(inc < 0){
             throw new ValidateException("inc can not less than 0");
         }
-        com.needto.common.services.async.api.AsyncResult<T> res = this.getResult(guid);
+        AsyncResult<T> res = this.getResult(guid);
         if(res != null){
             if(!res.isSuccess()){
                 res.incPercent(inc);
@@ -103,7 +102,7 @@ public class AsyncApiResultService {
     public <T> boolean setResult(String guid, T res, Long expire, Long estimatedTime, boolean replace){
         Assert.validateStringEmpty(guid, "guid can not be null");
         String key = this.getKey(guid);
-        com.needto.common.services.async.api.AsyncResult<T> cache;
+        AsyncResult<T> cache;
         if(redisCache.hasKey(key)){
             if(!replace){
                 throw new LogicException("EXIST_TASK", "guid had exist");

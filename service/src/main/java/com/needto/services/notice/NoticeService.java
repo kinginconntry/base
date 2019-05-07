@@ -1,12 +1,9 @@
 package com.needto.services.notice;
 
 import com.google.common.collect.Lists;
-import com.needto.common.dao.common.CommonDao;
-import com.needto.common.dao.common.FieldFilter;
+import com.needto.common.entity.FieldFilter;
 import com.needto.common.exception.ValidateException;
-import com.needto.common.services.notice.BroadCastMsg;
-import com.needto.common.services.notice.Notice;
-import com.needto.common.services.notice.TargetVersion;
+import com.needto.dao.common.CommonDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,7 @@ public class NoticeService {
      * @param notice
      * @return
      */
-    public com.needto.common.services.notice.Notice saveNotice(com.needto.common.services.notice.Notice notice){
+    public Notice saveNotice(Notice notice){
         if(StringUtils.isEmpty(notice.getType())){
             throw new ValidateException("NO_TYPE", "");
         }
@@ -78,14 +75,14 @@ public class NoticeService {
         if(mongoDao.findOne(Lists.newArrayList(
                 new FieldFilter("type", notice.getType()),
                 new FieldFilter("version", notice.getVersion())
-        ), com.needto.common.services.notice.Notice.class, com.needto.common.services.notice.Notice.TABLE) != null){
+        ), Notice.class, Notice.TABLE) != null){
             throw new ValidateException("NO_CREATE", "");
         }
-        return mongoDao.save(notice, com.needto.common.services.notice.Notice.TABLE);
+        return mongoDao.save(notice, Notice.TABLE);
     }
 
     public long deleteByIds(List<String> ids){
-        return mongoDao.deleteByIds(ids, com.needto.common.services.notice.Notice.TABLE);
+        return mongoDao.deleteByIds(ids, Notice.TABLE);
     }
 
     /**
@@ -95,7 +92,7 @@ public class NoticeService {
      * @param target
      * @return
      */
-    public List<com.needto.common.services.notice.Notice> getNotices(String type, String targetType, String target){
+    public List<Notice> getNotices(String type, String targetType, String target){
         if(StringUtils.isEmpty(targetType) || StringUtils.isEmpty(target)){
             return new ArrayList<>(0);
         }
@@ -110,15 +107,15 @@ public class NoticeService {
         Date now = new Date();
         Criteria criteria = Criteria.where("startTime").lte(now).and("endTime").gte(now);
         List<Criteria> orList = new ArrayList<>();
-        Map<String, TargetVersion> map = new HashMap<>(com.needto.common.services.notice.Notice.Type.values().length);
+        Map<String, TargetVersion> map = new HashMap<>(Notice.Type.values().length);
         if(!CollectionUtils.isEmpty(targetVersions)){
             for (TargetVersion targetVersion : targetVersions){
                 map.put(targetVersion.getType(), targetVersion);
             }
         }
-        for(com.needto.common.services.notice.Notice.Type temp : com.needto.common.services.notice.Notice.Type.values()){
-            if(temp.name().equals(com.needto.common.services.notice.Notice.Type.BROADCAST.name())){
-                if(map.containsKey(com.needto.common.services.notice.Notice.Type.BROADCAST.name())){
+        for(Notice.Type temp : Notice.Type.values()){
+            if(temp.name().equals(Notice.Type.BROADCAST.name())){
+                if(map.containsKey(Notice.Type.BROADCAST.name())){
                     orList.add(Criteria.where("type").is(temp.name()).and("version").gt(map.get(temp.name()).getVersion()));
                 }else{
                     orList.add(Criteria.where("type").is(temp.name()));
@@ -134,7 +131,7 @@ public class NoticeService {
         }
         Criteria[] criteriaArray = new Criteria[orList.size()];
         criteria.orOperator(orList.toArray(criteriaArray));
-        return mongoOperations.find(new Query(criteria), com.needto.common.services.notice.Notice.class, com.needto.common.services.notice.Notice.TABLE);
+        return mongoOperations.find(new Query(criteria), Notice.class, Notice.TABLE);
     }
 
     /**
@@ -183,17 +180,17 @@ public class NoticeService {
      * @param msg
      * @return
      */
-    public com.needto.common.services.notice.Notice createBroadCast(BroadCastMsg msg, Date start, Date end){
+    public Notice createBroadCast(BroadCastMsg msg, Date start, Date end){
         if(msg == null){
             throw new ValidateException("NO_DATA", "");
         }
         if(StringUtils.isEmpty(msg.getContent())){
             throw new ValidateException("NO_CONTENT", "");
         }
-        com.needto.common.services.notice.Notice notice = new com.needto.common.services.notice.Notice();
-        notice.setType(com.needto.common.services.notice.Notice.Type.BROADCAST.name());
-        notice.getSource().setType(com.needto.common.services.notice.Notice.SYS_SOURCE_TYPE);
-        notice.getSource().setGuid(com.needto.common.services.notice.Notice.SYS_SOURCE);
+        Notice notice = new Notice();
+        notice.setType(Notice.Type.BROADCAST.name());
+        notice.getSource().setType(Notice.SYS_SOURCE_TYPE);
+        notice.getSource().setGuid(Notice.SYS_SOURCE);
         notice.setData(msg);
         notice.setStartTime(start);
         notice.setEndTime(end);

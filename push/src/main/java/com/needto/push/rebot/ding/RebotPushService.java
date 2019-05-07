@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RebotPushService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(com.needto.common.services.rebot.RebotPushService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RebotPushService.class);
 
     /**
 	 * 将需要推送的消息使用丁丁机器人推送

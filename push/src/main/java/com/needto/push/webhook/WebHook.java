@@ -1,16 +1,19 @@
 package com.needto.push.webhook;
 
 import com.needto.common.entity.Dict;
-import com.needto.common.entity.UserEventConfig;
 import com.needto.common.utils.Crypto;
+import com.needto.dao.models.BaseEntity;
 import org.springframework.util.StringUtils;
 
 /**
  * @author Administrator
  */
-public class WebHook extends UserEventConfig {
+public class WebHook extends BaseEntity {
 
     public static final String TABLE = "_webhook";
+
+    public String owner;
+    public String event;
 
     /**
      * 远程url

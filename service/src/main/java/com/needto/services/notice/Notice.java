@@ -1,8 +1,7 @@
 package com.needto.services.notice;
 
-import com.needto.common.dao.models.BaseEntity;
 import com.needto.common.entity.Target;
-import com.needto.common.services.notice.NoticeMsg;
+import com.needto.dao.models.BaseEntity;
 
 import java.util.Date;
 

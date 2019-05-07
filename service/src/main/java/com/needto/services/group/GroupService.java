@@ -1,17 +1,16 @@
 package com.needto.services.group;
 
 import com.google.common.collect.Lists;
-import com.needto.common.dao.common.CommonDao;
-import com.needto.common.dao.common.FieldFilter;
-import com.needto.common.dao.mongo.MongoQueryUtils;
+import com.needto.common.entity.FieldFilter;
 import com.needto.common.entity.Target;
 import com.needto.common.entity.TreeData;
-import com.needto.common.services.group.Group;
 import com.needto.common.utils.Assert;
 import com.needto.common.utils.TreeUtils;
-import org.apache.commons.lang.StringUtils;
+import com.needto.dao.common.CommonDao;
+import com.needto.dao.common.Op;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -31,14 +30,14 @@ public class GroupService {
      * @param belongTo
      * @return
      */
-    public List<com.needto.common.services.group.Group> findByOwnerAndBelongTo(String owner, Target belongTo){
+    public List<Group> findByOwnerAndBelongTo(String owner, Target belongTo){
         Assert.validateCondition(StringUtils.isEmpty(owner) || belongTo == null, "");
         Assert.validateCondition(StringUtils.isEmpty(belongTo.getType()) || StringUtils.isEmpty(belongTo.getGuid()), "");
         return this.mongoDao.find(Lists.newArrayList(
                 new FieldFilter("owner", owner),
                 new FieldFilter("belongto.type", belongTo.getType()),
                 new FieldFilter("belongto.guid", belongTo.getGuid())
-        ), com.needto.common.services.group.Group.class, com.needto.common.services.group.Group.TABLE);
+        ), Group.class, Group.TABLE);
     }
 
     /**
@@ -51,7 +50,7 @@ public class GroupService {
         return TreeUtils.getHorizontal(findByOwnerAndBelongTo(owner, belongTo));
     }
 
-    public com.needto.common.services.group.Group save(com.needto.common.services.group.Group group){
+    public Group save(Group group){
         Assert.validateNull(group, "NO_GROUP");
         Assert.validateStringEmpty(group.getOwner(), "NO_OWNER");
         Assert.validateNull(group.getBelongto(), "NO_BELONGTO");
@@ -62,8 +61,8 @@ public class GroupService {
                 new FieldFilter("owner", group.getOwner()),
                 new FieldFilter("belongto.type", group.getBelongto().getType()),
                 new FieldFilter("belongto.guid", group.getBelongto().getGuid())
-        ), com.needto.common.services.group.Group.class, com.needto.common.services.group.Group.TABLE) == null, "PCODE_NOT_EXISTS", "");
-        return this.mongoDao.save(group, com.needto.common.services.group.Group.TABLE);
+        ), Group.class, Group.TABLE) == null, "PCODE_NOT_EXISTS", "");
+        return this.mongoDao.save(group, Group.TABLE);
     }
 
     public Long deleteByIds(String owner, Target belongTo, List<String> ids){
@@ -76,7 +75,7 @@ public class GroupService {
                 new FieldFilter("owner", owner),
                 new FieldFilter("belongto.type", belongTo.getType()),
                 new FieldFilter("belongto.guid", belongTo.getGuid()),
-                new FieldFilter("id", MongoQueryUtils.MongoOp.IN.name(), ids)
+                new FieldFilter("id", Op.IN.name(), ids)
         ), Group.TABLE);
     }
 

@@ -4,7 +4,7 @@ import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Dict;
 import com.needto.common.entity.Result;
 import com.needto.common.entity.Target;
-import com.needto.common.services.firewall.frequency.FrequencyService;
+import com.needto.firewall.frequency.FrequencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;

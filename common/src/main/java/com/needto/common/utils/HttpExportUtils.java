@@ -1,6 +1,7 @@
 package com.needto.common.utils;
 
-import org.apache.commons.lang.StringUtils;
+
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

@@ -1,8 +1,6 @@
 package com.needto.services.keyvalue;
 
 import com.needto.common.entity.Target;
-import com.needto.common.services.keyvalue.KeyValue;
-
 import java.util.List;
 
 /**
@@ -14,7 +12,7 @@ public interface IKeyValueService {
      * 获取头部信息
      * @return
      */
-    com.needto.common.services.keyvalue.KeyValue getName();
+    KeyValue getName();
 
     /**
      * 获取结果list

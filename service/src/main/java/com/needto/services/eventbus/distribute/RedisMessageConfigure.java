@@ -1,7 +1,5 @@
 package com.needto.services.eventbus.distribute;
 
-import com.needto.common.services.eventbus.distribute.RedisEventBus;
-import com.needto.common.services.eventbus.distribute.RedisMessageListenerAdapterRegister;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

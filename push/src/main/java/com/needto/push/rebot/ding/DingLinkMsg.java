@@ -1,6 +1,5 @@
 package com.needto.push.rebot.ding;
 
-import com.needto.common.services.rebot.ding.DingMsg;
 
 /**
  * @author Administrator

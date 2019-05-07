@@ -2,7 +2,6 @@ package com.needto.services.dynamictoken;
 
 import com.needto.common.entity.Result;
 import com.needto.common.filter.CommonFilter;
-import com.needto.common.services.dynamictoken.DynamicSignService;
 import com.needto.common.utils.RequestUtil;
 import com.needto.common.utils.ResponseUtil;
 import org.slf4j.Logger;

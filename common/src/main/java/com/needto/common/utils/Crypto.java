@@ -12,6 +12,9 @@ import java.util.Base64;
 
 public enum Crypto {
 
+    /**
+     * md5
+     */
     MD5("1"){
         @Override
         public String encry(String text, String key) {
@@ -24,6 +27,9 @@ public enum Crypto {
             return text;
         }
     },
+    /**
+     * rsa
+     */
     RSA("2"){
         @Override
         public String encry(String text, String key) {
@@ -35,6 +41,9 @@ public enum Crypto {
             return text;
         }
     },
+    /**
+     * base64
+     */
     BASE64("3"){
         @Override
         public String encry(String text, String key) {

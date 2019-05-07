@@ -1,4 +1,4 @@
-package com.needto.common.dao.models;
+package com.needto.dao.models;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
