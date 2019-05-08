@@ -176,4 +176,8 @@ public class GlobalEnv {
     public static String getAppPort(){
         return environment.getProperty("server.port");
     }
+
+    public static boolean isDebug(){
+        return "debug".equalsIgnoreCase(environment.getProperty("debug", "false"));
+    }
 }
