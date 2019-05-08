@@ -2,13 +2,14 @@ package com.needto.push.webhook;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import com.needto.common.dao.common.CommonDao;
-import com.needto.common.dao.common.FieldFilter;
-import com.needto.common.dao.common.FieldOrder;
-import com.needto.common.dao.mongo.MongoQueryUtils;
+import com.needto.common.entity.Filter;
+import com.needto.common.entity.Query;
 import com.needto.common.entity.Result;
-import com.needto.common.services.webhook.WebHook;
 import com.needto.common.utils.*;
+import com.needto.dao.common.CommonDao;
+import com.needto.dao.common.CommonQueryUtils;
+import com.needto.dao.common.Op;
+import com.needto.dao.models.FieldFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ import java.util.Map;
 @Service
 public class WebHookService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(com.needto.common.services.webhook.WebHookService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WebHookService.class);
 
     /**
      * 重试默认等待时间：毫秒
@@ -47,22 +48,27 @@ public class WebHookService {
         return this.mongoDao.save(webHook, WebHook.TABLE);
     }
 
-    public List<WebHook> find(List<FieldFilter> fieldFilters, List<FieldOrder> orders, String owner){
+    public List<WebHook> find(Query query, String owner){
         Assert.validateStringEmpty(owner);
-        if(fieldFilters == null){
-            fieldFilters = new ArrayList<>();
+        if(query == null){
+            query = new Query();
         }
-        fieldFilters.add(new FieldFilter("owner", owner));
-        return this.mongoDao.find(fieldFilters, orders, WebHook.class, WebHook.TABLE);
+        List<Filter> filters = query.getFilters();
+
+        if(filters == null){
+            filters = new ArrayList<>();
+        }
+        filters.add(new Filter("owner", owner));
+        return this.mongoDao.find(CommonQueryUtils.getQuery(query), WebHook.class, WebHook.TABLE);
     }
 
-    public long remove(List<FieldFilter> fieldFilters, String owner){
+    public long remove(List<Filter> fieldFilters, String owner){
         Assert.validateStringEmpty(owner);
         if(fieldFilters == null){
             fieldFilters = new ArrayList<>();
         }
-        fieldFilters.add(new FieldFilter("owner", owner));
-        return this.mongoDao.delete(fieldFilters, WebHook.TABLE);
+        fieldFilters.add(new Filter("owner", owner));
+        return this.mongoDao.delete(CommonQueryUtils.getFilters(fieldFilters), WebHook.TABLE);
     }
 
     public long removeByIds(List<String> ids, String owner){
@@ -70,7 +76,7 @@ public class WebHookService {
             return 0L;
         }
         return this.mongoDao.delete(Lists.newArrayList(
-                new FieldFilter("id", MongoQueryUtils.MongoOp.IN.name(), ids),
+                new FieldFilter("id", Op.IN.name(), ids),
                 new FieldFilter("owner", owner)
         ), WebHook.TABLE);
     }

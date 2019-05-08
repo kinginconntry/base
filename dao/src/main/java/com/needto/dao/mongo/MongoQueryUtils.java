@@ -1,13 +1,13 @@
 package com.needto.dao.mongo;
 
-import com.needto.common.entity.FieldFilter;
-import com.needto.common.entity.FieldUpdate;
 import com.needto.common.utils.Assert;
 import com.needto.common.utils.Utils;
 import com.needto.dao.common.CommonQuery;
-import com.needto.common.entity.FieldOrder;
 import com.needto.dao.common.Op;
 import com.needto.dao.models.BaseEntity;
+import com.needto.dao.models.FieldFilter;
+import com.needto.dao.models.FieldOrder;
+import com.needto.dao.models.FieldUpdate;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;

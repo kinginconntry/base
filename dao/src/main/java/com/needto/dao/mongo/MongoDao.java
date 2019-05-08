@@ -4,13 +4,14 @@ import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import com.needto.common.entity.FieldFilter;
-import com.needto.common.entity.FieldUpdate;
 import com.needto.dao.common.CommonDao;
 import com.needto.dao.common.CommonQuery;
-import com.needto.common.entity.FieldOrder;
+import com.needto.dao.common.Op;
 import com.needto.dao.common.PageDataResult;
 import com.needto.dao.models.BaseEntity;
+import com.needto.dao.models.FieldFilter;
+import com.needto.dao.models.FieldOrder;
+import com.needto.dao.models.FieldUpdate;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -110,7 +111,7 @@ public class MongoDao implements CommonDao {
     @Override
     public <T> T findOneByField(String field, String op, Object value, Class<T> objClass, String table) {
         if(StringUtils.isEmpty(op)){
-            op = MongoQueryUtils.MongoOp.EQ.name();
+            op = Op.EQ.name();
         }
         Document document = new Document();
         document.put(field, new Document(op, value));

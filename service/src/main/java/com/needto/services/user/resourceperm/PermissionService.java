@@ -1,11 +1,12 @@
 package com.needto.services.user.resourceperm;
 
-import com.needto.common.entity.FieldFilter;
+import com.needto.common.entity.Query;
 import com.needto.common.entity.TreeData;
 import com.needto.common.utils.Assert;
 import com.needto.common.utils.TreeUtils;
 import com.needto.dao.common.CommonDao;
-import com.needto.common.entity.FieldOrder;
+import com.needto.dao.common.CommonQueryUtils;
+import com.needto.dao.models.FieldFilter;
 import com.needto.services.user.resourceperm.entity.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,12 +33,12 @@ public class PermissionService {
         return this.mongoDao.save(permission, Permission.TABLE);
     }
 
-    public List<Permission> find(List<FieldFilter> fieldFilters, List<FieldOrder> orders){
-        return this.mongoDao.find(fieldFilters, orders, Permission.class, Permission.TABLE);
+    public List<Permission> find(Query query){
+        return this.mongoDao.find(CommonQueryUtils.getQuery(query), Permission.class, Permission.TABLE);
     }
 
-    public List<TreeData> getHorizontal(List<FieldFilter> fieldFilters, List<FieldOrder> orders){
-        return TreeUtils.getHorizontal(this.find(fieldFilters, orders));
+    public List<TreeData> getHorizontal(Query query){
+        return TreeUtils.getHorizontal(this.find(query));
     }
 
     public long deleteIds(List<String> ids){

@@ -15,7 +15,7 @@ public class ReqIdParam extends RequestParam {
 
     public List<String> ids;
 
-    public List<FieldUpdate> updates;
+    public List<Update> updates;
 
     public List<String> getIds() {
         return ids;
@@ -25,11 +25,11 @@ public class ReqIdParam extends RequestParam {
         this.ids = ids;
     }
 
-    public List<FieldUpdate> getUpdates() {
+    public List<Update> getUpdates() {
         return updates;
     }
 
-    public void setUpdates(List<FieldUpdate> updates) {
+    public void setUpdates(List<Update> updates) {
         this.updates = updates;
     }
 

@@ -1,11 +1,11 @@
 package com.needto.services.config;
 
 import com.google.common.collect.Lists;
-import com.needto.common.entity.FieldFilter;
 import com.needto.common.entity.Target;
 import com.needto.common.exception.ValidateException;
 import com.needto.common.utils.Assert;
 import com.needto.dao.common.CommonDao;
+import com.needto.dao.models.FieldFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +50,10 @@ public class ConfigService {
         if(StringUtils.isEmpty(catId) || StringUtils.isEmpty(key)){
             return null;
         }
-        List<FieldFilter> fieldFilters = Lists.newArrayList(new FieldFilter("catId", catId), new FieldFilter("key", key));
-        return this.mongoDao.findOne(fieldFilters, objClass, Config.TABLE);
+        return this.mongoDao.findOne(Lists.newArrayList(
+                new FieldFilter("catId", catId),
+                new FieldFilter("key", key)
+        ), objClass, Config.TABLE);
     }
 
     public <T extends Config> List<T> findConfigs(String catId, Class<T> objClass){

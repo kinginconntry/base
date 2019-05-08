@@ -1,12 +1,13 @@
 package com.needto.services.user.resourceperm;
 
 import com.google.common.collect.Lists;
-import com.needto.common.entity.FieldFilter;
-import com.needto.common.entity.FieldUpdate;
 import com.needto.common.entity.Target;
+import com.needto.common.entity.Update;
 import com.needto.common.utils.Assert;
 import com.needto.dao.common.CommonDao;
-import com.needto.dao.mongo.MongoQueryUtils;
+import com.needto.dao.common.CommonQueryUtils;
+import com.needto.dao.common.Op;
+import com.needto.dao.models.FieldFilter;
 import com.needto.services.user.resourceperm.entity.DataPerm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,16 +97,16 @@ public class DataPermService {
         Assert.validateNull(ids);
         return this.mongoDao.delete(Lists.newArrayList(
                 new FieldFilter("owner", owner),
-                new FieldFilter("id", MongoQueryUtils.MongoOp.IN.name(), ids)
+                new FieldFilter("id", Op.IN.name(), ids)
         ), DataPerm.TABLE);
     }
 
-    public Long update(String owner, List<String> ids, List<FieldUpdate> updates){
+    public Long update(String owner, List<String> ids, List<Update> updates){
         Assert.validateStringEmpty(owner);
         Assert.validateNull(ids);
         return this.mongoDao.update(Lists.newArrayList(
                 new FieldFilter("owner", owner),
-                new FieldFilter("id", MongoQueryUtils.MongoOp.IN.name(), ids)
-        ), updates, DataPerm.TABLE);
+                new FieldFilter("id", Op.IN.name(), ids)
+        ), CommonQueryUtils.getUpdates(updates), DataPerm.TABLE);
     }
 }

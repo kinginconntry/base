@@ -30,7 +30,7 @@ public class DefaultWebhookApi {
     @PostMapping(value = {"/app/webhook/find", "/sys/webhook/find", "/admin/webhook/find"})
     @ResponseBody
     public Result<List<WebHook>> find(@RequestBody Query query){
-        return Result.forSuccess(webHookService.find(query.getFilters(), query.getOrders(), GlobalEnv.getOwner()));
+        return Result.forSuccess(webHookService.find(query, GlobalEnv.getOwner()));
     }
 
     /**

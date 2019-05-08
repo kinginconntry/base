@@ -56,7 +56,7 @@ public class DefaultResourceControlApi {
         if(query == null){
             return Result.forSuccess();
         }
-        return Result.forSuccess(this.roleService.find(GlobalEnv.getOwner(), query.getFilters(), query.getOrders()));
+        return Result.forSuccess(this.roleService.find(GlobalEnv.getOwner(), query));
     }
 
     /**
@@ -101,7 +101,7 @@ public class DefaultResourceControlApi {
         if(query == null){
             return Result.forSuccess();
         }
-        return Result.forSuccess(this.permissionService.find(query.getFilters(), query.getOrders()));
+        return Result.forSuccess(this.permissionService.find(query));
     }
 
     /**
@@ -115,7 +115,7 @@ public class DefaultResourceControlApi {
         if(query == null){
             return Result.forSuccess();
         }
-        return Result.forSuccess(this.permissionService.getHorizontal(query.getFilters(), query.getOrders()));
+        return Result.forSuccess(this.permissionService.getHorizontal(query));
     }
 
     /**

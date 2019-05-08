@@ -10,7 +10,7 @@ public class RequestParam {
     /**
      * 过滤的标准信息
      */
-    public List<FieldFilter> filters;
+    public List<Filter> filters;
 
     /**
      * 过滤的额外查询
@@ -22,11 +22,11 @@ public class RequestParam {
      */
     public String search;
 
-    public List<FieldFilter> getFilters() {
+    public List<Filter> getFilters() {
         return filters;
     }
 
-    public void setFilters(List<FieldFilter> filters) {
+    public void setFilters(List<Filter> filters) {
         this.filters = filters;
     }
 

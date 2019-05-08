@@ -39,7 +39,7 @@ public class Query extends RequestParam{
     /**
      * 排序信息
      */
-    public List<FieldOrder> orders;
+    public List<Order> orders;
 
     /**
      * 需要字段
@@ -94,11 +94,11 @@ public class Query extends RequestParam{
         this.size = size;
     }
 
-    public List<FieldOrder> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<FieldOrder> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 

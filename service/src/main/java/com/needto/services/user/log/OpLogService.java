@@ -1,11 +1,10 @@
 package com.needto.services.user.log;
 
-import com.needto.common.entity.FieldFilter;
+import com.needto.common.entity.Filter;
 import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
 import com.needto.common.utils.Assert;
 import com.needto.dao.common.CommonDao;
-import com.needto.dao.common.CommonQuery;
 import com.needto.dao.common.CommonQueryUtils;
 import com.needto.dao.common.PageDataResult;
 import org.slf4j.Logger;
@@ -44,7 +43,7 @@ public class OpLogService {
         if(query.getFilters() == null){
             query.setFilters(new ArrayList<>(1));
         }
-        query.getFilters().add(new FieldFilter("owner", owner));
+        query.getFilters().add(new Filter("owner", owner));
         PageDataResult<OpLog> res = this.commonDao.findByPage(CommonQueryUtils.getQuery(query), OpLog.class, OpLog.TABLE);
         return PageResult.forSuccess(res.getTotal(), res.getPage(), res.getData());
     }
@@ -57,8 +56,8 @@ public class OpLogService {
         return PageResult.forSuccess(res.getTotal(), res.getPage(), res.getData());
     }
 
-    public long deleteByFilter(List<FieldFilter> filterList){
-        return this.commonDao.delete(filterList, OpLog.TABLE);
+    public long deleteByFilter(List<Filter> filterList){
+        return this.commonDao.delete(CommonQueryUtils.getFilters(filterList), OpLog.TABLE);
     }
 
     public long delete(List<String> ids){

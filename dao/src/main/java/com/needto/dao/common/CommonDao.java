@@ -1,9 +1,10 @@
 package com.needto.dao.common;
 
 
-import com.needto.common.entity.FieldFilter;
-import com.needto.common.entity.FieldUpdate;
-import com.needto.common.entity.FieldOrder;
+
+import com.needto.dao.models.FieldFilter;
+import com.needto.dao.models.FieldOrder;
+import com.needto.dao.models.FieldUpdate;
 
 import java.util.Collection;
 import java.util.List;

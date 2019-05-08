@@ -3,6 +3,9 @@ package com.needto.push.rebot.ding;
 
 import java.util.List;
 
+/**
+ * @author Administrator
+ */
 public class DingMarkDownMsg extends DingMsg {
 
     public static class MarkDown {

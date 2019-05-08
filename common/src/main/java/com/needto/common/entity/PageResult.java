@@ -1,6 +1,5 @@
 package com.needto.common.entity;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 
 /**
@@ -60,7 +59,7 @@ public class PageResult<T> implements Serializable {
         Redirect redirectData = new Redirect();
         redirectData.setData(data);
         redirectData.setRedirect(redirect);
-        return new PageResult<>(false, String.format("%s", HttpServletResponse.SC_FOUND), "", redirectData);
+        return new PageResult<>(false, String.format("%s", "404"), "", redirectData);
     }
 
 

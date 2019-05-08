@@ -8,7 +8,8 @@ package com.needto.common.utils;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
-import org.springframework.util.StringUtils;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -118,8 +119,11 @@ public class Encodes {
      * @return 解码后字符串
      */
     public static String decodeBase64(String input, String encoding) {
+        if(StringUtils.isEmpty(encoding)){
+            encoding = "utf-8";
+        }
         try {
-            return new String(Base64.decodeBase64(input), StringUtils.defaultIfEmpty(encoding, "utf-8"));
+            return new String(Base64.decodeBase64(input), encoding);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

@@ -1,13 +1,13 @@
 package com.needto.services.group;
 
 import com.google.common.collect.Lists;
-import com.needto.common.entity.FieldFilter;
 import com.needto.common.entity.Target;
 import com.needto.common.entity.TreeData;
 import com.needto.common.utils.Assert;
 import com.needto.common.utils.TreeUtils;
 import com.needto.dao.common.CommonDao;
 import com.needto.dao.common.Op;
+import com.needto.dao.models.FieldFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

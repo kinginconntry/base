@@ -2,7 +2,6 @@ package com.needto.common.utils;
 
 import com.google.common.collect.Lists;
 import com.needto.common.entity.Dict;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -508,7 +507,7 @@ public class ImportExcelUtils {
             }
             return workbook;
         } finally {
-            IOUtils.closeQuietly(fis);
+            IOUtil.close(fis);
         }
     }
 

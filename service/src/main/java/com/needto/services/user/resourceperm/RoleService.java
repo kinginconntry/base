@@ -1,13 +1,14 @@
 package com.needto.services.user.resourceperm;
 
 import com.google.common.collect.Lists;
-import com.needto.common.entity.FieldFilter;
+import com.needto.common.entity.Filter;
+import com.needto.common.entity.Query;
 import com.needto.common.entity.Target;
 import com.needto.common.utils.Assert;
 import com.needto.dao.common.CommonDao;
-import com.needto.common.entity.FieldOrder;
+import com.needto.dao.common.CommonQueryUtils;
 import com.needto.dao.common.Op;
-import com.needto.dao.mongo.MongoQueryUtils;
+import com.needto.dao.models.FieldFilter;
 import com.needto.services.user.resourceperm.entity.Role;
 import com.needto.services.user.resourceperm.entity.RoleRelation;
 import org.bson.types.ObjectId;
@@ -46,13 +47,18 @@ public class RoleService {
         ), Role.TABLE);
     }
 
-    public List<Role> find(String owner, List<FieldFilter> fieldFilters, List<FieldOrder> orders){
+    public List<Role> find(String owner, Query query){
         Assert.validateStringEmpty(owner);
-        if(fieldFilters == null){
-            fieldFilters = new ArrayList<>(1);
+        if(query == null){
+            query = new Query();
         }
-        fieldFilters.add(new FieldFilter("owner", owner));
-        return this.mongoDao.find(fieldFilters, orders, Role.class, Role.TABLE);
+        List<Filter> filters = query.getFilters();
+        if(filters == null){
+            filters = new ArrayList<>(1);
+        }
+        filters.add(new Filter("owner", owner));
+        query.setFilters(filters);
+        return this.mongoDao.find(CommonQueryUtils.getQuery(query), Role.class, Role.TABLE);
     }
 
     public List<Role> findByIds(String owner, List<String> ids){

@@ -3,6 +3,9 @@ package com.needto.push.rebot.ding;
 
 import java.util.List;
 
+/**
+ * @author Administrator
+ */
 public class DingActionCardMsg extends DingMsg {
 
     public static class Btn {

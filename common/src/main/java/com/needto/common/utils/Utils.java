@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.needto.common.entity.UrlInfo;
 import com.needto.common.exception.BaseException;
+import net.sf.json.xml.XMLSerializer;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 import org.springframework.util.CollectionUtils;
