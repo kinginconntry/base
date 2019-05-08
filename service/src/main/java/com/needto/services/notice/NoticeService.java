@@ -3,7 +3,7 @@ package com.needto.services.notice;
 import com.google.common.collect.Lists;
 import com.needto.common.exception.ValidateException;
 import com.needto.dao.common.CommonDao;
-import com.needto.dao.models.FieldFilter;
+import com.needto.dao.common.FieldFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

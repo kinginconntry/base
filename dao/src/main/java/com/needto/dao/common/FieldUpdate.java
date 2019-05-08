@@ -1,4 +1,4 @@
-package com.needto.dao.models;
+package com.needto.dao.common;
 
 import java.util.ArrayList;
 import java.util.List;

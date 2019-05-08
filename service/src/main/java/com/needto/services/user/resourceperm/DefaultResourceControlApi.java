@@ -5,8 +5,6 @@ import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Query;
 import com.needto.common.entity.Result;
 import com.needto.common.entity.TreeData;
-import com.needto.services.user.resourceperm.entity.Permission;
-import com.needto.services.user.resourceperm.entity.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

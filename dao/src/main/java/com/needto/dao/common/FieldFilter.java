@@ -1,4 +1,4 @@
-package com.needto.dao.models;
+package com.needto.dao.common;
 
 import com.google.common.collect.Lists;
 

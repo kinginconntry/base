@@ -4,9 +4,6 @@ import com.needto.common.entity.Filter;
 import com.needto.common.entity.Order;
 import com.needto.common.entity.Query;
 import com.needto.common.entity.Update;
-import com.needto.dao.models.FieldFilter;
-import com.needto.dao.models.FieldOrder;
-import com.needto.dao.models.FieldUpdate;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,7 +2,6 @@ package com.needto.services.user.ownercommon;
 
 import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Result;
-import com.needto.services.user.ownercommon.entity.Account;
 import com.needto.services.user.ownercommon.entity.Organition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

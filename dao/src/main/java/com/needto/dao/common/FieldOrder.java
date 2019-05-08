@@ -1,4 +1,4 @@
-package com.needto.dao.models;
+package com.needto.dao.common;
 
 /**
  * @author Administrator

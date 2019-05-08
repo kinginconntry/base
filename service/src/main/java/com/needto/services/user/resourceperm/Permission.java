@@ -1,4 +1,4 @@
-package com.needto.services.user.resourceperm.entity;
+package com.needto.services.user.resourceperm;
 
 import com.needto.common.entity.Itree;
 import com.needto.dao.models.BaseEntity;
