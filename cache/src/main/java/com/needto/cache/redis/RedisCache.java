@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.util.concurrent.UncheckedExecutionException;
+import com.needto.cache.entity.CacheData;
 import com.needto.common.context.GlobalEnv;
 import com.needto.common.exception.ValidateException;
 import com.needto.common.utils.Assert;

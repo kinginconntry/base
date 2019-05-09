@@ -30,6 +30,8 @@
         <module>service</module>
         <module>cache</module>
         <module>firewall</module>
+        <module>quartz</module>
+        <module>notice</module>
     </modules>
 
     <dependencies>

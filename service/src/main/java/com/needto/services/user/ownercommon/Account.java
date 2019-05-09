@@ -2,7 +2,7 @@ package com.needto.services.user.ownercommon;
 
 
 import com.needto.common.entity.Dict;
-import com.needto.dao.models.BaseEntity;
+import com.needto.dao.models.UserEntity;
 import com.needto.services.user.ownercommon.entity.AccountResource;
 import com.needto.services.user.ownercommon.entity.AccoutFeature;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  * 账户实体
  * @author Administrator
  */
-public class Account extends BaseEntity {
+public class Account extends UserEntity {
 
     public static final String TABLE = "_account";
 

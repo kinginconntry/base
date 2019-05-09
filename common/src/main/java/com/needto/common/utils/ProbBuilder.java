@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * @author Administrator
- * 概率生成器，主要用于从根据一堆概率数字随机获取出某个概率的位置
+ * 概率生成器，主要用于从根据一堆数字随机获取出某个概率的位置（根据数字大小进行处理）
  */
 public class ProbBuilder {
 

@@ -1,13 +1,13 @@
 package com.needto.services.user.resourceperm;
 
 import com.needto.common.entity.Itree;
-import com.needto.dao.models.BaseEntity;
+import com.needto.dao.models.UserEntity;
 
 /**
  * @author Administrator
  * 资源定义：权限节点，系统定义出来
  */
-public class Permission extends BaseEntity implements Itree {
+public class Permission extends UserEntity implements Itree {
 
     public static final String TABLE = "_permission";
 

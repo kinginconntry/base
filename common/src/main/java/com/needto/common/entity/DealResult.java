@@ -2,13 +2,19 @@ package com.needto.common.entity;
 
 /**
  * @author Administrator
- * 外部处理结果
+ * 内部处理结果
  */
-public class DealResult extends Dict {
+public class DealResult{
 
     public boolean success;
 
-    public DealResult() {
+    public Object data;
+
+    public Result getResult(){
+        Result<Object> res = new Result<>();
+        res.setData(this.data);
+        res.setSuccess(this.success);
+        return res;
     }
 
     public DealResult(boolean success) {

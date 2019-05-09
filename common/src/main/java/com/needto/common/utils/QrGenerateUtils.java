@@ -1,7 +1,5 @@
 package com.needto.common.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.needto.common.entity.MiniQrConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -12,7 +10,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,57 +23,47 @@ import java.util.Map;
  */
 public class QrGenerateUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(QrGenerateUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(QrGenerateUtils.class);
+
+    /**
+     * 微信小程序二维码生成url
+     */
+    private static final String MINI_URL = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=";
+
+    /**
+     * 生成普通二维码
+     * @param out
+     * @param qrParam
+     */
+    public static void createQr(OutputStream out, QrConfig qrParam){
+        Assert.validateNull(qrParam, "NO_PARAM", "");
+        qrParam.init();
+    }
 
     /**
      * 生成二维码
      *
-     * @param response    请求响应
-     * @param download    是否需要下载到微信小程序中
      * @param accessToken 小程序生成二维码api调用的token
      * @param qrParam     小程序二维码参数
      * @throws IOException
      */
-    public static void produceWeiXinMiniQr(HttpServletResponse response, boolean download, String accessToken, MiniQrConfig qrParam) throws IOException {
-        response.setHeader("Cache-Control", "no-store, no-cache");
-        response.setContentType("image/jpeg");
+    public static void createWechatMiniQr(OutputStream out, String accessToken, WechatMiniQrConfig qrParam) throws IOException {
 
-        if (qrParam == null || StringUtils.isEmpty(qrParam.page)) {
-            logger.debug("小程序参数不正确，参数：{}", qrParam != null ? JSON.toJSONString(qrParam) : "无");
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-        if (StringUtils.isEmpty(accessToken)) {
-            logger.debug("没有小程序token");
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-        if (qrParam.width == 0) {
-            qrParam.width = MiniQrConfig.DEFAULT_WIDTH_SMALL_LEN;
-        }
+        Assert.validateStringEmpty(accessToken, "NO_TOKEN", "");
+        Assert.validateCondition(qrParam == null || StringUtils.isEmpty(qrParam.page), "NO_PARAM", "");
+
+        qrParam.init();
 
         if (StringUtils.isEmpty(qrParam.scene)) {
             qrParam.scene = Long.toString(System.currentTimeMillis());
         }
 
-        if (MiniQrConfig.DEFAULT_WIDTH_SMALL_KEY.equals(qrParam.size)) {
-            qrParam.width = MiniQrConfig.DEFAULT_WIDTH_SMALL_LEN;
-        } else if (MiniQrConfig.DEFAULT_WIDTH_LARGE_KEY.equals(qrParam.size)) {
-            qrParam.width = MiniQrConfig.DEFAULT_WIDTH_LARGE_LEN;
-        }
-
-        if (StringUtils.isEmpty(qrParam.imgName)) {
+        if (StringUtils.isEmpty(qrParam.name)) {
             if (qrParam.size == null) {
                 qrParam.size = "s";
             }
-            qrParam.imgName = qrParam.scene + "_" + qrParam.size + ".jpeg";
+            qrParam.name = qrParam.scene + "_" + qrParam.size + ".jpeg";
         }
-        if (download) {
-            logger.debug("下载小程序二维码");
-            response.setHeader("Location", qrParam.imgName);
-            response.setHeader("Content-Disposition", "attachment; filename=" + qrParam.imgName);
-        }
-        String url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + accessToken;
 
         Map<String, Object> contentMap = new HashMap<>(6);
         contentMap.put("page", qrParam.page);
@@ -87,17 +74,92 @@ public class QrGenerateUtils {
         contentMap.put("is_hyaline", qrParam.isHyaline);
 
         RestTemplate client = new RestTemplate();
-        ResponseEntity<Resource> entitys = client.postForEntity(url, HttpMethod.POST, Resource.class, contentMap);
+        ResponseEntity<Resource> entitys = client.postForEntity(MINI_URL + accessToken, HttpMethod.POST, Resource.class, contentMap);
         if (entitys.getStatusCode().equals(HttpStatus.OK) && entitys.getBody() != null) {
             InputStream in = entitys.getBody().getInputStream();
             BufferedImage bi = ImageIO.read(in);
-            OutputStream out = response.getOutputStream();
             if(bi == null){
-                logger.debug("没有获取到图片数据");
+                LOG.debug("没有获取到图片数据");
             }
             ImageIO.write(bi, "jpg", out);
-        }else{
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
+    }
+
+    /**
+     * 普通二维码
+     */
+    public static class QrConfig {
+        /**
+         * 小尺寸二维码key
+         */
+        public static final String DEFAULT_WIDTH_SMALL_KEY = "s";
+
+        /**
+         * 大尺寸二维码key
+         */
+        public static final String DEFAULT_WIDTH_LARGE_KEY = "l";
+
+        /**
+         * 二维码宽度
+         */
+        public Integer width;
+
+        /**
+         * 大小类型
+         */
+        public String size;
+
+        /**
+         * 二维码名称
+         */
+        public String name;
+
+        public void init(){
+            if (this.width == null) {
+                if(DEFAULT_WIDTH_SMALL_KEY.equalsIgnoreCase(size)){
+                    this.width = 512;
+                }else if(DEFAULT_WIDTH_LARGE_KEY.equalsIgnoreCase(size)){
+                    this.width = 1024;
+                }else{
+                    this.width = 512;
+                }
+            }
+
+            if(this.width <= 0){
+                this.width = 512;
+            }
+        }
+    }
+
+    /**
+     * @author Administrator
+     * 小程序二维码配置
+     */
+    public static class WechatMiniQrConfig extends QrConfig {
+
+        /**
+         * 小程序页面路径
+         */
+        public String page;
+
+        /**
+         * 最大32个可见字符，只支持数字，大小写英文以及部分特殊字符：!#$&'()*+,/:;=?@-._~，其它字符请自行编码为合法字符（因不支持%，中文无法使用 urlencode 处理，请使用其他编码方式
+         */
+        public String scene;
+
+        /**
+         * 自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
+         */
+        public boolean autoColor = false;
+
+        /**
+         * autoColor 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"} 十进制表示
+         */
+        public Map<String, String> lineColor;
+
+        /**
+         * 是否需要透明底色， isHyaline 为true时，生成透明底色的小程序码
+         */
+        public boolean isHyaline = false;
     }
 }

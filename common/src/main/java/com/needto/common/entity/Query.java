@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @author Administrator
- * 标准查询参数
+ * http标准查询参数
  */
 public class Query extends RequestParam{
 

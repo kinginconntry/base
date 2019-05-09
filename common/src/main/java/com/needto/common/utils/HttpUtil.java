@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -141,5 +142,33 @@ public class HttpUtil {
         }
 
         return httpResponse.getEntity().getContent();
+    }
+
+    /**
+     * 生成普通二维码
+     */
+    public void createQr(HttpServletResponse response, QrGenerateUtils.QrConfig config, boolean download) throws IOException {
+        response.setHeader("Cache-Control", "no-store, no-cache");
+        response.setContentType("image/jpeg");
+        if (download) {
+            LOG.debug("下载小程序二维码");
+            response.setHeader("Location", config.name);
+            response.setHeader("Content-Disposition", "attachment; filename=" + config.name);
+        }
+        QrGenerateUtils.createQr(response.getOutputStream(), config);
+    }
+
+    /**
+     * 微信小程序二维码
+     */
+    public void createWechatMiniQr(HttpServletResponse response, String accessToken, QrGenerateUtils.WechatMiniQrConfig config, boolean download) throws IOException {
+        response.setHeader("Cache-Control", "no-store, no-cache");
+        response.setContentType("image/jpeg");
+        if (download) {
+            LOG.debug("下载小程序二维码");
+            response.setHeader("Location", config.name);
+            response.setHeader("Content-Disposition", "attachment; filename=" + config.name);
+        }
+        QrGenerateUtils.createWechatMiniQr(response.getOutputStream(), accessToken, config);
     }
 }

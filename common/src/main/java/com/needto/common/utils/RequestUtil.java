@@ -1,6 +1,6 @@
 package com.needto.common.utils;
 
-import com.needto.common.data.ClientType;
+import com.needto.common.context.ClientType;
 import com.needto.common.data.Constant;
 import com.needto.common.entity.Target;
 import com.needto.common.exception.ValidateException;

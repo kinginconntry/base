@@ -5,13 +5,9 @@ import java.util.List;
 
 /**
  * @author Administrator
+ * http统一更新参数
  */
 public class ReqIdParam extends RequestParam {
-
-    /**
-     * 是否异步执行
-     */
-    public Boolean isAsync;
 
     public List<String> ids;
 
@@ -31,13 +27,5 @@ public class ReqIdParam extends RequestParam {
 
     public void setUpdates(List<Update> updates) {
         this.updates = updates;
-    }
-
-    public Boolean isAsync() {
-        return isAsync;
-    }
-
-    public void setAsync(Boolean async) {
-        isAsync = async;
     }
 }

@@ -1,5 +1,7 @@
 package com.needto.common.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -13,13 +15,15 @@ import javax.servlet.ServletContext;
  */
 abstract public class CommonFilter implements Filter {
 
-    protected ApplicationContext appContextHelper;
+    protected final static Logger LOG = LoggerFactory.getLogger(CommonFilter.class);
+
+    protected ApplicationContext applicationContext;
 
     @Override
     public void init(FilterConfig filterConfig) {
-        System.out.println("初始化过滤器");
+        LOG.debug("初始化过滤器");
         ServletContext context = filterConfig.getServletContext();
-        appContextHelper = WebApplicationContextUtils.getWebApplicationContext(context);
+        applicationContext = WebApplicationContextUtils.getWebApplicationContext(context);
     }
 
     @Override

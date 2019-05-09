@@ -3,7 +3,6 @@ package com.needto.services.user.ownercommon;
 import com.needto.common.utils.Assert;
 import com.needto.dao.common.CommonDao;
 import com.needto.dao.common.FieldFilter;
-import com.needto.services.user.ownercommon.entity.Organition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

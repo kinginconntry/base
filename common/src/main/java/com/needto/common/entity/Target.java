@@ -1,5 +1,7 @@
 package com.needto.common.entity;
 
+import com.needto.common.utils.Utils;
+
 /**
  * @author Administrator
  * 数据归属
@@ -7,12 +9,12 @@ package com.needto.common.entity;
 public class Target {
 
     /**
-     * 应用所属平台操作日志
+     * 应用所属平台
      */
     public static final String PF_GUID = "_PF:PF_";
 
     /**
-     * 整个应用操作日志
+     * 整个应用
      */
     public static final String APP_GUID = "_APP:APP_";
 
@@ -27,39 +29,7 @@ public class Target {
         /**
          * 应用
          */
-        APP,
-        /**
-         * 系统管理内部用户
-         */
-        SYS,
-        /**
-         * 系统运营用户
-         */
-        ADMIN,
-        /**
-         * sso主用户
-         */
-        OWNER,
-        /**
-         * 账户
-         */
-        ACCOUNT,
-        /**
-         * 分组
-         */
-        GROUP,
-        /**
-         * 组织
-         */
-        ORG,
-        /**
-         * 角色
-         */
-        ROLE,
-        /**
-         * 某个用户
-         */
-        USER;
+        APP;
 
         public static boolean contain(String key) {
             for(Type type : Type.values()){
@@ -86,7 +56,7 @@ public class Target {
     }
 
     /**
-     * 归属于某个平台
+     * 归属于某个平台：默认
      * @return
      */
     public static Target pf(){
@@ -94,87 +64,27 @@ public class Target {
     }
 
     /**
-     * 归属于某个应用
+     * 归属于某个平台：某个
+     * @return
+     */
+    public static Target pf(String guid){
+        return new Target(Type.APP.name(), guid);
+    }
+
+    /**
+     * 归属于某个应用：默认
      * @return
      */
     public static Target app(){
         return new Target(Type.APP.name(), APP_GUID);
     }
 
+    /**
+     * 归属于某个应用：某个
+     * @return
+     */
     public static Target app(String guid){
         return new Target(Type.APP.name(), guid);
-    }
-
-    /**
-     * 归属于某个系统用户
-     * @param guid
-     * @return
-     */
-    public static Target sys(String guid){
-        return new Target(Type.SYS.name(), guid);
-    }
-
-    /**
-     * 归属于某个运营用户
-     * @param guid
-     * @return
-     */
-    public static Target admin(String guid){
-        return new Target(Type.ADMIN.name(), guid);
-    }
-
-    /**
-     * 归属于某个分组
-     * @param guid
-     * @return
-     */
-    public static Target group(String guid){
-        return new Target(Type.GROUP.name(), guid);
-    }
-
-    /**
-     * 归属于某个组织
-     * @param guid
-     * @return
-     */
-    public static Target org(String guid){
-        return new Target(Type.ORG.name(), guid);
-    }
-
-    /**
-     * 归属于某个主用户
-     * @param guid
-     * @return
-     */
-    public static Target owner(String guid){
-        return new Target(Type.OWNER.name(), guid);
-    }
-
-    /**
-     * 归属于某个角色
-     * @param guid
-     * @return
-     */
-    public static Target role(String guid){
-        return new Target(Type.ROLE.name(), guid);
-    }
-
-    /**
-     * 归属于某个账户
-     * @param guid
-     * @return
-     */
-    public static Target account(String guid){
-        return new Target(Type.ACCOUNT.name(), guid);
-    }
-
-    /**
-     * 归属于某个用户
-     * @param guid
-     * @return
-     */
-    public static Target user(String guid){
-        return new Target(Type.USER.name(), guid);
     }
 
     /**
@@ -229,5 +139,10 @@ public class Target {
 
     public void setGuid(String guid) {
         this.guid = guid;
+    }
+
+    @Override
+    public String toString() {
+        return Utils.nullToString(this.type) + ":" + Utils.nullToString(this.guid);
     }
 }

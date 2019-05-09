@@ -1,18 +1,24 @@
 package com.needto.common.entity;
 
-import java.io.Serializable;
 
 /**
  * @author Administrator
- * 重定向数据
+ * 重定向统一返回数据
  */
-public class Redirect implements Serializable {
-
-    private static final long serialVersionUID = -5809782578272943999L;
+public class Redirect{
 
     public String redirect;
 
     public Object data;
+
+    public Redirect(String redirect) {
+        this.redirect = redirect;
+    }
+
+    public Redirect(String redirect, Object data) {
+        this.redirect = redirect;
+        this.data = data;
+    }
 
     public String getRedirect() {
         return redirect;

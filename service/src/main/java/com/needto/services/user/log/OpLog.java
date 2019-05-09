@@ -2,13 +2,13 @@ package com.needto.services.user.log;
 
 import com.needto.common.entity.Target;
 import com.needto.common.entity.Dict;
-import com.needto.dao.models.BaseEntity;
+import com.needto.dao.models.UserEntity;
 
 /**
  * @author Administrator
  * 操作日志
  */
-public class OpLog extends BaseEntity {
+public class OpLog extends UserEntity {
 
     public static final String TABLE = "_oplog";
 

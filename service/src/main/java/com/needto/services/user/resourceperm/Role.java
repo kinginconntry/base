@@ -1,7 +1,7 @@
 package com.needto.services.user.resourceperm;
 
 
-import com.needto.dao.models.BaseEntity;
+import com.needto.dao.models.UserEntity;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author Administrator
  * 用户角色
  */
-public class Role extends BaseEntity {
+public class Role extends UserEntity {
 
     public static final String TABLE = "_role";
 

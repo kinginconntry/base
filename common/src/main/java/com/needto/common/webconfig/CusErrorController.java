@@ -3,7 +3,6 @@ package com.needto.common.webconfig;
 import com.needto.common.entity.Result;
 import com.needto.common.exception.BaseException;
 import com.needto.common.exception.LogicException;
-import com.needto.common.utils.Utils;
 import com.needto.common.utils.ValidateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

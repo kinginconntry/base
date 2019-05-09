@@ -15,7 +15,7 @@ public class CloneUtils {
 	/**
 	 * 无需进行复制的特殊类型数组
 	 */
-	static Class[] needlessCloneClasses = new Class[] { String.class,
+	static Class[] NEEDLESS_CLONE_CLASSES = new Class[] { String.class,
 			Boolean.class, Character.class, Byte.class, Short.class,
 			Integer.class, Long.class, Float.class, Double.class, Void.class,
 			Object.class, Class.class };
@@ -33,7 +33,7 @@ public class CloneUtils {
 			return true;
 		}
 		// 是否在无需复制类型数组里
-		for (Class tmp : needlessCloneClasses) {
+		for (Class tmp : NEEDLESS_CLONE_CLASSES) {
 			if (c.equals(tmp)) {
 				return true;
 			}

@@ -3,13 +3,13 @@ package com.needto.services.group;
 import com.needto.common.entity.Dict;
 import com.needto.common.entity.Itree;
 import com.needto.common.entity.Target;
-import com.needto.dao.models.BaseEntity;
+import com.needto.dao.models.TargetEntity;
 
 /**
  * 分组实体
  * @author Administrator
  */
-public class Group extends BaseEntity implements Itree {
+public class Group extends TargetEntity implements Itree {
 
     public static final String TABLE = "_group";
 

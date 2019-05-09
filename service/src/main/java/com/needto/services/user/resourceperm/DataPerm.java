@@ -1,7 +1,7 @@
 package com.needto.services.user.resourceperm;
 
 import com.needto.common.entity.Target;
-import com.needto.dao.models.BaseEntity;
+import com.needto.dao.models.UserEntity;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * 数据权限控制实体
  * @author Administrator
  */
-public class DataPerm extends BaseEntity {
+public class DataPerm extends UserEntity {
 
     public static final String TABLE = "_dataperm";
 

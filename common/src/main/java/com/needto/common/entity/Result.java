@@ -3,7 +3,7 @@ package com.needto.common.entity;
 import java.io.Serializable;
 
 /**
- * 不同层之间返回结果
+ * controller统一返回结果
  * @author Administrator
  */
 public class Result<T> implements Serializable {
@@ -54,10 +54,7 @@ public class Result<T> implements Serializable {
      * @return
      */
     public static <S> Result<Redirect> forRedirect(String redirect, S data) {
-        Redirect redirectData = new Redirect();
-        redirectData.setData(data);
-        redirectData.setRedirect(redirect);
-        return new Result<>(false, String.format("%s", "404"), "", redirectData);
+        return new Result<>(false, String.format("%s", "404"), "", new Redirect(redirect, data));
     }
 
     public Result(){}

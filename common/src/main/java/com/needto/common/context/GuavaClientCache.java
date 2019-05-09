@@ -2,7 +2,6 @@ package com.needto.common.context;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.needto.common.data.ClientType;
 import com.needto.common.entity.Dict;
 import com.needto.common.entity.Target;
 import com.needto.common.exception.LogicException;

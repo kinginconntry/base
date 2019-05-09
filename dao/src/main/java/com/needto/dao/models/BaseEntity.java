@@ -32,16 +32,6 @@ public class BaseEntity implements Serializable {
     public static final transient String UPTIME = "uptime";
 
     /**
-     * 创建者字段
-     */
-    public static final transient String CUSER = "cuser";
-
-    /**
-     * 更新者字段
-     */
-    public static final transient String UPUSER = "upuser";
-
-    /**
      * id 被混淆之后的数据
      */
     public static final transient String CONFUSE_ID = "confuseId";
@@ -73,20 +63,10 @@ public class BaseEntity implements Serializable {
     protected Date ctime;
 
     /**
-     * 创建者
-     */
-    protected String cuser;
-
-    /**
      * 更新时间
      */
     @JSONField(format = DATETIME_FORMAT)
     protected Date uptime;
-
-    /**
-     * 更新者
-     */
-    protected String upuser;
 
     /**
      * 删除标记
@@ -131,21 +111,5 @@ public class BaseEntity implements Serializable {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-    }
-
-    public String getCuser() {
-        return cuser;
-    }
-
-    public void setCuser(String cuser) {
-        this.cuser = cuser;
-    }
-
-    public String getUpuser() {
-        return upuser;
-    }
-
-    public void setUpuser(String upuser) {
-        this.upuser = upuser;
     }
 }

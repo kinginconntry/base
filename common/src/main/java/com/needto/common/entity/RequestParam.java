@@ -4,9 +4,13 @@ import java.util.List;
 
 /**
  * @author Administrator
- * 请求参数
+ * http请求参数
  */
 public class RequestParam {
+    /**
+     * 是否异步执行
+     */
+    public Boolean isAsync;
     /**
      * 过滤的标准信息
      */
@@ -44,5 +48,13 @@ public class RequestParam {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public Boolean isAsync() {
+        return isAsync;
+    }
+
+    public void setAsync(Boolean async) {
+        isAsync = async;
     }
 }
