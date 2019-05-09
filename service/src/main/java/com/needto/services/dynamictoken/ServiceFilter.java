@@ -30,7 +30,7 @@ public class ServiceFilter extends CommonFilter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if(dynamicSignService == null){
-            dynamicSignService = this.appContextHelper.getBean(DynamicSignService.class);
+            dynamicSignService = this.applicationContext.getBean(DynamicSignService.class);
         }
 
         String sign = RequestUtil.getInnerServiceSign((HttpServletRequest) request);

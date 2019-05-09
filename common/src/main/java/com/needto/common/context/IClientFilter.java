@@ -51,7 +51,7 @@ public class IClientFilter extends CommonFilter {
     @Override
     public void init(FilterConfig filterConfig) {
         super.init(filterConfig);
-        String iclientUrlPrefix = this.appContextHelper.getEnvironment().getProperty("iclient.url.prefix", "");
+        String iclientUrlPrefix = this.applicationContext.getEnvironment().getProperty("iclient.url.prefix", "");
         prefixSet.add("/app");
         prefixSet.add("/admin");
         prefixSet.add("/sys");
@@ -84,9 +84,9 @@ public class IClientFilter extends CommonFilter {
                 return;
             }
             if(!initFlag){
-                Environment environment = this.appContextHelper.getEnvironment();
-                this.iClientInit = (IClientInit) this.appContextHelper.getBean(environment.getProperty("client.filter.init", "defaultClientInit"));
-                this.iClientCache = (IClientCache) this.appContextHelper.getBean(environment.getProperty("client.filter.cache", "guavaClientCache"));
+                Environment environment = this.applicationContext.getEnvironment();
+                this.iClientInit = (IClientInit) this.applicationContext.getBean(environment.getProperty("client.filter.init", "defaultClientInit"));
+                this.iClientCache = (IClientCache) this.applicationContext.getBean(environment.getProperty("client.filter.cache", "guavaClientCache"));
                 GlobalEnv.setiClientCache(iClientCache);
                 initFlag = true;
                 LOG.debug("客户端过滤器初始化，iClientCache {}，iClientInit {}", iClientCache, iClientInit);
