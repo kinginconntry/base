@@ -248,7 +248,7 @@ public class RequestUtil {
     public static void main(String[] args) {
         String url = "http://gadg:80/aa/b/";
         String secret = "a";
-        String signUrl = SignUtils.signUrl(url, null, secret);
+        String signUrl = SignUtils.signUrl(url, "", secret);
         System.out.println(signUrl);
         System.out.println(SignUtils.validateUrlSign(signUrl, null, secret));
     }

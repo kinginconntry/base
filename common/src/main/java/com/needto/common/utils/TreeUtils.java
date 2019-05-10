@@ -1,7 +1,7 @@
 package com.needto.common.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.needto.common.entity.Itree;
+import com.needto.common.inter.Itree;
 import com.needto.common.entity.Tree;
 import com.needto.common.entity.TreeData;
 import org.springframework.util.CollectionUtils;

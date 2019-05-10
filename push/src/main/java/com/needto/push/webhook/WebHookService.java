@@ -127,7 +127,7 @@ public class WebHookService {
 
         String jsonStr = JSON.toJSONString(data);
         if(webHook.encryValid()){
-            Crypto crypto = webHook.getEncryTypeCrypto();
+            CryptoUtil.Crypto crypto = webHook.getEncryTypeCrypto();
             jsonStr = crypto.encry(jsonStr, webHook.getEncryKey());
         }
         if(webHook.signValid()){

@@ -28,7 +28,7 @@ public class QrGenerateUtils {
     /**
      * 微信小程序二维码生成url
      */
-    private static final String MINI_URL = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=";
+    private static final String MINI_URL = "https://asyncapi.weixin.qq.com/wxa/getwxacodeunlimit?access_token=";
 
     /**
      * 生成普通二维码

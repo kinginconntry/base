@@ -1,5 +1,7 @@
 package com.needto.common.entity;
 
+import com.needto.common.inter.Itree;
+
 /**
  * @author Administrator
  * 通用节点实现

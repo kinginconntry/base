@@ -1,7 +1,7 @@
 package com.needto.push.webhook;
 
 import com.needto.common.entity.Dict;
-import com.needto.common.utils.Crypto;
+import com.needto.common.utils.CryptoUtil;
 import com.needto.dao.models.BaseEntity;
 import org.springframework.util.StringUtils;
 
@@ -89,9 +89,9 @@ public class WebHook extends BaseEntity {
         return signType;
     }
 
-    public Crypto getSignTypeCrypto() {
-        if(Crypto.contain(this.signType)){
-            return Crypto.valueOf(signType);
+    public CryptoUtil.Crypto getSignTypeCrypto() {
+        if(CryptoUtil.Crypto.contain(this.signType)){
+            return CryptoUtil.Crypto.valueOf(signType);
         }
         return null;
     }
@@ -120,9 +120,9 @@ public class WebHook extends BaseEntity {
         return encryType;
     }
 
-    public Crypto getEncryTypeCrypto() {
-        if(Crypto.contain(this.encryType)){
-            return Crypto.valueOf(encryType);
+    public CryptoUtil.Crypto getEncryTypeCrypto() {
+        if(CryptoUtil.Crypto.contain(this.encryType)){
+            return CryptoUtil.Crypto.valueOf(encryType);
         }
         return null;
     }
@@ -156,7 +156,7 @@ public class WebHook extends BaseEntity {
     }
 
     public boolean encryValid(){
-        if(this.isEncry() && Crypto.contain(this.encryType) && !StringUtils.isEmpty(this.encryKey)){
+        if(this.isEncry() && CryptoUtil.Crypto.contain(this.encryType) && !StringUtils.isEmpty(this.encryKey)){
             return true;
         }else{
             return false;
@@ -164,7 +164,7 @@ public class WebHook extends BaseEntity {
     }
 
     public boolean signValid(){
-        if(this.isSign() && Crypto.contain(this.signType) && !StringUtils.isEmpty(this.signKey)){
+        if(this.isSign() && CryptoUtil.Crypto.contain(this.signType) && !StringUtils.isEmpty(this.signKey)){
             return true;
         }else{
             return false;

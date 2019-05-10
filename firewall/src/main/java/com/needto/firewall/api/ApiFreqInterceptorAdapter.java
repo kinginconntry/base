@@ -1,11 +1,11 @@
 package com.needto.firewall.api;
 
+import com.needto.cache.frequency.FrequencyService;
 import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Result;
 import com.needto.common.entity.Target;
 import com.needto.common.utils.RequestUtil;
 import com.needto.common.utils.ResponseUtil;
-import com.needto.firewall.frequency.FrequencyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class ApiFreqInterceptorAdapter extends HandlerInterceptorAdapter {
                 }
                 if(frequencyService.filter(source, targetGuid, max, second, forbidtime)){
                     // 禁用
-                    LOG.debug("api 访问频率过高, url {}, source {}, target {}, max {}, second {}", request.getRequestURI(), source, targetGuid, max, second);
+                    LOG.debug("asyncapi 访问频率过高, url {}, source {}, target {}, max {}, second {}", request.getRequestURI(), source, targetGuid, max, second);
                     ResponseUtil.outJson(response, Result.forError("403", ""));
                     return false;
                 }

@@ -34,7 +34,7 @@ public class Constant {
     /**
      * api客户端调用的url开头
      */
-    public static final String API_URL_START = "/api";
+    public static final String API_URL_START = "/asyncapi";
 
     /**
      * url签名key

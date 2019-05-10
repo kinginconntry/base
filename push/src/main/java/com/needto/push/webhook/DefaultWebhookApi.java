@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @author Administrator
- * 默认提供的webhook api
+ * 默认提供的webhook asyncapi
  */
 @RestController
 public class DefaultWebhookApi {

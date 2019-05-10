@@ -2,8 +2,10 @@ package com.needto.dao.mongo;
 
 import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
+import com.needto.common.utils.Assert;
 import com.needto.dao.common.CommonDao;
 import com.needto.dao.common.CommonQuery;
 import com.needto.dao.common.Op;
@@ -19,6 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -28,6 +34,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 
 /**
  * @author Administrator
@@ -464,6 +472,32 @@ public class MongoDao implements CommonDao {
         // TODO 检查结果
         Document result = mongoTemplate.getDb().runCommand(bson);
         LOG.debug("批量更新记录 --> 结果：" + result.toJson());
+    }
+
+    /**
+     * 聚合查询
+     * @param options
+     * @param table
+     * @param objClass
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> aggregate(List<DBObject> options, String table, Class<T> objClass){
+        Assert.validateCondition(CollectionUtils.isEmpty(options));
+        Assert.validateStringEmpty(table);
+        Assert.validateNull(objClass);
+        List<AggregationOperation> optionsList = new ArrayList<>();
+        for(DBObject dbObject : options){
+            optionsList.add(new DBObjectAggregationOperation(dbObject));
+        }
+        AggregationOptions aggregationOptions = new AggregationOptions.Builder().allowDiskUse(true).build();
+        Aggregation agg = newAggregation(optionsList).withOptions(aggregationOptions);
+        AggregationResults<T> tempRes = mongoTemplate.aggregate(agg, table, objClass);
+        List<T> res = new ArrayList<>();
+        for(T temp : tempRes){
+            res.add(temp);
+        }
+        return res;
     }
 
 

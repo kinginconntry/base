@@ -27,6 +27,8 @@ public class TaskDealContainer {
 
     private static final Map<String, String> DESC_MAP = new HashMap<>();
 
+    private static final Map<String, String> NAME_MAP = new HashMap<>();
+
     @Autowired
     private ApplicationContext applicationContext;
 
@@ -38,7 +40,8 @@ public class TaskDealContainer {
                 TaskDeal callbackInstance =((TaskDeal) v);
                 String code = callbackInstance.getClass().getAnnotation(TaskDealRegister.class).code();
                 String name = callbackInstance.getClass().getAnnotation(TaskDealRegister.class).name();
-                set(code, callbackInstance, name);
+                String desc = callbackInstance.getClass().getAnnotation(TaskDealRegister.class).desc();
+                set(code, callbackInstance, name, desc);
             }
         });
     }
@@ -50,13 +53,14 @@ public class TaskDealContainer {
         return MAP.containsKey(code);
     }
 
-    public void set(String code, TaskDeal orderDeal, String name){
+    public void set(String code, TaskDeal orderDeal, String name, String desc){
         if(StringUtils.isEmpty(code)){
             return;
         }
         Assert.validateCondition(MAP.containsKey(code), "code repeat");
         MAP.put(code, orderDeal);
-        DESC_MAP.put(code, name);
+        NAME_MAP.put(code, name);
+        DESC_MAP.put(code, desc);
     }
 
     public TaskDeal get(String code){

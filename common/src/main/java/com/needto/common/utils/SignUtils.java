@@ -2,7 +2,6 @@ package com.needto.common.utils;
 
 import org.springframework.util.StringUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -52,7 +51,7 @@ public class SignUtils {
      * @param secret 密钥
      * @return 签名url （null表示参数不对）
      */
-    public static String signUrl(String url, Map<String, Object> param, String secret) {
+    public static String signUrl(String url, Map<String, Object> param, String secret, String mode) {
         if (url.contains("?")) {
             url += String.format("&%s=%s&%s=%s", _NONCE_STR, Utils.randomStr(), _TIME_STAMP, Utils.timestamp());
         } else {
@@ -65,7 +64,7 @@ public class SignUtils {
         if (param != null) {
             urlParam.putAll(param);
         }
-        String sign = getParamSign(urlParam, secret);
+        String sign = getParamSign(urlParam, secret, mode);
         if (url.contains("?")) {
             url += String.format("&%s=%s", _SG_KEY, sign);
         } else {
@@ -74,8 +73,16 @@ public class SignUtils {
         return url;
     }
 
+    public static String signUrl(String url, Map<String, Object> param, String secret) {
+        return signUrl(url, param, secret, CryptoUtil.Crypto.MD5.key);
+    }
+
     public static String signUrl(String url, String secret) {
-        return signUrl(url, null, secret);
+        return signUrl(url, secret, CryptoUtil.Crypto.MD5.key);
+    }
+
+    public static String signUrl(String url, String secret, String mode) {
+        return signUrl(url, null, secret, mode);
     }
 
     /**
@@ -86,7 +93,7 @@ public class SignUtils {
      * @param secret 密钥
      * @return 是否被签名
      */
-    public static boolean validateUrlSign(String url, Map<String, Object> param, String secret) {
+    public static boolean validateUrlSign(String url, Map<String, Object> param, String secret, String mode) {
         Map<String, Object> urlParam = RequestUtil.getUrlParam(url);
         if (urlParam == null) {
             return false;
@@ -94,7 +101,11 @@ public class SignUtils {
         if (param != null) {
             urlParam.putAll(param);
         }
-        return validateParamSign(urlParam, secret);
+        return validateParamSign(urlParam, secret, mode);
+    }
+
+    public static boolean validateUrlSign(String url, Map<String, Object> param, String secret) {
+        return validateUrlSign(url, param, secret, CryptoUtil.Crypto.MD5.key);
     }
 
     public static boolean validateUrlSign(String url, String secret) {
@@ -108,7 +119,7 @@ public class SignUtils {
      * @param secret 密钥
      * @return 是否签名
      */
-    public static boolean validateParamSign(Map<String, Object> map, String secret) {
+    public static boolean validateParamSign(Map<String, Object> map, String secret, String mode) {
         if (map == null) {
             return false;
         }
@@ -117,8 +128,12 @@ public class SignUtils {
             // 没有签名
             return false;
         }
-        String checkSign = getParamSign(map, secret);
+        String checkSign = getParamSign(map, secret, mode);
         return sign.equals(checkSign);
+    }
+
+    public static boolean validateParamSign(Map<String, Object> map, String secret) {
+        return validateParamSign(map, secret, CryptoUtil.Crypto.MD5.key);
     }
 
     /**
@@ -149,7 +164,7 @@ public class SignUtils {
      * @param secret 密钥
      * @return 签名值（null表示参数不对）
      */
-    public static String getParamSign(Map<String, Object> map, String secret) {
+    public static String getParamSign(Map<String, Object> map, String secret, String mode) {
         Assert.validateNull(map, "sign map can not be null");
         String sign = null;
         map.put(_SIGN_KEY_, secret);
@@ -162,7 +177,8 @@ public class SignUtils {
 
         if (stringBuilder.length() > 0) {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-            sign = Crypto.BASE64.encry(Crypto.MD5.encry(stringBuilder.toString(), ""), "");
+            CryptoUtil.Crypto crypto = CryptoUtil.Crypto.valueOf(mode);
+            sign = crypto.encry(stringBuilder.toString(), "");
         }
         return sign;
     }

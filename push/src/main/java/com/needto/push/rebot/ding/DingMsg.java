@@ -1,7 +1,7 @@
 package com.needto.push.rebot.ding;
 
 
-import com.needto.common.entity.IValidate;
+import com.needto.common.inter.IValidate;
 
 
 /**

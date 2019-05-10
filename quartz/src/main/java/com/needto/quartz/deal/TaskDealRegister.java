@@ -14,4 +14,6 @@ public @interface TaskDealRegister {
     String code() default "";
 
     String name() default "";
+
+    String desc() default "";
 }

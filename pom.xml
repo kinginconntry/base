@@ -27,11 +27,20 @@
         <module>oss</module>
         <module>push</module>
         <module>dao</module>
-        <module>service</module>
         <module>cache</module>
         <module>firewall</module>
         <module>quartz</module>
         <module>notice</module>
+        <module>dynamictoken</module>
+        <module>zookeeper</module>
+        <module>task</module>
+        <module>log</module>
+        <module>perm</module>
+        <module>account</module>
+        <module>organization</module>
+        <module>group</module>
+        <module>config</module>
+        <module>keyvalue</module>
     </modules>
 
     <dependencies>

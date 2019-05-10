@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * @author Administrator
- * 默认的阿里云oss api
+ * 默认的阿里云oss asyncapi
  */
 @RestController
 public class DefaultAliyunOssApi {

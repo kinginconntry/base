@@ -10,5 +10,5 @@ public interface TaskDeal {
     /**
      * @param data
      */
-    String deal(TaskData data);
+    void deal(TaskData data);
 }
