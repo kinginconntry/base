@@ -1,4 +1,4 @@
-package com.needto.ownercommon.entity;
+package com.needto.account.entity;
 
 import java.util.Date;
 

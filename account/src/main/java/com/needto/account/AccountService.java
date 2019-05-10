@@ -1,4 +1,4 @@
-package com.needto.ownercommon;
+package com.needto.account;
 
 import com.needto.common.utils.Assert;
 import com.needto.dao.common.CommonDao;

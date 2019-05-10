@@ -1,4 +1,4 @@
-package com.needto.resourceperm;
+package com.needto.perm;
 
 import com.alibaba.fastjson.JSON;
 import com.needto.common.context.GlobalEnv;

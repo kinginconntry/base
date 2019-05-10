@@ -37,10 +37,10 @@
         <module>log</module>
         <module>perm</module>
         <module>account</module>
-        <module>organization</module>
         <module>group</module>
         <module>config</module>
         <module>keyvalue</module>
+        <module>organize</module>
     </modules>
 
     <dependencies>

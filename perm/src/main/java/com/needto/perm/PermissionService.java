@@ -1,4 +1,4 @@
-package com.needto.resourceperm;
+package com.needto.perm;
 
 import com.needto.common.entity.Query;
 import com.needto.common.entity.TreeData;

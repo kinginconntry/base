@@ -1,4 +1,4 @@
-package com.needto.resourceperm;
+package com.needto.perm;
 
 import com.google.common.collect.Lists;
 import com.needto.common.entity.Filter;

@@ -1,4 +1,4 @@
-package com.needto.ownercommon;
+package com.needto.account;
 
 import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Result;

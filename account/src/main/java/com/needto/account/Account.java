@@ -1,10 +1,10 @@
-package com.needto.ownercommon;
+package com.needto.account;
 
 
+import com.needto.account.entity.AccountResource;
+import com.needto.account.entity.AccoutFeature;
 import com.needto.common.entity.Dict;
 import com.needto.dao.models.UserEntity;
-import com.needto.services.user.ownercommon.entity.AccountResource;
-import com.needto.services.user.ownercommon.entity.AccoutFeature;
 
 import java.util.List;
 import java.util.Map;
