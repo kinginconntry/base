@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
 /**
  * @author Administrator
+ * mongo配置，清除_class属性
  */
 @Configuration
 public class MongoConfig {

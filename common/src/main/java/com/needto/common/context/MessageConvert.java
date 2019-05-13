@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * http消息转换器
+ * @author Administrator
  */
 public class MessageConvert {
 

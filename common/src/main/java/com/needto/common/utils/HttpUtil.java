@@ -18,8 +18,7 @@ import java.net.URI;
 
 /**
  *
- * @author yihui
- * @date 2017/7/13
+ * @author Administrator
  */
 public class HttpUtil {
 

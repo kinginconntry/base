@@ -43,6 +43,7 @@ public class ConfigService {
         if(this.findConfigByKey(config.getCatId(), config.getKey(), config.getClass()) != null){
             throw new ValidateException("EXISTED", "");
         }
+        LOG.debug("保存配置");
         return mongoDao.save(config, Config.TABLE);
     }
 
@@ -68,6 +69,7 @@ public class ConfigService {
             return 0L;
         }
         List<FieldFilter> fieldFilters = Lists.newArrayList(new FieldFilter("catId", catId), new FieldFilter("key", key));
+        LOG.debug("删除配置");
         return this.mongoDao.delete(fieldFilters, Config.TABLE);
     }
 
@@ -78,6 +80,7 @@ public class ConfigService {
         if(this.findConfigCatByKey(configCat.getId(), configCat.getClass()) != null){
             throw new ValidateException("EXISTED", "");
         }
+        LOG.debug("保存配置分类");
         return mongoDao.save(configCat, ConfigCat.TABLE);
     }
 
@@ -93,7 +96,8 @@ public class ConfigService {
         Assert.validateStringEmpty(belongto.getGuid());
         Assert.validateStringEmpty(belongto.getType());
         return this.mongoDao.find(Lists.newArrayList(
-
+            new FieldFilter("belongto.guid", belongto.getGuid()),
+            new FieldFilter("belongto.type", belongto.getType())
         ), objClass, Config.TABLE);
     }
 
@@ -101,6 +105,7 @@ public class ConfigService {
         if(StringUtils.isEmpty(id)){
             return 0L;
         }
+        LOG.debug("删除配置分类");
         return this.mongoDao.deleteById(id, ConfigCat.TABLE);
     }
 }

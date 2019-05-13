@@ -28,7 +28,7 @@ public class KeyValueContainer {
     private final Map<String, Map<String, IKeyValueService>> MAP = new HashMap<>();
 
     /**
-     * 授权的keyvalue（包含非授权的）
+     * 授权的keyvalue
      */
     private final Map<String, Map<String, KeyValue>> KEY_VALUE_MAP = new HashMap<>();
 
@@ -52,6 +52,11 @@ public class KeyValueContainer {
         });
     }
 
+    /**
+     * 获取某个分组的所有key
+     * @param group
+     * @return
+     */
     public List<KeyValue> getKeys(String group){
         Assert.validateNull(group);
         Map<String, KeyValue> map = KEY_VALUE_MAP.get(group);
@@ -62,6 +67,13 @@ public class KeyValueContainer {
         }
     }
 
+    /**
+     * 根据分组key获取源数据
+     * @param group
+     * @param target 归属目标
+     * @param sourceList
+     * @return
+     */
     public Map<String, List<KeyValue>> getKeyValues(String group, Target target, List<String> sourceList){
         Assert.validateNull(group);
         Map<String, List<KeyValue>> map = new HashMap<>();

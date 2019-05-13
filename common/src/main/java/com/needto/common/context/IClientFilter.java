@@ -3,6 +3,8 @@ package com.needto.common.context;
 import com.needto.common.data.Constant;
 import com.needto.common.entity.Target;
 import com.needto.common.filter.CommonFilter;
+import com.needto.common.inter.IClientCache;
+import com.needto.common.inter.IClientInit;
 import com.needto.common.utils.ResponseUtil;
 import com.sun.javafx.util.Utils;
 import org.slf4j.Logger;
@@ -85,7 +87,11 @@ public class IClientFilter extends CommonFilter {
             }
             if(!initFlag){
                 Environment environment = this.applicationContext.getEnvironment();
-                this.iClientInit = (IClientInit) this.applicationContext.getBean(environment.getProperty("client.filter.init", "defaultClientInit"));
+                try{
+                    this.iClientInit = this.applicationContext.getBean(IClientInit.class);
+                }catch (Exception e){
+                    this.iClientInit = (target, httpServletRequest1) -> {};
+                }
                 this.iClientCache = (IClientCache) this.applicationContext.getBean(environment.getProperty("client.filter.cache", "guavaClientCache"));
                 GlobalEnv.setiClientCache(iClientCache);
                 initFlag = true;

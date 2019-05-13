@@ -22,10 +22,8 @@
     </properties>
 
     <modules>
-        <module>docs</module>
         <module>common</module>
         <module>oss</module>
-        <module>push</module>
         <module>dao</module>
         <module>cache</module>
         <module>firewall</module>
@@ -41,6 +39,8 @@
         <module>config</module>
         <module>keyvalue</module>
         <module>organize</module>
+        <module>webhook</module>
+        <module>chatpush</module>
     </modules>
 
     <dependencies>

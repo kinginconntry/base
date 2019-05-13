@@ -1,18 +1,19 @@
 package com.needto.config;
 
 import com.needto.common.entity.Target;
-import com.needto.dao.models.BaseEntity;
+import com.needto.common.inter.IOrder;
+import com.needto.dao.models.UserEntity;
 
 /**
  * @author Administrator
  */
-public class Config extends BaseEntity {
+public class Config extends UserEntity implements IOrder {
     public static final String TABLE = "_config";
 
     /**
      * 配置所属
      */
-    public Target belongTo;
+    public Target belongto;
 
     /**
      * 归属分类
@@ -41,31 +42,21 @@ public class Config extends BaseEntity {
     private Object value;
 
     /**
-     * 是否系统预置
-     */
-    private boolean preset;
-
-    /**
      * 是否启用
      */
-    private boolean able;
-
-    /**
-     * 是否显示
-     */
-    private boolean show;
+    private boolean enable;
 
     /**
      * 排序号
      */
     private int order;
 
-    public Target getBelongTo() {
-        return belongTo;
+    public Target getBelongto() {
+        return belongto;
     }
 
-    public void setBelongTo(Target belongTo) {
-        this.belongTo = belongTo;
+    public void setBelongto(Target belongto) {
+        this.belongto = belongto;
     }
 
     public String getCatId() {
@@ -108,30 +99,15 @@ public class Config extends BaseEntity {
         this.value = value;
     }
 
-    public boolean isPreset() {
-        return preset;
+    public boolean isEnable() {
+        return enable;
     }
 
-    public void setPreset(boolean preset) {
-        this.preset = preset;
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 
-    public boolean isAble() {
-        return able;
-    }
-
-    public void setAble(boolean able) {
-        this.able = able;
-    }
-
-    public boolean isShow() {
-        return show;
-    }
-
-    public void setShow(boolean show) {
-        this.show = show;
-    }
-
+    @Override
     public int getOrder() {
         return order;
     }

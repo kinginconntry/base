@@ -1,6 +1,6 @@
 package com.needto.common.utils;
 
-import com.needto.common.context.ClientType;
+import com.needto.common.entity.ClientType;
 import com.needto.common.data.Constant;
 import com.needto.common.entity.Target;
 import com.needto.common.exception.ValidateException;
@@ -229,7 +229,7 @@ public class RequestUtil {
         }
 
         // 没有则产生一个指纹信息
-        return new Target(ClientType.WEB.name(), Utils.getGuid());
+        return new Target(ClientType.NO_AUTH.name(), Utils.getGuid());
     }
 
     /**

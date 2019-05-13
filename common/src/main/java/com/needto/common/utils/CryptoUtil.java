@@ -52,6 +52,12 @@ public class CryptoUtil {
         return new KeyPairData(new String(publicKey.getEncoded(), "utf-8"), new String(privateKey.getEncoded(), "utf-8"));
     }
 
+    /**
+     * sha加密
+     * @param text
+     * @param mode
+     * @return
+     */
     public static String shaEncrypto(String text, String mode){
         if(text == null || mode == null){
             return text;

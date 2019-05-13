@@ -4,7 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Query;
 import com.needto.common.entity.Result;
-import com.needto.common.entity.TreeData;
+import com.needto.perm.data.FunctionPermData;
+import com.needto.perm.model.FunctionPerm;
+import com.needto.perm.model.Role;
+import com.needto.perm.service.FunctionPermService;
+import com.needto.perm.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +31,7 @@ public class PermApi {
     private static final Logger LOG = LoggerFactory.getLogger(PermApi.class);
 
     @Autowired
-    private PermissionService permissionService;
+    private FunctionPermService permissionService;
 
     @Autowired
     private RoleService roleService;
@@ -83,7 +87,7 @@ public class PermApi {
      */
     @PostMapping(value = {"/sys/role/save", "/admin/role/save"})
     @ResponseBody
-    public Result<Permission> savePerm(@RequestBody Permission permission){
+    public Result<FunctionPerm> savePerm(@RequestBody FunctionPerm permission){
         LOG.debug("保存权限，操作人 {}", GlobalEnv.getOwner());
         return Result.forSuccessIfNotNull(permissionService.save(permission));
     }
@@ -95,7 +99,7 @@ public class PermApi {
      */
     @PostMapping(value = {"/sys/perm/find", "/admin/perm/find"})
     @ResponseBody
-    public Result<List<Permission>> findPerm(@RequestBody Query query){
+    public Result<List<FunctionPerm>> findPerm(@RequestBody Query query){
         if(query == null){
             return Result.forSuccess();
         }
@@ -103,17 +107,13 @@ public class PermApi {
     }
 
     /**
-     * 查找权限(水平结构)
-     * @param query
+     * 查找权限
      * @return
      */
-    @PostMapping(value = {"/sys/perm/find/horizontal", "/admin/perm/find/horizontal"})
+    @PostMapping(value = {"/app/permdata/find", "/sys/permdata/find", "/admin/permdata/find"})
     @ResponseBody
-    public Result<List<TreeData>> findPermHorizontal(@RequestBody Query query){
-        if(query == null){
-            return Result.forSuccess();
-        }
-        return Result.forSuccess(this.permissionService.getHorizontal(query));
+    public Result<List<FunctionPermData>> findPermData(){
+        return Result.forSuccess(this.permissionService.getData());
     }
 
     /**

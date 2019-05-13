@@ -2,9 +2,11 @@ package com.needto.common.context;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.needto.common.entity.ClientType;
 import com.needto.common.entity.Dict;
 import com.needto.common.entity.Target;
 import com.needto.common.exception.LogicException;
+import com.needto.common.inter.IClientCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +85,7 @@ public class GuavaClientCache implements IClientCache {
         String key = getGuid(client);
         Dict dict = null;
         try {
-            if(ClientType.WEB.name().equals(client.getType())){
+            if(ClientType.NO_AUTH.name().equals(client.getType())){
                 if(noAuthCreate){
                     dict = webClientFingerCache.get(key, Dict::new);
                 }else{
@@ -113,7 +115,7 @@ public class GuavaClientCache implements IClientCache {
     @Override
     public Dict get(Target client){
         String key = getGuid(client);
-        if(ClientType.WEB.name().equals(client.getType())){
+        if(ClientType.NO_AUTH.name().equals(client.getType())){
             return webClientFingerCache.getIfPresent(key);
         }else{
             return tokenClientFingerCache.getIfPresent(key);
@@ -127,7 +129,7 @@ public class GuavaClientCache implements IClientCache {
     @Override
     public void remove(Target client){
         String key = getGuid(client);
-        if(ClientType.WEB.name().equals(client.getType())){
+        if(ClientType.NO_AUTH.name().equals(client.getType())){
             webClientFingerCache.invalidate(key);
         }else{
             tokenClientFingerCache.invalidate(key);

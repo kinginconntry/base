@@ -1,12 +1,13 @@
 package com.needto.config;
 
 import com.needto.common.entity.Target;
-import com.needto.dao.models.BaseEntity;
+import com.needto.common.inter.IOrder;
+import com.needto.dao.models.UserEntity;
 
 /**
  * @author Administrator
  */
-public class ConfigCat extends BaseEntity {
+public class ConfigCat extends UserEntity implements IOrder {
 
     public static final String TABLE = "_configCat";
 
@@ -51,6 +52,7 @@ public class ConfigCat extends BaseEntity {
         this.desc = desc;
     }
 
+    @Override
     public int getOrder() {
         return order;
     }

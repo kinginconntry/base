@@ -12,7 +12,8 @@ import javax.annotation.PostConstruct;
 
 /**
  * @author Administrator
- * redis 流水号生成器
+ * redis 单机流水号生成器
+ * TODO 需要升级为多机流水号生成器
  *
  */
 @Service

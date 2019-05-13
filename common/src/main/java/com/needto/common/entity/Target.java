@@ -141,8 +141,11 @@ public class Target {
         this.guid = guid;
     }
 
-    @Override
-    public String toString() {
+    /**
+     * 获取该对象的组合唯一id
+     * @return
+     */
+    public String getTargetId(){
         return Utils.nullToString(this.type) + ":" + Utils.nullToString(this.guid);
     }
 }

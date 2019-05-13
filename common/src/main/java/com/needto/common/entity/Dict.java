@@ -19,6 +19,12 @@ public class Dict extends HashMap {
         return (T) o;
     }
 
+    public static Dict of(String key, Object value){
+        Dict dict = new Dict();
+        dict.put(key, value);
+        return dict;
+    }
+
     public <T> T getValue(String key){
         return this.getValue(key, null);
     }

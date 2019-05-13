@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.needto.common.entity.UrlInfo;
 import com.needto.common.exception.BaseException;
+import com.needto.common.inter.IOrder;
 import net.sf.json.xml.XMLSerializer;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
@@ -407,6 +408,49 @@ public class Utils {
         return source;
     }
 
+    /**
+     * 排序 IOrder 接口
+     * @param orders
+     * @param desc
+     */
+    public static void orderSort(List<IOrder> orders, boolean desc) {
+        if (CollectionUtils.isEmpty(orders)) {
+            return;
+        }
+        if (!desc) {
+            // 正序
+            orders.sort((a, b) -> {
+                if (a.getOrder() > b.getOrder()) {
+                    return 1;
+                } else if (a.getOrder() > b.getOrder()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+        } else {
+            // 逆序
+            orders.sort((a, b) -> {
+                if (a.getOrder() > b.getOrder()) {
+                    return -1;
+                } else if (a.getOrder() > b.getOrder()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+    }
 
+        /**
+         * 排序 IOrder 接口, 正序
+         * @param orders
+         */
+    public static void orderSort(List<IOrder> orders) {
+        orderSort(orders, false);
+    }
 
+    public static void main(String[] args){
+
+    }
 }

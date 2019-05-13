@@ -1,22 +1,48 @@
 package com.needto.dao.mongo;
 
+import com.needto.common.utils.Assert;
 import com.needto.common.utils.Utils;
 import com.needto.dao.models.BaseEntity;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.AfterLoadEvent;
 import org.springframework.data.mongodb.core.mapping.event.BeforeSaveEvent;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.util.Date;
 
 /**
  * mongo事件监听器
+ * 转换_id成id，混淆id，创建时间，更新时间
  */
 @Component
 public class MongoEventListener extends AbstractMongoEventListener {
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    private IMongoIntercept iMongoIntercept;
+
+    @PostConstruct
+    public void init(){
+        try {
+            iMongoIntercept = applicationContext.getBean(IMongoIntercept.class);
+        }catch (Exception e){
+            // 默认的配置
+            iMongoIntercept = new IMongoIntercept() {
+                @Override
+                public void beforeSave(BaseEntity source, Document document) {}
+                @Override
+                public void afterLoad(Document document) {}
+            };
+        }
+
+    }
 
     /**
      * 插入数据时进行数据转换处理
@@ -24,6 +50,9 @@ public class MongoEventListener extends AbstractMongoEventListener {
      */
     @Override
     public void onBeforeSave(BeforeSaveEvent event) {
+        // 更新原对象信息
+        Object source = event.getSource();
+        Assert.validateCondition(!(source instanceof BaseEntity), "model must extend BaseEntity.class");
         Document doc = event.getDocument();
         Date now = new Date();
         assert doc != null;
@@ -59,30 +88,27 @@ public class MongoEventListener extends AbstractMongoEventListener {
         }
         doc.put(BaseEntity.UPTIME, now);
 
-        // 更新原对象信息
-        Object source = event.getSource();
-        if(source instanceof BaseEntity){
-            try {
-                Class sourceClass = source.getClass().getSuperclass();
-                Field idField = sourceClass.getDeclaredField(BaseEntity.ID);
-                idField.setAccessible(true);
-                idField.set(source, oid.toString());
+        try {
+            Class sourceClass = source.getClass().getSuperclass();
+            Field idField = sourceClass.getDeclaredField(BaseEntity.ID);
+            idField.setAccessible(true);
+            idField.set(source, oid.toString());
 
-                Field confuseIdField = sourceClass.getDeclaredField(BaseEntity.CONFUSE_ID);
-                confuseIdField.setAccessible(true);
-                confuseIdField.set(source, confuseId);
+            Field confuseIdField = sourceClass.getDeclaredField(BaseEntity.CONFUSE_ID);
+            confuseIdField.setAccessible(true);
+            confuseIdField.set(source, confuseId);
 
-                Field ctimeField = sourceClass.getDeclaredField(BaseEntity.CTIME);
-                ctimeField.setAccessible(true);
-                ctimeField.set(source, ctime);
+            Field ctimeField = sourceClass.getDeclaredField(BaseEntity.CTIME);
+            ctimeField.setAccessible(true);
+            ctimeField.set(source, ctime);
 
-                Field uptimeField = sourceClass.getDeclaredField(BaseEntity.UPTIME);
-                uptimeField.setAccessible(true);
-                uptimeField.set(source, now);
+            Field uptimeField = sourceClass.getDeclaredField(BaseEntity.UPTIME);
+            iMongoIntercept.beforeSave((BaseEntity) source, doc);
+            uptimeField.setAccessible(true);
+            uptimeField.set(source, now);
 
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 
@@ -96,5 +122,6 @@ public class MongoEventListener extends AbstractMongoEventListener {
         if(source.get(MongoDao.OID) != null){
             source.put(BaseEntity.ID, source.get(MongoDao.OID).toString());
         }
+        iMongoIntercept.afterLoad(source);
     }
 }

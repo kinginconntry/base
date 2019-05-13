@@ -12,6 +12,31 @@ import java.util.GregorianCalendar;
 public class DateUtils {
 
     /**
+     * 永远
+     */
+    public static Date FOREVER_DATE;
+
+    static {
+        FOREVER_DATE = forever();
+    }
+
+    /**
+     * 永远的时间
+     * @return
+     */
+    public static Date forever(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, 3000);
+        calendar.set(Calendar.MONTH, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    /**
      * Date转Calendar
      *
      * @param date

@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationOperationCon
 
 /**
  * @author Administrator
- * dbObject聚合操作类
+ * mongo聚合操作类, 使用DBObject接口实例来表达聚合内容
  */
 public class DBObjectAggregationOperation implements AggregationOperation {
 
