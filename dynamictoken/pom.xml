@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dynamicsign</artifactId>
-    <name>dynamicsign</name>
+    <artifactId>dynamictoken</artifactId>
+    <name>dynamictoken</name>
     <description>系统内部沟通的动态token</description>
 
     <dependencies>
