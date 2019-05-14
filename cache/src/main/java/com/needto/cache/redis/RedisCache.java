@@ -8,6 +8,8 @@ import com.needto.cache.entity.CacheData;
 import com.needto.common.context.GlobalEnv;
 import com.needto.common.exception.ValidateException;
 import com.needto.common.utils.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -41,6 +43,9 @@ public class RedisCache{
     public static final String KEY_NAMESPACE_DELIMTER = ":";
     public static final String KEY_DELIMTER = ".";
 
+    @Autowired
+    private Environment environment;
+
     @Resource
     public RedisTemplate<String, Object> redisTemplate;
 
@@ -53,11 +58,11 @@ public class RedisCache{
         /**
          * 默认时间600秒
          */
-        defaultTtl = Long.valueOf(GlobalEnv.getProperty("cache.ttl", "600"));
+        defaultTtl = Long.valueOf(environment.getProperty("cache.ttl", "600"));
         /**
          * 默认前缀
          */
-        prefix = GlobalEnv.getProperty("cache.prefix", "D");
+        prefix = environment.getProperty("cache.prefix", "D");
     }
 
     /**
