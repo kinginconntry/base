@@ -43,7 +43,7 @@ public enum TriggerType {
     /**
      * 简单触发器
      */
-    STRIGGER{
+    SIMPLE{
         @Override
         public Trigger getTrigger(TriggerData triggerData) {
             Dict config = triggerData.getConfig();

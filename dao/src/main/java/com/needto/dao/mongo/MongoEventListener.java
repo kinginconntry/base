@@ -52,7 +52,9 @@ public class MongoEventListener extends AbstractMongoEventListener {
     public void onBeforeSave(BeforeSaveEvent event) {
         // 更新原对象信息
         Object source = event.getSource();
-        Assert.validateCondition(!(source instanceof BaseEntity), "model must extend BaseEntity.class");
+        if(!(source instanceof BaseEntity)){
+            return;
+        }
         Document doc = event.getDocument();
         Date now = new Date();
         assert doc != null;
