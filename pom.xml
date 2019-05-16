@@ -41,6 +41,7 @@
         <module>organize</module>
         <module>webhook</module>
         <module>chatpush</module>
+        <module>pay</module>
     </modules>
 
     <dependencies>

@@ -40,10 +40,14 @@ public class ScheduleManager implements IScheduleManager {
      */
     @Override
     public <T extends Job> boolean addJob(JobData jobData, Class<T> jobClass) {
+        Assert.validateNull(jobData);
+        Assert.validateNull(jobClass);
 
         //设置任务重复提交标识
         String name = jobData.getName();
         String group = jobData.getGroup();
+        Assert.validateStringEmpty(group, "EMPTY_GROUP", "");
+        Assert.validateStringEmpty(name, "EMPTY_NAME", "");
         JobKey jobKey = new JobKey(name, group);
 
         try {

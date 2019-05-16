@@ -1,6 +1,7 @@
 package com.needto.chatpush.email.config;
 
 import com.needto.common.utils.Assert;
+import com.needto.common.utils.Env;
 import com.needto.common.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.AbstractEnvironment;
@@ -35,7 +36,7 @@ public class EmailSessionContainer {
 
     @PostConstruct
     public void init(){
-        Map<String, Map<String, Object>> map = Utils.getProperties((AbstractEnvironment) environment, DEFAULT_EMAIL_PREFIX);
+        Map<String, Map<String, Object>> map = Env.getProperties((AbstractEnvironment) environment, DEFAULT_EMAIL_PREFIX);
         for(Map.Entry<String, Map<String, Object>> entry : map.entrySet()){
             String key = entry.getKey();
             Assert.validateStringEmpty(key);

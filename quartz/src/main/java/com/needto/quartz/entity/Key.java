@@ -10,6 +10,11 @@ public class Key {
      */
     public String name;
 
+    public Key(String group, String name) {
+        this.group = group;
+        this.name = name;
+    }
+
     public String getGroup() {
         return group;
     }

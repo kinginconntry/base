@@ -57,6 +57,18 @@ public class QuartzManagerService {
         return PageResult.forSuccess(data.getTotal(), data.getPage(), list);
     }
 
+    public List<QuartzJob> findJob(Query query){
+        List<Dict> data = commonDao.find(CommonQueryUtils.getQuery(query),  Dict.class, "");
+        List<QuartzJob> list = null;
+        if(data != null){
+            list = new ArrayList<>(data.size());
+            for(Dict dict : data){
+                list.add(QuartzJob.builder(dict));
+            }
+        }
+        return list;
+    }
+
     /**
      * 查询触发器
      * @param query
@@ -80,6 +92,25 @@ public class QuartzManagerService {
         return PageResult.forSuccess(data.getTotal(), data.getPage(), list);
     }
 
+    public List<QuartzTrigger> findTrigger(Query query){
+        List<Dict> data = commonDao.find(CommonQueryUtils.getQuery(query),  Dict.class, "");
+        List<QuartzTrigger> list = null;
+        if(data != null){
+            list = new ArrayList<>(data.size());
+            for(Dict dict : data){
+                if(TriggerType.CRON.name().equals(dict.get("TRIGGER_TYPE"))){
+                    list.add(QuartzCronTrigger.builder(dict));
+                }else if(TriggerType.SIMPLE.name().equals(dict.get("TRIGGER_TYPE"))){
+                    list.add(QuartzSimpleTrigger.builder(dict));
+                }else{
+
+                }
+            }
+        }
+        return list;
+    }
+
+
     /**
      * 查询日历
      * @param query
@@ -95,5 +126,17 @@ public class QuartzManagerService {
             }
         }
         return PageResult.forSuccess(data.getTotal(), data.getPage(), list);
+    }
+
+    public List<QuartzCalendar> findCalendar(Query query){
+        List<Dict> data = commonDao.find(CommonQueryUtils.getQuery(query),  Dict.class, "");
+        List<QuartzCalendar> list = null;
+        if(data != null){
+            list = new ArrayList<>(data.size());
+            for(Dict dict : data){
+                list.add(QuartzCalendar.builder(dict));
+            }
+        }
+        return list;
     }
 }
