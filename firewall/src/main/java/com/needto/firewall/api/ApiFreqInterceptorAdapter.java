@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author Administrator
  * api频率拦截器
+ * 基于用户指纹或用户ip的防刷机制（没有指纹则使用ip）
  */
 @Service
 public class ApiFreqInterceptorAdapter extends HandlerInterceptorAdapter {
@@ -47,7 +48,7 @@ public class ApiFreqInterceptorAdapter extends HandlerInterceptorAdapter {
                 String source = ((HandlerMethod) handler).getBean().getClass().getName() + "_" + ((HandlerMethod) handler).getMethod().getName();
                 String targetGuid;
                 if(target != null){
-                    targetGuid = target.getType() + "_" + target.getGuid();
+                    targetGuid = target.getGuid();
                 }else{
                     String ip = RequestUtil.getIp(request);
                     targetGuid = "IP_" + ip;
@@ -61,7 +62,7 @@ public class ApiFreqInterceptorAdapter extends HandlerInterceptorAdapter {
                 if(frequencyService.filter(source, targetGuid, max, second, forbidtime)){
                     // 禁用
                     LOG.debug("asyncapi 访问频率过高, url {}, source {}, target {}, max {}, second {}", request.getRequestURI(), source, targetGuid, max, second);
-                    ResponseUtil.outJson(response, Result.forError("403", ""));
+                    ResponseUtil.outJson(response, Result.forError("HEIGHT_FREQ", ""));
                     return false;
                 }
             }

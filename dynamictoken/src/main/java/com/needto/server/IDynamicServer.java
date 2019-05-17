@@ -5,7 +5,7 @@ package com.needto.server;
  */
 public interface IDynamicServer {
     /**
-     * 更新sign值
+     * 更新客户端标识值
      */
     void updateSign();
 }

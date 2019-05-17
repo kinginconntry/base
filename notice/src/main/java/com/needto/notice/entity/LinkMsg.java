@@ -5,7 +5,7 @@ package com.needto.notice.entity;
  * @author Administrator
  * 链接消息
  */
-public class LinkMsg extends AbstractNoticeMsg {
+public class LinkMsg extends NoticeMsg {
 
     /**
      * 标题

@@ -1,19 +1,19 @@
 package com.needto.cache.serialnum;
 
+import com.needto.cache.entity.CacheData;
 import com.needto.cache.redis.RedisCache;
+import com.needto.common.utils.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author Administrator
  * redis 单机流水号生成器
- * TODO 需要升级为多机流水号生成器
+ *
+ * FIXME 多机情况下有问题
  *
  */
 @Service
@@ -22,45 +22,34 @@ public class IdGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(IdGenerator.class);
 
     @Autowired
-    private Environment environment;
-
-    @Autowired
     private RedisCache redisCache;
 
     /**
-     * 默认尾部流水数的占位符
+     * 下一个流水号
+     * @param key 流水号前缀
+     * @param ttl 过期时间
+     * @param bit 流水号位数
+     * @param ph 占位符
+     * @return
      */
-    private String defaultPh;
-
-    /**
-     * 尾部流水数长度
-     */
-    private Integer bit = 5;
-
-    @PostConstruct
-    public void init(){
-        this.bit = Integer.valueOf(environment.getProperty("idgenerator.bit", "5"));
-        this.defaultPh = environment.getProperty("idgenerator.ph", "0");
-    }
-
-    /**
-     * @return 下一个流水号
-     */
-    public synchronized String build(String key, long ttl, int bit) {
-        if(StringUtils.isEmpty(key)){
-            throw new IllegalArgumentException("key can not be empty");
+    public String build(String key, long ttl, Integer bit, String ph, CacheData cacheData) {
+        Assert.validateStringEmpty(key, "key can not be empty");
+        Assert.validateCondition(bit <= 0, "bit can not be less than 0");
+        if(StringUtils.isEmpty(ph)){
+            ph = "0";
         }
-        if(bit <= 0){
-            throw new IllegalArgumentException("bit can not be less than 0");
+        long index;
+        if(cacheData == null){
+            index = redisCache.inc(key, ttl);
+        }else{
+            index = redisCache.inc(key, ttl, cacheData);
         }
-        long index = redisCache.inc(key, ttl);
         String temp = index + "";
-        if(temp.length() > bit){
-            throw new RuntimeException("worksheetId has already exceeded max");
-        }
+        Assert.validateCondition(temp.length() > bit, "IDGENERATOR_MORE_THAN_MAX_BIT", "worksheetId has already exceeded max");
+
         StringBuilder prefix = new StringBuilder();
         for(int i = 0, len = bit - temp.length(); i < len; i++){
-            prefix.append(defaultPh);
+            prefix.append(ph);
         }
         LOG.debug("生成流水号：{}", prefix+temp);
         return prefix + temp;
@@ -73,6 +62,6 @@ public class IdGenerator {
      * @return
      */
     public String build(String key, long ttl){
-        return this.build(key, ttl, bit);
+        return this.build(key, ttl, 5, "0", null);
     }
 }

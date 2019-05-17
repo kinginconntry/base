@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * FIXME 未处理完
+ */
 @Component
 @ConditionalOnBean(WechatConfig.class)
 public class WechatPay implements Deal<WechatPayData> {

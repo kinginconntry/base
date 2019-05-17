@@ -17,8 +17,9 @@ import java.util.Map;
  * http 请求任务
  */
 @Component
-@TaskDealRegister(code = "http", name="http任务", desc="发送http请求到相应服务器")
 public class HttpTaskDeal implements TaskDeal {
+
+    public static final String DEAL_CODE = "HTTP";
 
     private static final String URL = "url";
     private static final String METHOD = "method";
@@ -69,5 +70,10 @@ public class HttpTaskDeal implements TaskDeal {
             }
         }
         ApiRequest.defaultSourceRequest(new RestTemplate(), url, body, httpMethod, httpHeaders, null, Object.class);
+    }
+
+    @Override
+    public String code() {
+        return DEAL_CODE;
     }
 }

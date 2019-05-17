@@ -52,7 +52,7 @@ public class DefaultWebhookApi {
      * @param webHook
      * @return
      */
-    @PostMapping(value = {"/sys/webhook/save", "/admin/webhook/save"})
+    @PostMapping(value = {"/app/webhook/save", "/sys/webhook/save", "/admin/webhook/save"})
     @ResponseBody
     public Result<WebHook> save(@RequestBody WebHook webHook){
         if(webHook == null){

@@ -7,4 +7,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix="pay.wechat")
 public class WechatConfig {
+
 }

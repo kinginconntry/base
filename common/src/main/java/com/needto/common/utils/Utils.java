@@ -212,6 +212,10 @@ public class Utils {
         return resMap;
     }
 
+    public static String formatUrl(String s) {
+        return !s.startsWith("http") && !s.startsWith("HTTP") ? "http://" + s : s;
+    }
+
     public static String trim(String obj){
         if(obj == null){
             return null;

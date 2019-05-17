@@ -1,14 +1,15 @@
 package com.needto.notice.service;
 
 import com.google.common.collect.Lists;
+import com.needto.common.entity.PageResult;
+import com.needto.common.entity.Query;
 import com.needto.common.entity.Target;
 import com.needto.common.exception.ValidateException;
 import com.needto.common.utils.Assert;
 import com.needto.common.utils.DateUtils;
-import com.needto.dao.common.CommonDao;
-import com.needto.dao.common.FieldFilter;
-import com.needto.dao.common.Op;
-import com.needto.notice.entity.AbstractNoticeMsg;
+import com.needto.dao.common.*;
+import com.needto.notice.data.Constant;
+import com.needto.notice.entity.NoticeMsg;
 import com.needto.notice.event.NoticeChangeEvent;
 import com.needto.notice.model.Notice;
 import org.slf4j.Logger;
@@ -35,11 +36,6 @@ public class NoticeService {
 
     @Autowired
     private CommonDao commonDao;
-
-    /**
-     * 所有用户
-     */
-    private static final Target ALL_USER = new Target("USER", "__ALL__");
 
     /**
      * 保存系统消息
@@ -88,34 +84,14 @@ public class NoticeService {
 
     /**
      * 创建系统公告
-     * @param msg
+     * @param notice
      * @return
      */
-    public Notice createBroadCast(AbstractNoticeMsg msg, Target target, Date start, Date end){
-        if(msg == null){
+    public Notice createBroadCast(Notice notice){
+        if(notice == null){
             throw new ValidateException("NO_DATA", "");
         }
-        if(target == null){
-            target = ALL_USER;
-        }
-        Notice notice = new Notice();
-        notice.setData(msg);
-        notice.setStartTime(start);
-        notice.setEndTime(end);
-        notice.setPrompt(true);
-        notice.setTarget(target);
         return this.save(notice);
-    }
-
-    /**
-     * 对所有用户创建公告
-     * @param msg
-     * @param start
-     * @param end
-     * @return
-     */
-    public Notice createBroadCast(AbstractNoticeMsg msg, Date start, Date end){
-        return this.createBroadCast(msg, null, start, end);
     }
 
     /**
@@ -125,7 +101,7 @@ public class NoticeService {
      */
     public List<Notice> getNotice(Target target){
         if(target == null){
-            target = ALL_USER;
+            target = Constant.ALL_USER;
         }
 
         Date now = new Date();
@@ -135,6 +111,29 @@ public class NoticeService {
             new FieldFilter("target.guid", target.getGuid()),
             new FieldFilter("target.type", target.getType())
         ), Notice.class, Notice.TABLE);
+    }
+
+    /**
+     * 确认消息已读
+     * @param target
+     * @param ids
+     * @return
+     */
+    public long ackNotice(Target target, List<String> ids){
+        Assert.validateNull(target);
+        Assert.validateCondition(CollectionUtils.isEmpty(ids), "NO_ID", "");
+        return this.commonDao.update(Lists.newArrayList(
+                new FieldFilter("id", Op.IN.name(), ids),
+                new FieldFilter("target.guid", target.getGuid()),
+                new FieldFilter("target.type", target.getType())
+        ), Lists.newArrayList(
+                new FieldUpdate("ack", true)
+        ), Notice.TABLE);
+    }
+
+    public PageResult<List<Notice>> page(Query query){
+        PageDataResult<Notice> res = this.commonDao.findByPage(CommonQueryUtils.getQuery(query), Notice.class, Notice.TABLE);
+        return PageResult.forSuccess(res.getTotal(), res.getPage(), res.getData());
     }
 
 

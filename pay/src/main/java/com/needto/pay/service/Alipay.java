@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * FIXME 未处理完
+ */
 @Component
 @ConditionalOnBean(AlipayConfig.class)
 public class Alipay implements Deal<AlipayData> {

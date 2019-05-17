@@ -34,15 +34,12 @@ public class TaskDealContainer {
 
     @PostConstruct
     public void init(){
-        Map<String, Object> filterMap = applicationContext.getBeansWithAnnotation(TaskDealRegister.class);
+        Map<String, TaskDeal> filterMap = applicationContext.getBeansOfType(TaskDeal.class);
         filterMap.forEach((k, v) -> {
-            if(v instanceof TaskDeal){
-                TaskDeal callbackInstance =((TaskDeal) v);
-                String code = callbackInstance.getClass().getAnnotation(TaskDealRegister.class).code();
-                String name = callbackInstance.getClass().getAnnotation(TaskDealRegister.class).name();
-                String desc = callbackInstance.getClass().getAnnotation(TaskDealRegister.class).desc();
-                set(code, callbackInstance, name, desc);
-            }
+            String code = v.code();
+            String name = v.name();
+            String desc = v.desc();
+            set(code, v, name, desc);
         });
     }
 

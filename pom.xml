@@ -42,6 +42,10 @@
         <module>webhook</module>
         <module>chatpush</module>
         <module>pay</module>
+        <module>mq</module>
+        <module>tokenizer</module>
+        <module>fulltextsearch</module>
+        <!--<module>asr</module>-->
     </modules>
 
     <dependencies>

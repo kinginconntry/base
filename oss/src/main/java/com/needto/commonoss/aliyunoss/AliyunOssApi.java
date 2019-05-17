@@ -5,6 +5,7 @@ import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Dict;
 import com.needto.common.entity.Result;
 import com.needto.common.entity.Target;
+import com.needto.common.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -34,11 +35,9 @@ public class AliyunOssApi {
     private String bucket;
 
     private boolean webFilter(Target target){
+        Assert.validateNull(target, "NO_CLIENT", "");
         if(frequencyService == null){
             return false;
-        }
-        if(target == null){
-            return true;
         }
         return frequencyService.filter(GlobalEnv.getiClientCache().getGuid(target), "/web/oss/build", 10, 5, 600);
     }

@@ -1,7 +1,6 @@
 package com.needto.group;
 
 import com.needto.common.entity.Dict;
-import com.needto.common.entity.Target;
 import com.needto.common.inter.Itree;
 import com.needto.dao.models.UserEntity;
 
@@ -10,8 +9,6 @@ import com.needto.dao.models.UserEntity;
  * @author Administrator
  */
 public class Group extends UserEntity implements Itree {
-
-    public static final String TABLE = "_group";
 
     /**
      * 主用户id
@@ -22,11 +19,6 @@ public class Group extends UserEntity implements Itree {
      * 父节点id
      */
     private String pid;
-
-    /**
-     * 所属
-     */
-    private Target belongto;
 
     /**
      * 分组名
@@ -70,14 +62,6 @@ public class Group extends UserEntity implements Itree {
 
     public void setOwner(String owner) {
         this.owner = owner;
-    }
-
-    public Target getBelongto() {
-        return belongto;
-    }
-
-    public void setBelongto(Target belongto) {
-        this.belongto = belongto;
     }
 
     public String getPid() {

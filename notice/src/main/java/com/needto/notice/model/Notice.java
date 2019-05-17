@@ -1,16 +1,16 @@
 package com.needto.notice.model;
 
 import com.needto.common.entity.Target;
-import com.needto.dao.models.UserEntity;
-import com.needto.notice.entity.AbstractNoticeMsg;
+import com.needto.dao.models.TargetEntity;
+import com.needto.notice.entity.NoticeMsg;
 
 import java.util.Date;
 
 /**
  * @author Administrator
- * 系统消息
+ * 系统消息(可能是管理人员或者系统自动发布)
  */
-public class Notice extends UserEntity {
+public class Notice extends TargetEntity {
 
     public final static String TABLE = "_notice";
 
@@ -22,7 +22,7 @@ public class Notice extends UserEntity {
     /**
      * 消息实体
      */
-    private AbstractNoticeMsg data;
+    private NoticeMsg data;
 
     /**
      * 开始时间，这个时间点之后的目标能接受到消息
@@ -40,6 +40,11 @@ public class Notice extends UserEntity {
      */
     private boolean prompt;
 
+    /**
+     * 确认收到
+     */
+    private boolean ack;
+
     public Notice() {
         this.startTime = new Date();
         this.target = new Target();
@@ -54,11 +59,11 @@ public class Notice extends UserEntity {
         this.target = target;
     }
 
-    public AbstractNoticeMsg getData() {
+    public NoticeMsg getData() {
         return data;
     }
 
-    public void setData(AbstractNoticeMsg data) {
+    public void setData(NoticeMsg data) {
         this.data = data;
     }
 
@@ -84,5 +89,13 @@ public class Notice extends UserEntity {
 
     public void setPrompt(boolean prompt) {
         this.prompt = prompt;
+    }
+
+    public boolean isAck() {
+        return ack;
+    }
+
+    public void setAck(boolean ack) {
+        this.ack = ack;
     }
 }
