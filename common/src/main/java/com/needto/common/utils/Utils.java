@@ -1,10 +1,12 @@
 package com.needto.common.utils;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.needto.common.exception.BaseException;
 import com.needto.common.inter.IOrder;
+import net.sf.json.JSONSerializer;
 import net.sf.json.xml.XMLSerializer;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
@@ -164,6 +166,16 @@ public class Utils {
         XMLSerializer xmlSerializer = new XMLSerializer();
         String resutStr = xmlSerializer.read(xmlStr).toString();
         return JSONObject.parseObject(resutStr);
+    }
+
+    /**
+     * json转xml
+     * @param o
+     * @return
+     */
+    public static String objectToXml(Object o){
+        XMLSerializer xmlSerializer = new XMLSerializer();
+        return xmlSerializer.write(JSONSerializer.toJSON(JSON.toJSONString(o)));
     }
 
     /**

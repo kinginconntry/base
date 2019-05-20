@@ -1,7 +1,6 @@
 package com.needto.pay.service;
 
 import com.needto.common.entity.Dict;
-import com.needto.pay.entity.CallbackData;
 import com.needto.pay.entity.IPayData;
 
 /**
@@ -19,7 +18,7 @@ public interface Deal<T extends IPayData> {
      * 支付结果回调
      * @return
      */
-    void payCallback(CallbackData callback);
+    void payCallback(Dict callback);
 
     String code();
 

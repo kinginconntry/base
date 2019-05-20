@@ -1,12 +1,23 @@
 package com.needto.pay.config;
 
+import com.alipay.api.DefaultAlipayClient;
+import com.needto.common.utils.Assert;
+import com.needto.common.utils.ValidateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author Administrator
  */
 @ConfigurationProperties(prefix="pay.alipay")
 public class AlipayConfig {
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     private String appId;
 
@@ -16,9 +27,20 @@ public class AlipayConfig {
 
     private String domain;
 
-    private String signType = "RSA2";
+    private String notifyUrl;
 
-    private String charset = "utf-8";
+    @PostConstruct
+    private void init(){
+        Assert.validateStringEmpty(this.getAppId());
+        Assert.validateStringEmpty(this.getPrivateKey());
+        Assert.validateStringEmpty(this.getPublicKey());
+        if(StringUtils.isEmpty(this.getNotifyUrl())){
+            this.setNotifyUrl(this.getDomain() + "/pay/alipay/notify");
+        }
+        Assert.validateCondition(ValidateUtils.isUrl(this.getNotifyUrl()));
+        applicationContext.getAutowireCapableBeanFactory().createBean(AlipayOpen.class);
+
+    }
 
     public String getAppId() {
         return appId;
@@ -52,19 +74,11 @@ public class AlipayConfig {
         this.domain = domain;
     }
 
-    public String getSignType() {
-        return signType;
+    public String getNotifyUrl() {
+        return notifyUrl;
     }
 
-    public void setSignType(String signType) {
-        this.signType = signType;
-    }
-
-    public String getCharset() {
-        return charset;
-    }
-
-    public void setCharset(String charset) {
-        this.charset = charset;
+    public void setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
     }
 }

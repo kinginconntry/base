@@ -1,6 +1,7 @@
 package com.needto.pay.event;
 
 import com.needto.pay.entity.IPayData;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.ApplicationEvent;
 
 public class PayPrepareAfterEvent extends ApplicationEvent {
@@ -58,5 +59,9 @@ public class PayPrepareAfterEvent extends ApplicationEvent {
 
     public void setErrcode(String errcode) {
         this.errcode = errcode;
+    }
+
+    public boolean isSuccess(){
+        return StringUtils.isAlpha(this.errcode);
     }
 }

@@ -8,60 +8,83 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayOpenPublicTemplateMessageIndustryModifyRequest;
 import com.alipay.api.response.AlipayOpenPublicTemplateMessageIndustryModifyResponse;
 import com.needto.common.entity.Dict;
+import com.needto.common.exception.LogicException;
+import com.needto.common.utils.Assert;
+import com.needto.common.utils.Utils;
 import com.needto.pay.config.AlipayConfig;
+import com.needto.pay.config.AlipayOpen;
 import com.needto.pay.entity.AlipayData;
 import com.needto.pay.entity.CallbackData;
 import com.needto.pay.entity.Way;
+import com.needto.pay.event.PayFailtureEvent;
+import com.needto.pay.event.PaySuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.util.Map;
 
 /**
- * FIXME 未处理完
  */
 @Component
-@ConditionalOnBean(AlipayConfig.class)
+@ConditionalOnBean(AlipayOpen.class)
 public class Alipay implements Deal<AlipayData> {
 
     private static final String GATEWAY_URL = "https://openapi.alipay.com/gateway.do";
 
-    private static final String RETURN_URL = "";
-
     @Autowired
     private AlipayConfig alipayConfig;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     private AlipayClient alipayClient;
 
     @PostConstruct
     private void init(){
         //实例化客户端
-        alipayClient = new DefaultAlipayClient(GATEWAY_URL, alipayConfig.getAppId(), alipayConfig.getPrivateKey(), "json", alipayConfig.getCharset(), alipayConfig.getPublicKey(), alipayConfig.getSignType());
+        alipayClient = new DefaultAlipayClient(GATEWAY_URL, alipayConfig.getAppId(), alipayConfig.getPrivateKey(), "json", "utf-8", alipayConfig.getPublicKey(), "RSA2");
+    }
+
+    private void checkParam(AlipayData payData){
+        Assert.validateStringEmpty(payData.getGuid(), "NO_GUID", "");
+        Assert.validateStringEmpty(payData.getProductCode(), "NO_PRODUCT_CODE", "");
+        Assert.validateStringEmpty(payData.getSubject(), "NO_SUBJECT", "");
+        Assert.validateCondition(payData.getBigDecimal() == null || payData.getBigDecimal().intValue() <= 0, "ILLEGAL_FEE", "");
+    }
+
+    private void validateSign(String sign){
+
     }
 
     @Override
     public String prepare(AlipayData payData) {
-
+        checkParam(payData);
         //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.open.public.template.message.industry.modify
         AlipayOpenPublicTemplateMessageIndustryModifyRequest request = new AlipayOpenPublicTemplateMessageIndustryModifyRequest();
-        request.setReturnUrl(alipayConfig.getDomain() + RETURN_URL);
-        //SDK已经封装掉了公共参数，这里只需要传入业务参数
-        //此次只是参数展示，未进行字符串转义，实际情况下请转义
-        request.setBizContent("  {" +
-                "    \"primary_industry_name\":\"IT科技/IT软件与服务\"," +
-                "    \"primary_industry_code\":\"10001/20102\"," +
-                "    \"secondary_industry_code\":\"10001/20102\"," +
-                "    \"secondary_industry_name\":\"IT科技/IT软件与服务\"" +
-                " }");
+        request.setNotifyUrl(alipayConfig.getNotifyUrl());
+        request.setApiVersion("1.0");
+        Dict bizContent = new Dict();
+        bizContent.put("out_trade_no", payData.getGuid());
+        bizContent.put("product_code", payData.getProductCode());
+        bizContent.put("subject", payData.getSubject());
+        bizContent.put("body", payData.getBody());
+        bizContent.put("total_amount", payData.getBigDecimal().divide(BigDecimal.valueOf(100)).intValue());
+        bizContent.put("integration_type", payData.getIntegrationType());
+        request.setBizContent(JSON.toJSONString(bizContent));
         try {
             AlipayOpenPublicTemplateMessageIndustryModifyResponse response = alipayClient.execute(request);
-            Dict jsonObject = JSON.parseObject(response.getBody(), Dict.class);
+            Dict res = JSON.parseObject(response.getBody(), Dict.class);
             //调用成功，则处理业务逻辑
             if(response.isSuccess()){
-
+                Map<String, Object> payRes = res.getValue("alipay_trade_page_pay_response");
+                Assert.validateCondition(!"Success".equals(payRes.get("msg")), Utils.nullToString(payRes.get("sub_code")), Utils.nullToString(payRes.get("sub_msg")));
+                return "";
             }else{
-
+                throw new LogicException("-1", "");
             }
         } catch (AlipayApiException e) {
             e.printStackTrace();
@@ -70,8 +93,15 @@ public class Alipay implements Deal<AlipayData> {
     }
 
     @Override
-    public void payCallback(CallbackData result) {
-
+    public void payCallback(Dict callback) {
+        CallbackData callbackData = new CallbackData();
+        callbackData.putAll(callback);
+        callbackData.setGuid(callback.getValue("out_trade_no"));
+        if("TRADE_SUCCESS".equals(callback.get("trade_status"))){
+            applicationContext.publishEvent(new PaySuccessEvent(this, callbackData, code()));
+        }else{
+            applicationContext.publishEvent(new PayFailtureEvent(this, callbackData, code()));
+        }
     }
 
     @Override

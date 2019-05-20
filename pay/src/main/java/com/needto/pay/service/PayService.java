@@ -1,10 +1,9 @@
 package com.needto.pay.service;
 
+import com.needto.common.entity.Dict;
 import com.needto.common.exception.BaseException;
 import com.needto.common.utils.Assert;
-import com.needto.pay.entity.CallbackData;
 import com.needto.pay.entity.IPayData;
-import com.needto.pay.event.PayFailtureEvent;
 import com.needto.pay.event.PayPrepareAfterEvent;
 import com.needto.pay.event.PayPrepareBeforeEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,10 +74,10 @@ public class PayService {
         }
     }
 
-    public void payCallback(String payWay, CallbackData callbackData){
+    public void payCallback(String payWay, Dict Dict){
         Assert.validateCondition(this.contain(payWay), "NO_SUPPORT", "");
         try{
-            this.get(payWay).payCallback(callbackData);
+            this.get(payWay).payCallback(Dict);
         }catch (BaseException e){
             e.printStackTrace();
         }
