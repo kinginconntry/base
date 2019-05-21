@@ -262,6 +262,7 @@ public class MongoDao implements CommonDao {
      * @param table
      * @return
      */
+    @Override
     public long updateDeleted(List<FieldFilter> fieldFilters, String table) {
         return this.update(fieldFilters, Lists.newArrayList(new FieldUpdate(BaseEntity.DELETED, true)), table);
     }

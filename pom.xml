@@ -45,6 +45,9 @@
         <module>mq</module>
         <module>tokenizer</module>
         <module>fulltextsearch</module>
+        <module>thirdauth</module>
+        <module>order</module>
+        <module>discount</module>
         <!--<module>asr</module>-->
     </modules>
 

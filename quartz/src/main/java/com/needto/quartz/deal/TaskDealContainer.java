@@ -1,5 +1,6 @@
 package com.needto.quartz.deal;
 
+import com.needto.common.service.ThingContainerService;
 import com.needto.common.utils.Assert;
 import com.needto.quartz.entity.TaskData;
 import com.needto.quartz.entity.TaskEvent;
@@ -19,53 +20,10 @@ import java.util.Map;
  * @author Administrator
  */
 @Component
-public class TaskDealContainer {
+public class TaskDealContainer extends ThingContainerService<TaskDeal> {
 
     private static final Log log = LogFactory.getLog(TaskDealContainer.class);
 
-    private static final Map<String, TaskDeal> MAP = new HashMap<>();
-
-    private static final Map<String, String> DESC_MAP = new HashMap<>();
-
-    private static final Map<String, String> NAME_MAP = new HashMap<>();
-
-    @Autowired
-    private ApplicationContext applicationContext;
-
-    @PostConstruct
-    public void init(){
-        Map<String, TaskDeal> filterMap = applicationContext.getBeansOfType(TaskDeal.class);
-        filterMap.forEach((k, v) -> {
-            String code = v.code();
-            String name = v.name();
-            String desc = v.desc();
-            set(code, v, name, desc);
-        });
-    }
-
-    public boolean contain(String code){
-        if(StringUtils.isEmpty(code)){
-            return false;
-        }
-        return MAP.containsKey(code);
-    }
-
-    public void set(String code, TaskDeal orderDeal, String name, String desc){
-        if(StringUtils.isEmpty(code)){
-            return;
-        }
-        Assert.validateCondition(MAP.containsKey(code), "code repeat");
-        MAP.put(code, orderDeal);
-        NAME_MAP.put(code, name);
-        DESC_MAP.put(code, desc);
-    }
-
-    public TaskDeal get(String code){
-        if(StringUtils.isEmpty(code)){
-            return null;
-        }
-        return MAP.get(code);
-    }
 
 
     @EventListener
@@ -78,5 +36,10 @@ public class TaskDealContainer {
             // 没有找到执行器，执行失败
             log.info("没有找到执行器 " + taskEvent.getDeal()+ "，执行失败");
         }
+    }
+
+    @Override
+    protected Class<TaskDeal> getThingClass() {
+        return TaskDeal.class;
     }
 }

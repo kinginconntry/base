@@ -9,7 +9,7 @@ public interface Thing {
      * 事物名
      * @return
      */
-    String getName();
+    default String getName(){ return ""; }
 
     /**
      * 事物唯一编码

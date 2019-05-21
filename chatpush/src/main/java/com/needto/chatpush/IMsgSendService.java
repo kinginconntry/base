@@ -1,9 +1,11 @@
 package com.needto.chatpush;
 
+import com.needto.common.inter.Thing;
+
 /**
  * @author Administrator
  */
-public interface IMsgSendService<T> {
+public interface IMsgSendService<T> extends Thing {
 
     /**
      * 发送
@@ -12,21 +14,5 @@ public interface IMsgSendService<T> {
      */
     boolean send(T o);
 
-    /**
-     * 名称
-     * @return
-     */
-    default String name(){ return ""; }
-
-    /**
-     * 描述
-     * @return
-     */
-    default String desc(){ return ""; }
-
-    /**
-     * 唯一代号
-     * @return
-     */
-    String code();
+    String type();
 }

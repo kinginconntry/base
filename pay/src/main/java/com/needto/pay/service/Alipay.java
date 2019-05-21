@@ -98,14 +98,14 @@ public class Alipay implements Deal<AlipayData> {
         callbackData.putAll(callback);
         callbackData.setGuid(callback.getValue("out_trade_no"));
         if("TRADE_SUCCESS".equals(callback.get("trade_status"))){
-            applicationContext.publishEvent(new PaySuccessEvent(this, callbackData, code()));
+            applicationContext.publishEvent(new PaySuccessEvent(this, callbackData, getCode()));
         }else{
-            applicationContext.publishEvent(new PayFailtureEvent(this, callbackData, code()));
+            applicationContext.publishEvent(new PayFailtureEvent(this, callbackData, getCode()));
         }
     }
 
     @Override
-    public String code() {
+    public String getCode() {
         return Way.ALIPAY.name();
     }
 }

@@ -106,14 +106,14 @@ public class WechatPay implements Deal<WechatPayData> {
         callbackData.putAll(callback);
         callbackData.setGuid(callback.getValue("out_trade_no"));
         if("SUCCESS".equals(callback.get("return_code"))){
-            applicationContext.publishEvent(new PaySuccessEvent(this, callbackData, code()));
+            applicationContext.publishEvent(new PaySuccessEvent(this, callbackData, getCode()));
         }else{
-            applicationContext.publishEvent(new PayFailtureEvent(this, callbackData, code()));
+            applicationContext.publishEvent(new PayFailtureEvent(this, callbackData, getCode()));
         }
     }
 
     @Override
-    public String code() {
+    public String getCode() {
         return Way.WECHAT.name();
     }
 }

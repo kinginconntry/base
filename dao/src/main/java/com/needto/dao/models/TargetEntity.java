@@ -1,6 +1,7 @@
 package com.needto.dao.models;
 
 import com.needto.common.entity.Target;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Administrator
@@ -43,4 +44,12 @@ public class TargetEntity extends BaseEntity {
     public void setUptarget(Target uptarget) {
         this.uptarget = uptarget;
     }
+
+    public void initTarget(Target target){
+        this.uptarget = target;
+        if(StringUtils.isEmpty(this.id)){
+            this.ctarget = target;
+        }
+    }
+
 }

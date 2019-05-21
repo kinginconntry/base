@@ -74,6 +74,8 @@ public interface CommonDao {
 
     long deleteByIds(List<String> ids, String table);
 
+    long updateDeleted(List<FieldFilter> fieldFilters, String table);
+
     long updateOne(List<FieldFilter> fieldFilters, List<FieldUpdate> updates, String table);
 
     long updateById(String id, List<FieldUpdate> updates, String table);

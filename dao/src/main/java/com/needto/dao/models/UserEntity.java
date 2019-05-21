@@ -1,5 +1,7 @@
 package com.needto.dao.models;
 
+import org.springframework.util.StringUtils;
+
 /**
  * @author Administrator
  * 跟登录用户相关的类
@@ -40,5 +42,12 @@ public class UserEntity extends BaseEntity {
 
     public void setUpuser(String upuser) {
         this.upuser = upuser;
+    }
+
+    public void initUser(String user){
+        this.upuser = user;
+        if(StringUtils.isEmpty(this.id)){
+            this.cuser = user;
+        }
     }
 }

@@ -73,7 +73,7 @@ public class HttpTaskDeal implements TaskDeal {
     }
 
     @Override
-    public String code() {
+    public String getCode() {
         return DEAL_CODE;
     }
 }
