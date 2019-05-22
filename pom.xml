@@ -44,10 +44,11 @@
         <module>pay</module>
         <module>mq</module>
         <module>tokenizer</module>
-        <module>fulltextsearch</module>
         <module>thirdauth</module>
         <module>order</module>
         <module>discount</module>
+        <module>mongo</module>
+        <module>es</module>
         <!--<module>asr</module>-->
     </modules>
 
