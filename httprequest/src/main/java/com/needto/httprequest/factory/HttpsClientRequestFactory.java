@@ -1,4 +1,4 @@
-package com.needto.common.factory;
+package com.needto.httprequest.factory;
 
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 

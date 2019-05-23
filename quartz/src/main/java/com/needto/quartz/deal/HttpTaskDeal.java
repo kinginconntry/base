@@ -2,6 +2,7 @@ package com.needto.quartz.deal;
 
 import com.alibaba.fastjson.JSON;
 import com.needto.common.utils.*;
+import com.needto.httprequest.service.ApiRequest;
 import com.needto.quartz.entity.TaskData;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpHeaders;

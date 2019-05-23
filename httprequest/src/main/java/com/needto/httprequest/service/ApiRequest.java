@@ -1,9 +1,10 @@
-package com.needto.common.utils;
+package com.needto.httprequest.service;
 
 import com.alibaba.fastjson.JSON;
 import com.needto.common.context.MessageConvert;
 import com.needto.common.entity.Dict;
-import com.needto.common.factory.HttpsClientRequestFactory;
+import com.needto.common.utils.Utils;
+import com.needto.httprequest.factory.HttpsClientRequestFactory;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.slf4j.Logger;

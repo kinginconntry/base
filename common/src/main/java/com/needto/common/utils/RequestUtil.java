@@ -92,8 +92,8 @@ public class RequestUtil {
      * @param request
      * @return
      */
-    public static boolean isAjax(ServletRequest request) {
-        String requestType = ((RequestFacade) request).getHeader("X-Requested-With");
+    public static boolean isAjax(HttpServletRequest request) {
+        String requestType = request.getHeader("X-Requested-With");
         if (StringUtils.isEmpty(requestType) || !"XMLHTTPREQUEST".equals(requestType.toUpperCase())) {
             return false;
         } else {

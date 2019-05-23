@@ -1,6 +1,8 @@
-package com.needto.dao.common;
+package com.needto.dao.inter;
 
 
+
+import com.needto.dao.common.*;
 
 import java.util.Collection;
 import java.util.List;

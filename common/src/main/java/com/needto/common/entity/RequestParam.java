@@ -1,5 +1,6 @@
 package com.needto.common.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,9 @@ public class RequestParam {
     public String search;
 
     public List<Filter> getFilters() {
+        if(this.filters == null){
+            this.filters = new ArrayList<>(0);
+        }
         return filters;
     }
 

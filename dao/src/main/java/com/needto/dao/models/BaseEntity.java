@@ -1,6 +1,11 @@
 package com.needto.dao.models;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.needto.common.inter.IInit;
+import com.needto.dao.inter.ICtime;
+import com.needto.dao.inter.IDelete;
+import com.needto.dao.inter.IUptime;
+import com.needto.dao.inter.Id;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -9,7 +14,7 @@ import java.util.Date;
  * @author Administrator
  * dao基础模型
  */
-public class BaseEntity implements Serializable {
+public class BaseEntity implements Serializable, IInit, Id, ICtime, IUptime, IDelete {
 
     /**
      * 系统默认的时间格式化信息
@@ -17,34 +22,9 @@ public class BaseEntity implements Serializable {
     public final static String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     /**
-     * 创建者或更新者为系统时配置的数据
-     */
-    public static final transient String SYS_USER = "__SYS__";
-
-    /**
-     * 创建时间字段
-     */
-    public static final transient String CTIME = "ctime";
-
-    /**
-     * 更新时间字段
-     */
-    public static final transient String UPTIME = "uptime";
-
-    /**
-     * id 被混淆之后的数据
-     */
-    public static final transient String CONFUSE_ID = "confuseId";
-
-    /**
      * id
      */
     public static final transient String ID = "id";
-
-    /**
-     * 删除字段
-     */
-    public static final transient String DELETED = "deleted";
 
     /**
      * id
@@ -81,34 +61,42 @@ public class BaseEntity implements Serializable {
         this.confuseId = confuseId;
     }
 
+    @Override
     public Date getCtime() {
         return ctime;
     }
 
+    @Override
     public void setCtime(Date ctime) {
         this.ctime = ctime;
     }
 
+    @Override
     public Date getUptime() {
         return uptime;
     }
 
+    @Override
     public void setUptime(Date uptime) {
         this.uptime = uptime;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public boolean isDeleted() {
         return deleted;
     }
 
+    @Override
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }

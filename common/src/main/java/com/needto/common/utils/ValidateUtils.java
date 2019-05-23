@@ -92,27 +92,34 @@ public class ValidateUtils {
      * 判断用户是否通过移动端访问
      * @return
      */
-    public static boolean isMoblie(HttpServletRequest request) {
-        String userAgent = RequestUtil.getUserAgent(request);
+    public static boolean isMoblie(String useragent) {
         for (String mobileAgent : MOBILE_AGENTS) {
-            if (userAgent.contains(mobileAgent)) {
+            if (useragent.contains(mobileAgent)) {
                 return true;
             }
         }
         //如果是平板，直接当PC处理
         for (String padAgent : PAD_AGENTS) {
-            if (userAgent.contains(padAgent)) {
+            if (useragent.contains(padAgent)) {
                 return true;
             }
         }
         return false;
     }
 
-    /**
-     * 判断用户是否通过移动端访问，为兼容isMoblie的拼写错误存在
-     */
-    public static boolean isMobile(HttpServletRequest request) {
-        return isMoblie(request);
+    public static String getDevice(String useragent){
+        for (String mobileAgent : MOBILE_AGENTS) {
+            if (useragent.contains(mobileAgent)) {
+                return "MOBILE";
+            }
+        }
+        //如果是平板，直接当PC处理
+        for (String padAgent : PAD_AGENTS) {
+            if (useragent.contains(padAgent)) {
+                return "PAD";
+            }
+        }
+        return "WEB";
     }
 
     /**
@@ -120,24 +127,22 @@ public class ValidateUtils {
      * 判断是否微信(含电脑版微信， 不含企业微信)
      * 如果需要判断是否手机微信，可通过组合isMobile来判断
      *
-     * @param request
+     * @param useragent
      * @return
      */
-    public static boolean isWeixin(HttpServletRequest request) {
-        String userAgent = RequestUtil.getUserAgent(request);
-        return userAgent.contains("micromessenger") && !userAgent.contains("wxwork");
+    public static boolean isWeixin(String useragent) {
+        return useragent.contains("micromessenger") && !useragent.contains("wxwork");
     }
 
     /**
      *
      * 判断是否企业微信,含电脑版、手机版
      * 如果需要判断是否手机微信，可通过组合isMobile来判断
-     * @param request
+     * @param useragent
      * @return
      */
-    public static boolean isQiyeWeixin(HttpServletRequest request) {
-        String userAgent = RequestUtil.getUserAgent(request);
-        return userAgent.contains("micromessenger") && userAgent.contains("wxwork");
+    public static boolean isQiyeWeixin(String useragent) {
+        return useragent.contains("micromessenger") && useragent.contains("wxwork");
     }
 
     /**

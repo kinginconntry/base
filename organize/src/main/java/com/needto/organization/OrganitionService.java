@@ -1,7 +1,7 @@
 package com.needto.organization;
 
 import com.needto.common.utils.Assert;
-import com.needto.dao.common.CommonDao;
+import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.FieldFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

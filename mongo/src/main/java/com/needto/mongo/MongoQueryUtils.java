@@ -3,7 +3,7 @@ package com.needto.mongo;
 import com.needto.common.utils.Assert;
 import com.needto.common.utils.Utils;
 import com.needto.dao.common.*;
-import com.needto.dao.models.BaseEntity;
+import com.needto.dao.inter.Id;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Sort;
@@ -28,7 +28,7 @@ public class MongoQueryUtils {
     private static final Map<String, String> INNER_FIELD_MAP = new HashMap<>();
 
     static {
-        INNER_FIELD_MAP.put(BaseEntity.ID, MongoDao.OID);
+        INNER_FIELD_MAP.put(Id.ID, MongoDao.OID);
     }
 
     public static List<ObjectId> getIds(List<String> ids) {
@@ -115,7 +115,7 @@ public class MongoQueryUtils {
         if(value == null){
             return null;
         }
-        if(BaseEntity.ID.equals(field)){
+        if(Id.ID.equals(field)){
             if(value instanceof Collection){
                 if(((Collection) value).isEmpty()){
                     return value;

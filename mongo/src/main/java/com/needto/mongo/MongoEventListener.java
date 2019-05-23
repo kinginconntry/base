@@ -1,6 +1,10 @@
 package com.needto.mongo;
 
 import com.needto.common.utils.Utils;
+import com.needto.dao.inter.ConfuseId;
+import com.needto.dao.inter.ICtime;
+import com.needto.dao.inter.IUptime;
+import com.needto.dao.inter.Id;
 import com.needto.dao.models.BaseEntity;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -68,42 +72,42 @@ public class MongoEventListener extends AbstractMongoEventListener {
             }else{
                 oid = new ObjectId();
             }
-        }else if(doc.containsKey(BaseEntity.ID)){
-            oid = MongoQueryUtils.getId(doc.get(BaseEntity.ID));
+        }else if(doc.containsKey(Id.ID)){
+            oid = MongoQueryUtils.getId(doc.get(Id.ID));
             if(oid != null){
                 oidExist = true;
             }else{
                 oid = new ObjectId();
             }
-            doc.remove(BaseEntity.ID);
+            doc.remove(Id.ID);
         }else{
             oid = new ObjectId();
         }
         doc.put(MongoDao.OID, oid);
         confuseId = Utils.confuseStr(oid.toString());
-        doc.put(BaseEntity.CONFUSE_ID, confuseId);
+        doc.put(ConfuseId.CONFUSE_ID, confuseId);
         if(!oidExist){
-            doc.putIfAbsent(BaseEntity.CTIME, now);
+            doc.putIfAbsent(ICtime.CTIME, now);
         }else{
-            ctime = (Date) doc.get(BaseEntity.CTIME);
+            ctime = (Date) doc.get(ICtime.CTIME);
         }
-        doc.put(BaseEntity.UPTIME, now);
+        doc.put(IUptime.UPTIME, now);
 
         try {
             Class sourceClass = source.getClass().getSuperclass();
-            Field idField = sourceClass.getDeclaredField(BaseEntity.ID);
+            Field idField = sourceClass.getDeclaredField(Id.ID);
             idField.setAccessible(true);
             idField.set(source, oid.toString());
 
-            Field confuseIdField = sourceClass.getDeclaredField(BaseEntity.CONFUSE_ID);
+            Field confuseIdField = sourceClass.getDeclaredField(ConfuseId.CONFUSE_ID);
             confuseIdField.setAccessible(true);
             confuseIdField.set(source, confuseId);
 
-            Field ctimeField = sourceClass.getDeclaredField(BaseEntity.CTIME);
+            Field ctimeField = sourceClass.getDeclaredField(ICtime.CTIME);
             ctimeField.setAccessible(true);
             ctimeField.set(source, ctime);
 
-            Field uptimeField = sourceClass.getDeclaredField(BaseEntity.UPTIME);
+            Field uptimeField = sourceClass.getDeclaredField(IUptime.UPTIME);
             iMongoIntercept.beforeSave((BaseEntity) source, doc);
             uptimeField.setAccessible(true);
             uptimeField.set(source, now);
@@ -121,7 +125,7 @@ public class MongoEventListener extends AbstractMongoEventListener {
     public void onAfterLoad(AfterLoadEvent event) {
         final Document source = (Document) event.getSource();
         if(source.get(MongoDao.OID) != null){
-            source.put(BaseEntity.ID, source.get(MongoDao.OID).toString());
+            source.put(Id.ID, source.get(MongoDao.OID).toString());
         }
         iMongoIntercept.afterLoad(source);
     }

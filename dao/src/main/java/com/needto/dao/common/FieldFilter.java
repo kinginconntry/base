@@ -39,6 +39,12 @@ public class FieldFilter {
         this.value = value;
     }
 
+    public FieldFilter(String field, Op op, Object value) {
+        this.field = field;
+        this.op = op != null ? op.name() : null;
+        this.value = value;
+    }
+
     public static List<FieldFilter> single(String field, String op, Object value){
         return Lists.newArrayList(new FieldFilter(field, op, value));
     }

@@ -49,6 +49,8 @@
         <module>discount</module>
         <module>mongo</module>
         <module>es</module>
+        <module>cipher</module>
+        <module>httprequest</module>
         <!--<module>asr</module>-->
     </modules>
 

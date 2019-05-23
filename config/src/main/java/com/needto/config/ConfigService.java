@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.needto.common.entity.Target;
 import com.needto.common.exception.ValidateException;
 import com.needto.common.utils.Assert;
-import com.needto.dao.common.CommonDao;
+import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.FieldFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

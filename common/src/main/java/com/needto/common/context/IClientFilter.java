@@ -88,11 +88,11 @@ public class IClientFilter extends CommonFilter {
             if(!initFlag){
                 Environment environment = this.applicationContext.getEnvironment();
                 try{
-                    this.iClientInit = this.applicationContext.getBean(IClientInit.class);
+                    this.iClientInit = (IClientInit) this.applicationContext.getBean(environment.getProperty("iclient.cache", "guavaClientCache"));
                 }catch (Exception e){
                     this.iClientInit = (target, httpServletRequest1) -> {};
                 }
-                this.iClientCache = (IClientCache) this.applicationContext.getBean(environment.getProperty("client.filter.cache", "guavaClientCache"));
+                this.iClientCache = this.applicationContext.getBean(IClientCache.class);
                 GlobalEnv.setiClientCache(iClientCache);
                 initFlag = true;
                 LOG.debug("客户端过滤器初始化，iClientCache {}，iClientInit {}", iClientCache, iClientInit);

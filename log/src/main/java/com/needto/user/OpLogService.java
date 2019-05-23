@@ -4,7 +4,7 @@ import com.needto.common.entity.Filter;
 import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
 import com.needto.common.utils.Assert;
-import com.needto.dao.common.CommonDao;
+import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.CommonQueryUtils;
 import com.needto.dao.common.PageDataResult;
 import org.slf4j.Logger;
@@ -38,10 +38,6 @@ public class OpLogService {
         Assert.validateStringEmpty(owner);
         if(query == null){
             query = new Query();
-        }
-
-        if(query.getFilters() == null){
-            query.setFilters(new ArrayList<>(1));
         }
         query.getFilters().add(new Filter("owner", owner));
         PageDataResult<OpLog> res = this.commonDao.findByPage(CommonQueryUtils.getQuery(query), OpLog.class, OpLog.TABLE);

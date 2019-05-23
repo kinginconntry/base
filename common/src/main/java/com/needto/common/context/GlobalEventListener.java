@@ -5,6 +5,7 @@ import com.needto.common.inter.IClientCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,7 @@ public class GlobalEventListener {
     private static final Logger LOG = LoggerFactory.getLogger(GlobalEventListener.class);
 
     @Autowired
-    private IClientCache iClientCache;
+    private ApplicationContext applicationContext;
 
     /**
      * 更新上下文事件
@@ -34,7 +35,7 @@ public class GlobalEventListener {
 
     @EventListener
     private void removeClientFinger(RemoveClientFingerEvent removeClientFingerEvent){
-        iClientCache.remove(removeClientFingerEvent.getClient());
+        applicationContext.getBean(IClientCache.class).remove(removeClientFingerEvent.getClient());
         LOG.debug("移除客户端指纹信息");
     }
 }

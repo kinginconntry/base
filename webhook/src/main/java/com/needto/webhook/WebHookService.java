@@ -6,10 +6,11 @@ import com.needto.common.entity.Filter;
 import com.needto.common.entity.Query;
 import com.needto.common.entity.Result;
 import com.needto.common.utils.*;
-import com.needto.dao.common.CommonDao;
+import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.CommonQueryUtils;
 import com.needto.dao.common.FieldFilter;
 import com.needto.dao.common.Op;
+import com.needto.httprequest.service.ApiRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +56,6 @@ public class WebHookService {
             query = new Query();
         }
         List<Filter> filters = query.getFilters();
-
-        if(filters == null){
-            filters = new ArrayList<>();
-        }
         filters.add(new Filter("owner", owner));
         return this.mongoDao.find(CommonQueryUtils.getQuery(query), WebHook.class, WebHook.TABLE);
     }

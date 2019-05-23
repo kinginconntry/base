@@ -2,7 +2,7 @@ package com.needto.perm.service;
 
 import com.needto.common.entity.Query;
 import com.needto.common.utils.Assert;
-import com.needto.dao.common.CommonDao;
+import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.CommonQueryUtils;
 import com.needto.dao.common.FieldFilter;
 import com.needto.perm.data.FunctionPermData;

@@ -7,7 +7,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.needto.common.utils.Assert;
 import com.needto.dao.common.*;
-import com.needto.dao.models.BaseEntity;
+import com.needto.dao.inter.*;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class MongoDao implements CommonDao {
     private static final Logger LOG = LoggerFactory.getLogger(MongoDao.class);
 
 
-    public static final transient String OID = "_id";
+    public static final String OID = "_id";
 
     /**
      * NO_UPDATE_FIELDS
@@ -52,15 +52,15 @@ public class MongoDao implements CommonDao {
 
     static {
         NO_UPDATE_FIELDS.add(MongoDao.OID);
-        NO_UPDATE_FIELDS.add(BaseEntity.CONFUSE_ID);
-        NO_UPDATE_FIELDS.add(BaseEntity.CTIME);
-        NO_UPDATE_FIELDS.add(BaseEntity.UPTIME);
+        NO_UPDATE_FIELDS.add(ConfuseId.CONFUSE_ID);
+        NO_UPDATE_FIELDS.add(ICtime.CTIME);
+        NO_UPDATE_FIELDS.add(IUptime.UPTIME);
     }
 
 
     public void updateInit(List<FieldUpdate> updates) {
         updates.removeIf(update -> NO_UPDATE_FIELDS.contains(update.getField()));
-        updates.add(new FieldUpdate(BaseEntity.UPTIME, new Date()));
+        updates.add(new FieldUpdate(IUptime.UPTIME, new Date()));
     }
 
 
@@ -145,7 +145,7 @@ public class MongoDao implements CommonDao {
     }
 
     public <T> List<T> findByConfuseIds(List<String> confuseIds, Class<T> objClass, String table) {
-        return this.mongoTemplate.find(new Query(Criteria.where(BaseEntity.CONFUSE_ID).in(confuseIds)), objClass, table);
+        return this.mongoTemplate.find(new Query(Criteria.where(ConfuseId.CONFUSE_ID).in(confuseIds)), objClass, table);
     }
 
     public <T> List<T> find(Query query, Class<T> objClass, String table) {
@@ -171,7 +171,7 @@ public class MongoDao implements CommonDao {
     }
 
     public long countByConfuseIds(List<String> confuseIds, String table) {
-        return this.mongoTemplate.count(new Query(Criteria.where(BaseEntity.CONFUSE_ID).in(confuseIds)), table);
+        return this.mongoTemplate.count(new Query(Criteria.where(ConfuseId.CONFUSE_ID).in(confuseIds)), table);
     }
 
     public long countByQuery(Query query, String table) {
@@ -261,7 +261,7 @@ public class MongoDao implements CommonDao {
      */
     @Override
     public long updateDeleted(List<FieldFilter> fieldFilters, String table) {
-        return this.update(fieldFilters, Lists.newArrayList(new FieldUpdate(BaseEntity.DELETED, true)), table);
+        return this.update(fieldFilters, Lists.newArrayList(new FieldUpdate(IDelete.DELETED, true)), table);
     }
 
     @Override
@@ -284,11 +284,11 @@ public class MongoDao implements CommonDao {
      * @return
      */
     public long updateDeletedById(String id, String table) {
-        return this.updateById(id, Lists.newArrayList(new FieldUpdate(BaseEntity.DELETED, true)), table);
+        return this.updateById(id, Lists.newArrayList(new FieldUpdate(IDelete.DELETED, true)), table);
     }
 
     public long deleteByConfuseId(String confuseId, String table) {
-        DeleteResult deleteResult = this.mongoTemplate.remove(new Query(Criteria.where(BaseEntity.CONFUSE_ID).is(confuseId)), table);
+        DeleteResult deleteResult = this.mongoTemplate.remove(new Query(Criteria.where(ConfuseId.CONFUSE_ID).is(confuseId)), table);
         return deleteResult.getDeletedCount();
     }
 
@@ -300,7 +300,7 @@ public class MongoDao implements CommonDao {
      * @return
      */
     public long updateDeletedByConfuseId(String confuseId, String table) {
-        return this.updateByConfuseId(confuseId, Lists.newArrayList(new FieldUpdate(BaseEntity.DELETED, true)), table);
+        return this.updateByConfuseId(confuseId, Lists.newArrayList(new FieldUpdate(IDelete.DELETED, true)), table);
     }
 
     @Override
@@ -316,16 +316,16 @@ public class MongoDao implements CommonDao {
     }
 
     public long updateDeletedByIds(List<String> ids, String table) {
-        return this.updateByIds(ids, Lists.newArrayList(new FieldUpdate(BaseEntity.DELETED, true)), table);
+        return this.updateByIds(ids, Lists.newArrayList(new FieldUpdate(IDelete.DELETED, true)), table);
     }
 
     public long deleteByConfuseIds(List<String> confuseIds, String table) {
-        DeleteResult deleteResult = this.mongoTemplate.remove(new Query(Criteria.where(BaseEntity.CONFUSE_ID).in(confuseIds)), table);
+        DeleteResult deleteResult = this.mongoTemplate.remove(new Query(Criteria.where(ConfuseId.CONFUSE_ID).in(confuseIds)), table);
         return deleteResult.getDeletedCount();
     }
 
     public long updateDeletedByConfuseIds(List<String> confuseIds, String table) {
-        return this.updateByConfuseIds(confuseIds, Lists.newArrayList(new FieldUpdate(BaseEntity.DELETED, true)), table);
+        return this.updateByConfuseIds(confuseIds, Lists.newArrayList(new FieldUpdate(IDelete.DELETED, true)), table);
     }
 
 
@@ -371,7 +371,7 @@ public class MongoDao implements CommonDao {
             return 0;
         }
         updateInit(updates);
-        UpdateResult updateResult = this.mongoTemplate.updateFirst(new Query(Criteria.where(BaseEntity.CONFUSE_ID).is(confuseId)), MongoQueryUtils.getUpdate(updates), table);
+        UpdateResult updateResult = this.mongoTemplate.updateFirst(new Query(Criteria.where(ConfuseId.CONFUSE_ID).is(confuseId)), MongoQueryUtils.getUpdate(updates), table);
         return updateResult.getModifiedCount();
     }
 
@@ -380,7 +380,7 @@ public class MongoDao implements CommonDao {
             return 0;
         }
         updateInit(updates);
-        UpdateResult updateResult = this.mongoTemplate.updateFirst(new Query(Criteria.where(BaseEntity.CONFUSE_ID).is(confuseId)), MongoQueryUtils.getIncUpdate(updates), table);
+        UpdateResult updateResult = this.mongoTemplate.updateFirst(new Query(Criteria.where(ConfuseId.CONFUSE_ID).is(confuseId)), MongoQueryUtils.getIncUpdate(updates), table);
         return updateResult.getModifiedCount();
     }
 
@@ -412,7 +412,7 @@ public class MongoDao implements CommonDao {
             return 0;
         }
         updateInit(updates);
-        UpdateResult updateResult = this.mongoTemplate.updateMulti(new Query(Criteria.where(BaseEntity.CONFUSE_ID).in(confuseIds)), MongoQueryUtils.getUpdate(updates), table);
+        UpdateResult updateResult = this.mongoTemplate.updateMulti(new Query(Criteria.where(ConfuseId.CONFUSE_ID).in(confuseIds)), MongoQueryUtils.getUpdate(updates), table);
         return updateResult.getModifiedCount();
     }
 
@@ -421,7 +421,7 @@ public class MongoDao implements CommonDao {
             return 0;
         }
         updateInit(updates);
-        UpdateResult updateResult = this.mongoTemplate.updateMulti(new Query(Criteria.where(BaseEntity.CONFUSE_ID).in(confuseIds)), MongoQueryUtils.getIncUpdate(updates), table);
+        UpdateResult updateResult = this.mongoTemplate.updateMulti(new Query(Criteria.where(ConfuseId.CONFUSE_ID).in(confuseIds)), MongoQueryUtils.getIncUpdate(updates), table);
         return updateResult.getModifiedCount();
     }
 

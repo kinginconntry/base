@@ -52,7 +52,6 @@ public class GuavaClientCache implements IClientCache {
      */
     private static final Dict DEFAULT_NO_AUTH_CACHE = new Dict();
 
-
     @PostConstruct
     public void init(){
         // 默认30天，43200分钟
@@ -74,6 +73,8 @@ public class GuavaClientCache implements IClientCache {
         noAuthCreate = Boolean.valueOf(environment.getProperty("client.noauth.create", "true"));
         LOG.debug("客户端缓存容器初始化，client.expire.token {}，client.max.token {}，client.expire.web {}，client.max.web {}", tokenExpire, tokenMax, webExpire, webMax);
     }
+
+
 
     /**
      * 设置客户端指纹

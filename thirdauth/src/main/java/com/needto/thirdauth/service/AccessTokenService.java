@@ -1,7 +1,7 @@
 package com.needto.thirdauth.service;
 
 import com.google.common.collect.Lists;
-import com.needto.dao.common.CommonDao;
+import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.FieldFilter;
 import com.needto.thirdauth.model.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;

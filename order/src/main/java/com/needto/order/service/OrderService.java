@@ -7,7 +7,7 @@ import com.needto.common.entity.Query;
 import com.needto.common.entity.Target;
 import com.needto.common.exception.BaseException;
 import com.needto.common.utils.Assert;
-import com.needto.dao.common.CommonDao;
+import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.CommonQueryUtils;
 import com.needto.dao.common.FieldFilter;
 import com.needto.dao.common.PageDataResult;
@@ -135,9 +135,6 @@ public class OrderService {
             query = new Query();
         }
         List<Filter> fieldFilters = query.getFilters();
-        if(fieldFilters == null){
-            fieldFilters = new ArrayList<>(2);
-        }
         fieldFilters.add(new Filter("belongTo.type", belongTo.getType()));
         fieldFilters.add(new Filter("belongTo.guid", belongTo.getGuid()));
         query.setFilters(fieldFilters);
