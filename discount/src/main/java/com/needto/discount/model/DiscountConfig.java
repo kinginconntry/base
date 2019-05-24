@@ -1,6 +1,5 @@
 package com.needto.discount.model;
 
-import com.needto.common.entity.Dict;
 import com.needto.common.entity.Target;
 import com.needto.dao.models.TargetEntity;
 

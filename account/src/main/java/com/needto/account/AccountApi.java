@@ -3,7 +3,7 @@ package com.needto.account;
 import com.needto.account.model.Account;
 import com.needto.account.service.AccountService;
 import com.needto.common.context.GlobalEnv;
-import com.needto.common.entity.Result;
+import com.needto.tool.entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

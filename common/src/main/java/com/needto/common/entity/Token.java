@@ -1,6 +1,6 @@
 package com.needto.common.entity;
 
-import com.needto.common.utils.Utils;
+import com.needto.tool.utils.Utils;
 
 import java.util.Date;
 import java.util.HashSet;

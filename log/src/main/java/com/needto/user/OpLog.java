@@ -1,6 +1,5 @@
 package com.needto.user;
 
-import com.needto.common.entity.Dict;
 import com.needto.common.entity.Target;
 import com.needto.dao.models.UserEntity;
 

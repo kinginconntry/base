@@ -1,7 +1,6 @@
 package com.needto.dao.models;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.needto.common.inter.IInit;
 import com.needto.dao.inter.ICtime;
 import com.needto.dao.inter.IDelete;
 import com.needto.dao.inter.IUptime;

@@ -5,7 +5,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import com.needto.common.utils.Assert;
 import com.needto.dao.common.*;
 import com.needto.dao.inter.*;
 import org.bson.Document;

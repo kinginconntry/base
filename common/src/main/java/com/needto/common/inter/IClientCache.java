@@ -1,10 +1,10 @@
 package com.needto.common.inter;
 
 import com.needto.common.data.Constant;
-import com.needto.common.entity.Dict;
 import com.needto.common.entity.Target;
-import com.needto.common.utils.Assert;
 import com.needto.common.utils.RequestUtil;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.utils.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 

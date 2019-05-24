@@ -1,8 +1,6 @@
 package com.needto.quartz.controller;
 
-import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
-import com.needto.common.entity.Result;
 import com.needto.quartz.entity.*;
 import com.needto.quartz.model.QuartzCalendar;
 import com.needto.quartz.model.QuartzJob;

@@ -1,9 +1,6 @@
 package com.needto.group;
 
 import com.google.common.collect.Lists;
-import com.needto.common.entity.TreeData;
-import com.needto.common.utils.Assert;
-import com.needto.common.utils.TreeUtils;
 import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.FieldFilter;
 import com.needto.dao.common.Op;

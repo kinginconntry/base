@@ -1,6 +1,5 @@
 package com.needto.firewall.list;
 
-import com.needto.common.entity.Result;
 import com.needto.common.entity.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

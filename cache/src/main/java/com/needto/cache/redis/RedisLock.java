@@ -1,8 +1,8 @@
 package com.needto.cache.redis;
 
-import com.needto.common.inter.ILock;
-import com.needto.common.exception.LogicException;
-import com.needto.common.utils.Assert;
+import com.needto.tool.exception.LogicException;
+import com.needto.tool.inter.ILock;
+import com.needto.tool.utils.Assert;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.concurrent.TimeUnit;

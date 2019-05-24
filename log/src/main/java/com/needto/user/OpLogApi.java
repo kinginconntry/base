@@ -1,9 +1,7 @@
 package com.needto.user;
 
 import com.needto.common.context.GlobalEnv;
-import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
-import com.needto.common.entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

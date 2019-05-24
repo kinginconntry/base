@@ -1,6 +1,5 @@
 package com.needto.client;
 
-import com.needto.common.entity.Result;
 import com.needto.common.filter.CommonFilter;
 import com.needto.common.utils.ResponseUtil;
 import com.needto.data.Constant;

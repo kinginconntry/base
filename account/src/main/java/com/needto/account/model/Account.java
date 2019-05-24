@@ -3,8 +3,8 @@ package com.needto.account.model;
 
 import com.needto.account.entity.AccountResource;
 import com.needto.account.entity.AccoutFeature;
-import com.needto.common.entity.Dict;
 import com.needto.dao.models.BaseEntity;
+import com.needto.tool.entity.Dict;
 
 import java.util.List;
 import java.util.Map;

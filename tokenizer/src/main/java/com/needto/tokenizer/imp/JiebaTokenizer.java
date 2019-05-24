@@ -2,8 +2,6 @@ package com.needto.tokenizer.imp;
 
 import com.huaban.analysis.jieba.JiebaSegmenter;
 import com.huaban.analysis.jieba.SegToken;
-import com.needto.common.entity.Dict;
-import com.needto.common.utils.Assert;
 import com.needto.tokenizer.data.ITokenizer;
 import com.needto.tokenizer.data.Type;
 import org.springframework.stereotype.Component;

@@ -1,11 +1,10 @@
 package com.needto.common.webconfig;
 
 import com.needto.common.context.GlobalEnv;
-import com.needto.common.entity.Result;
-import com.needto.common.exception.BaseException;
-import com.needto.common.exception.LogicException;
-import com.needto.common.utils.RequestUtil;
-import com.needto.common.utils.ValidateUtils;
+import com.needto.tool.entity.Result;
+import com.needto.tool.exception.BaseException;
+import com.needto.tool.exception.LogicException;
+import com.needto.tool.utils.ValidateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;

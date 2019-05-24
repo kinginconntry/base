@@ -1,9 +1,6 @@
 package com.needto.user;
 
-import com.needto.common.entity.Filter;
-import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
-import com.needto.common.utils.Assert;
 import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.CommonQueryUtils;
 import com.needto.dao.common.PageDataResult;
@@ -12,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

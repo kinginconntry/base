@@ -2,7 +2,6 @@ package com.needto.firewall.api;
 
 import com.needto.cache.frequency.FrequencyService;
 import com.needto.common.context.GlobalEnv;
-import com.needto.common.entity.Result;
 import com.needto.common.entity.Target;
 import com.needto.common.utils.RequestUtil;
 import com.needto.common.utils.ResponseUtil;

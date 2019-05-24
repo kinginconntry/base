@@ -1,6 +1,5 @@
 package com.needto.mq.redis;
 
-import com.needto.common.utils.Assert;
 import com.needto.mq.IMessage;
 import com.needto.mq.IReceiver;
 import org.slf4j.Logger;

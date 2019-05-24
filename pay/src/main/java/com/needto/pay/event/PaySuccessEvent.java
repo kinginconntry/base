@@ -1,6 +1,5 @@
 package com.needto.pay.event;
 
-import com.needto.common.entity.Dict;
 import com.needto.pay.entity.CallbackData;
 import org.springframework.context.ApplicationEvent;
 

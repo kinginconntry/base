@@ -1,6 +1,5 @@
 package com.needto.order.model;
 
-import com.needto.common.entity.Dict;
 import com.needto.dao.models.TargetEntity;
 import com.needto.order.data.Product;
 

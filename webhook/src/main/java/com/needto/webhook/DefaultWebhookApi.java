@@ -2,7 +2,6 @@ package com.needto.webhook;
 
 import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Query;
-import com.needto.common.entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;

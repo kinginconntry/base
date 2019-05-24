@@ -1,5 +1,8 @@
 package com.needto.common.entity;
 
+import com.needto.tool.entity.Dict;
+import com.needto.tool.entity.Filter;
+
 import java.util.ArrayList;
 import java.util.List;
 

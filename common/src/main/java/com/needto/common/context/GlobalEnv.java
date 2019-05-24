@@ -1,10 +1,10 @@
 package com.needto.common.context;
 
 import com.needto.common.data.Constant;
-import com.needto.common.entity.Dict;
 import com.needto.common.entity.Target;
 import com.needto.common.inter.IClientCache;
-import com.needto.common.utils.Assert;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.utils.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;

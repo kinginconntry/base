@@ -1,8 +1,6 @@
 package com.needto.quartz.entity;
 
-import com.needto.common.entity.Dict;
 import com.needto.common.exception.LogicException;
-import com.needto.common.utils.Assert;
 import org.quartz.CronExpression;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;

@@ -1,8 +1,6 @@
 package com.needto.perm;
 
 import com.needto.common.context.GlobalEnv;
-import com.needto.common.entity.Dict;
-import com.needto.common.entity.Result;
 import com.needto.common.utils.ResponseUtil;
 import com.needto.perm.data.Constant;
 import com.needto.perm.data.PermAuth;

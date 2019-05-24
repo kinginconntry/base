@@ -1,6 +1,5 @@
 package com.needto.quartz.deal;
 
-import com.needto.common.inter.Thing;
 import com.needto.quartz.entity.TaskData;
 
 /**

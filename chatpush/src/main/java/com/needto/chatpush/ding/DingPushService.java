@@ -1,8 +1,8 @@
 package com.needto.chatpush.ding;
 
-import com.needto.common.entity.Dict;
-import com.needto.common.inter.IValidate;
 import com.needto.httprequest.service.ApiRequest;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.inter.IValidate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -27,7 +27,7 @@ public class DingPushService {
             return false;
         }
         try {
-            ApiRequest.request(rebotUrl, HttpMethod.POST, dingMsg, Dict.class);
+            .request(rebotUrl, HttpMethod.POST, dingMsg, Dict.class);
             LOG.debug("钉钉推送消息，实体 {}", dingMsg.toString());
             return true;
         } catch (Exception e) {

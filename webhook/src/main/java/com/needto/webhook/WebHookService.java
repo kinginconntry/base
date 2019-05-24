@@ -2,9 +2,7 @@ package com.needto.webhook;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import com.needto.common.entity.Filter;
 import com.needto.common.entity.Query;
-import com.needto.common.entity.Result;
 import com.needto.common.utils.*;
 import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.CommonQueryUtils;

@@ -1,7 +1,6 @@
 package com.needto.quartz.entity;
 
 import com.needto.common.context.GlobalEnv;
-import com.needto.common.entity.Dict;
 import com.needto.quartz.data.Constants;
 import org.quartz.*;
 

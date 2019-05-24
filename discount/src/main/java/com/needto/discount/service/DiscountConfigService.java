@@ -1,6 +1,5 @@
 package com.needto.discount.service;
 
-import com.needto.common.entity.Filter;
 import com.needto.common.entity.Target;
 import com.needto.dao.inter.CommonDao;
 import com.needto.discount.model.DiscountConfig;

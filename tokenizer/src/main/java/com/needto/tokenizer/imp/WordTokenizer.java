@@ -1,7 +1,5 @@
 package com.needto.tokenizer.imp;
 
-import com.needto.common.entity.Dict;
-import com.needto.common.utils.Assert;
 import com.needto.tokenizer.data.ITokenizer;
 import com.needto.tokenizer.data.Type;
 import org.apdplat.word.WordSegmenter;

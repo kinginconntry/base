@@ -2,7 +2,7 @@ package com.needto.cache.serialnum;
 
 import com.needto.cache.entity.CacheData;
 import com.needto.cache.redis.RedisCache;
-import com.needto.common.utils.Assert;
+import com.needto.tool.utils.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

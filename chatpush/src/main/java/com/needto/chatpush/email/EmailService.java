@@ -8,7 +8,6 @@ import com.needto.chatpush.email.event.EmailAfterSendSuccessEvent;
 import com.needto.chatpush.email.util.EmailUtil;
 import com.needto.common.exception.BaseException;
 import com.needto.common.exception.LogicException;
-import com.needto.common.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;

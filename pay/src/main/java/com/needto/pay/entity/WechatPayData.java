@@ -1,8 +1,6 @@
 package com.needto.pay.entity;
 
 
-import com.needto.common.entity.Dict;
-
 /**
  * @author Administrator
  */

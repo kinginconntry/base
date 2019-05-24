@@ -1,6 +1,6 @@
 package com.needto.chatpush;
 
-import com.needto.common.inter.Thing;
+import com.needto.tool.inter.Thing;
 
 /**
  * @author Administrator

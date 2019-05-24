@@ -1,7 +1,5 @@
 package com.needto.pay.service;
 
-import com.needto.common.entity.Dict;
-import com.needto.common.inter.Thing;
 import com.needto.pay.entity.IPayData;
 
 /**

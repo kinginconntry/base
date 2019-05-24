@@ -2,7 +2,6 @@ package com.needto.chatpush.email.entity;
 
 
 import com.needto.common.exception.LogicException;
-import com.needto.common.utils.Assert;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;

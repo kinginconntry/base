@@ -1,10 +1,6 @@
 package com.needto.quartz.entity;
 
 
-import com.needto.common.entity.Dict;
-
-import java.util.List;
-
 /**
  * @author Administrator
  */

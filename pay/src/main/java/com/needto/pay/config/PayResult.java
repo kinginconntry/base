@@ -1,7 +1,5 @@
 package com.needto.pay.config;
 
-import com.needto.common.entity.Dict;
-
 public class PayResult extends Dict {
     public String info;
 

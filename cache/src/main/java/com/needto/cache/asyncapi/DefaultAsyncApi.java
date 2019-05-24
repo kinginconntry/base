@@ -1,6 +1,6 @@
 package com.needto.cache.asyncapi;
 
-import com.needto.common.entity.Result;
+import com.needto.tool.entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -1,7 +1,5 @@
 package com.needto.quartz.model;
 
-import com.needto.common.entity.Dict;
-
 /**
  * @author Administrator
  * quartz任务

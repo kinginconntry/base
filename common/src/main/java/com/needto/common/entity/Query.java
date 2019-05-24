@@ -1,6 +1,8 @@
 package com.needto.common.entity;
 
 
+import com.needto.tool.entity.Order;
+
 import java.util.List;
 
 /**

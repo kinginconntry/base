@@ -1,7 +1,6 @@
 package com.needto.config;
 
 import com.needto.common.entity.Target;
-import com.needto.common.inter.IOrder;
 import com.needto.dao.models.UserEntity;
 
 /**

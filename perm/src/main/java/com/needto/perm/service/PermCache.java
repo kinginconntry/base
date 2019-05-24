@@ -5,7 +5,6 @@ import com.needto.cache.entity.CacheData;
 import com.needto.cache.entity.CacheWrap;
 import com.needto.cache.redis.RedisCache;
 import com.needto.common.entity.Target;
-import com.needto.common.utils.Assert;
 import com.needto.perm.data.PermData;
 import com.needto.perm.event.DataPermChangeEvent;
 import com.needto.perm.event.RoleDataChangeEvent;

@@ -1,12 +1,12 @@
 package com.needto.common.entity;
 
-import com.needto.common.utils.Utils;
+import com.needto.tool.entity.BaseTarget;
 
 /**
  * @author Administrator
  * 数据归属
  */
-public class Target {
+public class Target extends BaseTarget {
 
     /**
      * 应用所属平台
@@ -41,18 +41,12 @@ public class Target {
         }
     }
 
-    /**
-     * 归属类型
-     * @see Type
-     */
-    public String type;
+    public Target(){
+        super();
+    }
 
-    /**
-     * 归属目标id
-     */
-    public String guid;
-
-    public Target() {
+    public Target(String type, String name){
+        super(type, name);
     }
 
     /**
@@ -120,32 +114,4 @@ public class Target {
         return isPf(target) || isApp(target);
     }
 
-    public Target(String type, String guid) {
-        this.type = type;
-        this.guid = guid;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
-
-    /**
-     * 获取该对象的组合唯一id
-     * @return
-     */
-    public String getTargetId(){
-        return Utils.nullToString(this.type) + ":" + Utils.nullToString(this.guid);
-    }
 }

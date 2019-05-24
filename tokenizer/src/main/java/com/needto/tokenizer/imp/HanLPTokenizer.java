@@ -7,8 +7,6 @@ import com.hankcs.hanlp.tokenizer.IndexTokenizer;
 import com.hankcs.hanlp.tokenizer.NLPTokenizer;
 import com.hankcs.hanlp.tokenizer.SpeedTokenizer;
 import com.hankcs.hanlp.tokenizer.StandardTokenizer;
-import com.needto.common.entity.Dict;
-import com.needto.common.utils.Assert;
 import com.needto.tokenizer.data.ITokenizer;
 import com.needto.tokenizer.data.Type;
 import org.springframework.stereotype.Component;

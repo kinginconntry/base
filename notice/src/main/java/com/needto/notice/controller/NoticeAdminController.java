@@ -1,8 +1,6 @@
 package com.needto.notice.controller;
 
-import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
-import com.needto.common.entity.Result;
 import com.needto.notice.model.Notice;
 import com.needto.notice.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;

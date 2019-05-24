@@ -2,10 +2,7 @@ package com.needto.commonoss.aliyunoss;
 
 import com.needto.cache.frequency.FrequencyService;
 import com.needto.common.context.GlobalEnv;
-import com.needto.common.entity.Dict;
-import com.needto.common.entity.Result;
 import com.needto.common.entity.Target;
-import com.needto.common.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;

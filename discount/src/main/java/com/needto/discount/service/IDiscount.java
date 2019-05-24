@@ -1,7 +1,5 @@
 package com.needto.discount.service;
 
-import com.needto.common.inter.Thing;
-
 import java.math.BigDecimal;
 
 /**

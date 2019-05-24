@@ -1,6 +1,5 @@
 package com.needto.thirdauth.controller;
 
-import com.needto.common.entity.Dict;
 import com.needto.thirdauth.data.ThirdEvent;
 import com.needto.thirdauth.service.ThirdService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package com.needto.tokenizer.util;
 
-import com.needto.common.utils.Utils;
 import org.aspectj.util.FileUtil;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StringUtils;

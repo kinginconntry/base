@@ -3,7 +3,6 @@ package com.needto.perm;
 import com.alibaba.fastjson.JSON;
 import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Query;
-import com.needto.common.entity.Result;
 import com.needto.perm.data.FunctionPermData;
 import com.needto.perm.model.FunctionPerm;
 import com.needto.perm.model.Role;

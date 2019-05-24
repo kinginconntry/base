@@ -1,7 +1,5 @@
 package com.needto.quartz.service;
 
-import com.needto.common.entity.Dict;
-import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
 import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.CommonQueryUtils;

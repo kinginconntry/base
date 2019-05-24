@@ -1,7 +1,5 @@
 package com.needto.quartz.model;
 
-import com.needto.common.entity.Dict;
-
 public class QuartzSimpleTrigger extends QuartzTrigger {
     public int repeatCount;
     public int repatInterval;

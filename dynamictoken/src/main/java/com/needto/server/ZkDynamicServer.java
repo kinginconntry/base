@@ -1,6 +1,6 @@
 package com.needto.server;
 
-import com.needto.common.utils.Utils;
+import com.google.common.util.concurrent.AbstractScheduledService;
 import com.needto.zk.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+import java.util.concurrent.TimeUnit;
+
+import static com.google.common.util.concurrent.AbstractScheduledService.Scheduler.newFixedDelaySchedule;
 import static java.lang.Thread.sleep;
 
 /**
@@ -35,16 +38,29 @@ public class ZkDynamicServer implements IDynamicServer {
         Boolean startTask = Boolean.valueOf(environment.getProperty("dynamic.start", "false"));
         this.updateSign();
         if(startTask){
-            ((Runnable) () -> {
-                while (true) {
-                    try {
-                        sleep(sleepMs);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            new AbstractScheduledService(){
+                @Override
+                protected void runOneIteration() {
                     updateSign();
                 }
-            }).run();
+
+                @Override
+                protected Scheduler scheduler() {
+                    return newFixedDelaySchedule(sleepMs, sleepMs, TimeUnit.MILLISECONDS);
+                }
+
+                @Override
+                protected void startUp() throws Exception {
+                    super.startUp();
+                    LOG.debug("DynamicTask start ..........");
+                }
+
+                @Override
+                protected void shutDown() throws Exception {
+                    super.shutDown();
+                    LOG.debug("DynamicTask start ..........");
+                }
+            };
         }
     }
 

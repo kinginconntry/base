@@ -1,8 +1,7 @@
 package com.needto.chatpush.ding;
 
 
-import com.needto.common.inter.IValidate;
-
+import com.needto.tool.inter.IValidate;
 
 /**
  * @author Administrator

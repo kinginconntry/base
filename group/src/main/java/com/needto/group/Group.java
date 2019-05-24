@@ -1,7 +1,5 @@
 package com.needto.group;
 
-import com.needto.common.entity.Dict;
-import com.needto.common.inter.Itree;
 import com.needto.dao.models.UserEntity;
 
 /**

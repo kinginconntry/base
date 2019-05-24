@@ -3,8 +3,11 @@ package com.needto.common.utils;
 import com.needto.common.entity.ClientType;
 import com.needto.common.data.Constant;
 import com.needto.common.entity.Target;
-import com.needto.common.exception.ValidateException;
-import org.apache.catalina.connector.RequestFacade;
+import com.needto.tool.exception.ValidateException;
+import com.needto.tool.utils.Assert;
+import com.needto.tool.utils.SignUtils;
+import com.needto.tool.utils.Utils;
+import com.needto.tool.utils.ValidateUtils;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletRequest;

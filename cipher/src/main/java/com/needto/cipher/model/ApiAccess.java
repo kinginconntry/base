@@ -1,10 +1,7 @@
 package com.needto.cipher.model;
 
 
-import com.needto.common.entity.Dict;
 import com.needto.common.entity.Target;
-import com.needto.common.utils.Assert;
-import com.needto.common.utils.CryptoUtil;
 import com.needto.dao.models.UserEntity;
 import org.springframework.util.StringUtils;
 

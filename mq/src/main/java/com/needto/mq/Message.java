@@ -1,7 +1,6 @@
 package com.needto.mq;
 
 import com.needto.common.context.GlobalEnv;
-import com.needto.common.entity.Dict;
 
 /**
  * @author Administrator

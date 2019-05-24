@@ -1,7 +1,7 @@
 package com.needto.common.service;
 
-import com.needto.common.inter.Thing;
-import com.needto.common.utils.Assert;
+import com.needto.tool.inter.Thing;
+import com.needto.tool.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;

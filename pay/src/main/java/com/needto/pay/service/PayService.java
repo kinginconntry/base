@@ -1,20 +1,11 @@
 package com.needto.pay.service;
 
-import com.needto.common.entity.Dict;
 import com.needto.common.exception.BaseException;
 import com.needto.common.service.ThingContainerService;
-import com.needto.common.utils.Assert;
 import com.needto.pay.entity.IPayData;
 import com.needto.pay.event.PayPrepareAfterEvent;
 import com.needto.pay.event.PayPrepareBeforeEvent;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Administrator

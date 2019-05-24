@@ -1,8 +1,7 @@
 package com.needto.chatpush.email.config;
 
-import com.needto.common.utils.Assert;
 import com.needto.common.utils.Env;
-import com.needto.common.utils.Utils;
+import com.needto.tool.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.Environment;
