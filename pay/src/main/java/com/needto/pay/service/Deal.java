@@ -1,6 +1,8 @@
 package com.needto.pay.service;
 
 import com.needto.pay.entity.IPayData;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.inter.Thing;
 
 /**
  * @author Administrator

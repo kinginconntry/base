@@ -1,6 +1,7 @@
 package com.needto.quartz.deal;
 
 import com.needto.quartz.entity.TaskData;
+import com.needto.tool.inter.Thing;
 
 /**
  * @author Administrator

@@ -3,22 +3,26 @@ package com.needto.webhook;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.needto.common.entity.Query;
-import com.needto.common.utils.*;
 import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.CommonQueryUtils;
 import com.needto.dao.common.FieldFilter;
 import com.needto.dao.common.Op;
-import com.needto.httprequest.service.ApiRequest;
+import com.needto.http.entity.HttpHeader;
+import com.needto.http.utils.ApiRequest;
+import com.needto.tool.entity.Filter;
+import com.needto.tool.entity.Result;
+import com.needto.tool.utils.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -130,23 +134,27 @@ public class WebHookService {
             url = SignUtils.signUrl(url, webHook.getSignKey());
         }
         Map<String, String> headers = webHook.getHeaders();
-        HttpHeaders httpHeaders = null;
+        HttpHeader httpHeaders = null;
         if(!CollectionUtils.isEmpty(headers)){
-            httpHeaders = new HttpHeaders();
+            httpHeaders = new HttpHeader();
             for(Map.Entry<String, String> entry : headers.entrySet()){
-                httpHeaders.set(entry.getKey(), entry.getValue());
+                httpHeaders.setHeader(entry.getKey(), entry.getValue());
             }
         }
-        ResponseEntity<Object> res = ApiRequest.request(url, HttpMethod.POST, jsonStr, httpHeaders, Object.class);
-        int status = res.getStatusCode().value();
+        String finalUrl = url;
+        String finalJsonStr = jsonStr;
+        ApiRequest.post(url, null, jsonStr, httpHeaders, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                LOG.debug("发送webhook数据：url {}, data {}, headers {}，发送失败！", finalUrl, finalJsonStr, headers.toString());
+            }
 
-        if(status >= 200 && status < 300){
-            LOG.debug("发送webhook数据：url {}, data {}, headers {}, 返回状态码 {}", url, jsonStr, headers.toString(), status);
-            return true;
-        }else{
-            LOG.error("发送webhook数据：url {}, data {}, headers {}, 返回状态码 {}，发送失败！", url, jsonStr, headers.toString(), status);
-            return false;
-        }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                LOG.error("发送webhook数据：url {}, data {}, headers {}", finalUrl, finalJsonStr, headers.toString());
+            }
+        });
+        return true;
     }
 
     private boolean sendData(WebHook webHook, Object data, int retry){

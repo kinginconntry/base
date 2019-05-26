@@ -7,6 +7,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.needto.dao.common.*;
 import com.needto.dao.inter.*;
+import com.needto.tool.utils.Assert;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;

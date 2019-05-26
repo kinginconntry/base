@@ -1,7 +1,9 @@
 package com.needto.keyvalue;
 
-import com.needto.common.context.GlobalEnv;
-import com.needto.common.utils.RequestUtil;
+import com.needto.tool.entity.Result;
+import com.needto.tool.utils.Utils;
+import com.needto.web.context.WebEnv;
+import com.needto.web.utils.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,7 +61,7 @@ public class KeyValueApi {
             group = "sys";
         }
 
-        return Result.forSuccess(keyValueContainer.getKeyValues(group, GlobalEnv.getClient(request), Utils.getList(sources)));
+        return Result.forSuccess(keyValueContainer.getKeyValues(group, WebEnv.getClient(request), Utils.getList(sources)));
     }
 
 

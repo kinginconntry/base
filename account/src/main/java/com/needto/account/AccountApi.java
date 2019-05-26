@@ -2,8 +2,8 @@ package com.needto.account;
 
 import com.needto.account.model.Account;
 import com.needto.account.service.AccountService;
-import com.needto.common.context.GlobalEnv;
 import com.needto.tool.entity.Result;
+import com.needto.web.context.WebEnv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,7 +26,7 @@ public class AccountApi {
     @PostMapping(value = {"/app/account/find", "/sys/account/find", "/admin/account/find"})
     @ResponseBody
     public Result<Account> findAccount(){
-        return Result.forSuccess(accountService.find(GlobalEnv.getOwner()));
+        return Result.forSuccess(accountService.find(WebEnv.getOwner()));
     }
 
 }

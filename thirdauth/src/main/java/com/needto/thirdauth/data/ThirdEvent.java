@@ -1,5 +1,7 @@
 package com.needto.thirdauth.data;
 
+import com.needto.tool.entity.Dict;
+
 /**
  * @author Administrator
  * 第三方事件

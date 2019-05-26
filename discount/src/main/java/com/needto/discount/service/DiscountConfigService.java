@@ -3,6 +3,7 @@ package com.needto.discount.service;
 import com.needto.common.entity.Target;
 import com.needto.dao.inter.CommonDao;
 import com.needto.discount.model.DiscountConfig;
+import com.needto.tool.entity.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

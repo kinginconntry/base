@@ -7,6 +7,7 @@ import com.needto.common.entity.Target;
 import com.needto.notice.data.Constant;
 import com.needto.notice.event.NoticeChangeEvent;
 import com.needto.notice.model.Notice;
+import com.needto.tool.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;

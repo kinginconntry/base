@@ -2,6 +2,7 @@ package com.needto.user;
 
 import com.needto.common.entity.Target;
 import com.needto.dao.models.UserEntity;
+import com.needto.tool.entity.Dict;
 
 /**
  * @author Administrator

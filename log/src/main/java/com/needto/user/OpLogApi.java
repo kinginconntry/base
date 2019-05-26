@@ -1,7 +1,9 @@
 package com.needto.user;
 
-import com.needto.common.context.GlobalEnv;
+import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
+import com.needto.tool.entity.Result;
+import com.needto.web.context.WebEnv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +30,7 @@ public class OpLogApi {
     @PostMapping(value = {"/app/oplog/page"})
     @ResponseBody
     public PageResult<List<OpLog>> page(@RequestBody Query query){
-        return opLogService.findByPage(query, GlobalEnv.getOwner());
+        return opLogService.findByPage(query, WebEnv.getOwner());
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.needto.webhook;
 
 import com.needto.dao.models.BaseEntity;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.utils.CryptoUtil;
 import org.springframework.util.StringUtils;
 
 /**

@@ -1,6 +1,8 @@
 package com.needto.commonoss.aliyunoss;
 
 
+import com.needto.tool.entity.Dict;
+
 /**
  * @author Administrator
  * 阿里云oss参数

@@ -2,6 +2,7 @@ package com.needto.config;
 
 import com.needto.common.entity.Target;
 import com.needto.dao.models.UserEntity;
+import com.needto.tool.inter.IOrder;
 
 /**
  * @author Administrator

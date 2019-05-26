@@ -1,7 +1,8 @@
 package com.needto.webhook;
 
-import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Query;
+import com.needto.tool.entity.Result;
+import com.needto.web.context.WebEnv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class DefaultWebhookApi {
     @PostMapping(value = {"/app/webhook/find", "/sys/webhook/find", "/admin/webhook/find"})
     @ResponseBody
     public Result<List<WebHook>> find(@RequestBody Query query){
-        return Result.forSuccess(webHookService.find(query, GlobalEnv.getOwner()));
+        return Result.forSuccess(webHookService.find(query, WebEnv.getOwner()));
     }
 
     /**
@@ -43,7 +44,7 @@ public class DefaultWebhookApi {
         if(CollectionUtils.isEmpty(ids)){
             return Result.forError("NO_ID", "");
         }
-        return Result.forSuccess(webHookService.removeByIds(ids, GlobalEnv.getOwner()));
+        return Result.forSuccess(webHookService.removeByIds(ids, WebEnv.getOwner()));
     }
 
     /**
@@ -57,7 +58,7 @@ public class DefaultWebhookApi {
         if(webHook == null){
             return Result.forError("NO_DATA", "");
         }
-        webHook.setOwner(GlobalEnv.getOwner());
+        webHook.setOwner(WebEnv.getOwner());
         return Result.forSuccess(webHookService.save(webHook));
     }
 }

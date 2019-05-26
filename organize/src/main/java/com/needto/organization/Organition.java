@@ -1,6 +1,7 @@
 package com.needto.organization;
 
 import com.needto.dao.models.UserEntity;
+import com.needto.tool.entity.Link;
 
 import java.util.Map;
 

@@ -2,6 +2,8 @@ package com.needto.tokenizer.imp;
 
 import com.needto.tokenizer.data.ITokenizer;
 import com.needto.tokenizer.data.Type;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.utils.Assert;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.*;
 import org.springframework.stereotype.Component;

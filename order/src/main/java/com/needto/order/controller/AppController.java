@@ -1,11 +1,13 @@
 package com.needto.order.controller;
 
-import com.needto.common.context.GlobalEnv;
+import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
 import com.needto.order.data.OrderData;
 import com.needto.order.data.OrderStatus;
 import com.needto.order.model.Order;
 import com.needto.order.service.OrderService;
+import com.needto.tool.entity.Result;
+import com.needto.web.context.WebEnv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,8 +34,8 @@ public class AppController {
     @ResponseBody
     public Result<OrderData> buy(HttpServletRequest request, @RequestBody Order order){
         // 保存订单
-        order.setOwner(GlobalEnv.getOwner());
-        return Result.forSuccessIfNotNull(OrderData.get(orderService.create(order, GlobalEnv.getClient(request))));
+        order.setOwner(WebEnv.getOwner());
+        return Result.forSuccessIfNotNull(OrderData.get(orderService.create(order, WebEnv.getClient(request))));
     }
 
     /**
@@ -44,7 +46,7 @@ public class AppController {
     @RequestMapping("/app/order/find/{id}")
     @ResponseBody
     public Result<OrderData> findOne(@PathVariable String id){
-        return Result.forSuccessIfNotNull(OrderData.get(orderService.findById(id, GlobalEnv.getOwnerTarget())));
+        return Result.forSuccessIfNotNull(OrderData.get(orderService.findById(id, WebEnv.getOwnerTarget())));
     }
 
     /**
@@ -54,7 +56,7 @@ public class AppController {
     @RequestMapping("/app/order/page")
     @ResponseBody
     public PageResult<List<Order>> findByPage(@RequestBody Query query){
-        return orderService.findByPage(query, GlobalEnv.getOwnerTarget());
+        return orderService.findByPage(query, WebEnv.getOwnerTarget());
     }
 
     /**

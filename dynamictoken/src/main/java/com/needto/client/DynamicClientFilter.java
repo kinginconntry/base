@@ -1,8 +1,9 @@
 package com.needto.client;
 
-import com.needto.common.filter.CommonFilter;
-import com.needto.common.utils.ResponseUtil;
 import com.needto.data.Constant;
+import com.needto.tool.entity.Result;
+import com.needto.web.filter.CommonFilter;
+import com.needto.web.utils.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;

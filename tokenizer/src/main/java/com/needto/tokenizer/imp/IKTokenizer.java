@@ -4,6 +4,8 @@ import com.needto.tokenizer.data.ITokenizer;
 import com.needto.tokenizer.data.Type;
 import com.needto.tokenizer.entity.IkConfig;
 import com.needto.tokenizer.util.TokenizerUtils;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;

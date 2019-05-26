@@ -4,6 +4,8 @@ import com.huaban.analysis.jieba.JiebaSegmenter;
 import com.huaban.analysis.jieba.SegToken;
 import com.needto.tokenizer.data.ITokenizer;
 import com.needto.tokenizer.data.Type;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.utils.Assert;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

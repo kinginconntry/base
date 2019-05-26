@@ -2,6 +2,7 @@ package com.needto.order.model;
 
 import com.needto.dao.models.TargetEntity;
 import com.needto.order.data.Product;
+import com.needto.tool.entity.Dict;
 
 import java.util.Date;
 import java.util.List;

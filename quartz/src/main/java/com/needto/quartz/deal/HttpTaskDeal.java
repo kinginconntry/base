@@ -1,12 +1,12 @@
 package com.needto.quartz.deal;
 
 import com.alibaba.fastjson.JSON;
-import com.needto.common.utils.*;
-import com.needto.httprequest.service.ApiRequest;
+import com.needto.http.entity.HttpHeader;
+import com.needto.http.entity.Method;
+import com.needto.http.utils.ApiRequest;
 import com.needto.quartz.entity.TaskData;
+import com.needto.tool.utils.*;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
@@ -50,27 +50,28 @@ public class HttpTaskDeal implements TaskDeal {
         if(!StringUtils.isEmpty(bodyCryptoMode) && !StringUtils.isEmpty(bodyCryptoKey) && body != null){
             body = CryptoUtil.Crypto.valueOf(bodyCryptoMode).encry(JSON.toJSONString(body), bodyCryptoKey);
         }
-        HttpHeaders httpHeaders = null;
+        HttpHeader httpHeaders = null;
         if(!CollectionUtils.isEmpty(headers)){
-            httpHeaders = new HttpHeaders();
+            httpHeaders = new HttpHeader();
             for(Map.Entry<String, Object> entry : headers.entrySet()){
                 if(!StringUtils.isEmpty(entry.getKey())){
-                    httpHeaders.set(entry.getKey(), Utils.nullToString(entry.getValue()));
+                    httpHeaders.setHeader(entry.getKey(), Utils.nullToString(entry.getValue()));
                 }
             }
         }
         Assert.validateCondition(ValidateUtils.isUrl(url));
-        HttpMethod httpMethod;
+        Method httpMethod;
         if(!StringUtils.isEmpty(method)){
-            httpMethod = HttpMethod.valueOf(method);
+            httpMethod = Method.valueOf(method);
+
         }else{
             if(body != null){
-                httpMethod = HttpMethod.POST;
+                httpMethod = Method.POST;
             }else{
-                httpMethod = HttpMethod.GET;
+                httpMethod = Method.GET;
             }
         }
-        ApiRequest.defaultSourceRequest(new RestTemplate(), url, body, httpMethod, httpHeaders, null, Object.class);
+        ApiRequest.request(url, httpMethod, null, body, httpHeaders, null);
     }
 
     @Override

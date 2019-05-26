@@ -1,6 +1,7 @@
 package com.needto.organization;
 
-import com.needto.common.context.GlobalEnv;
+import com.needto.tool.entity.Result;
+import com.needto.web.context.WebEnv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class OrganitionApi {
     @PostMapping(value = {"/app/organition/find", "/sys/organition/find", "/admin/organition/find"})
     @ResponseBody
     public Result<Organition> findOrientation(){
-        return Result.forSuccess(organitionService.find(GlobalEnv.getOwner()));
+        return Result.forSuccess(organitionService.find(WebEnv.getOwner()));
     }
 
     /**
@@ -39,7 +40,7 @@ public class OrganitionApi {
         if(organition == null){
             return Result.forError("NO_DATA", "");
         }
-        organition.setOwner(GlobalEnv.getOwner());
+        organition.setOwner(WebEnv.getOwner());
         return Result.forSuccess(organitionService.save(organition));
     }
 

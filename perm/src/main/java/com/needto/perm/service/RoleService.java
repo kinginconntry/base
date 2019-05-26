@@ -9,6 +9,8 @@ import com.needto.dao.common.FieldFilter;
 import com.needto.dao.common.Op;
 import com.needto.perm.model.Role;
 import com.needto.perm.model.RoleRelation;
+import com.needto.tool.entity.Filter;
+import com.needto.tool.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

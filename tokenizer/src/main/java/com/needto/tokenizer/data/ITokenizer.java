@@ -1,5 +1,9 @@
 package com.needto.tokenizer.data;
 
+import com.needto.tool.entity.Dict;
+import com.needto.tool.inter.Thing;
+import com.needto.tool.utils.Assert;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;

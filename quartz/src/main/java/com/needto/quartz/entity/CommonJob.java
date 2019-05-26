@@ -1,7 +1,8 @@
 package com.needto.quartz.entity;
 
-import com.needto.common.context.GlobalEnv;
+import com.needto.common.context.SpringEnv;
 import com.needto.quartz.data.Constants;
+import com.needto.tool.entity.Dict;
 import org.quartz.*;
 
 /**
@@ -24,6 +25,6 @@ public class CommonJob implements Job {
         taskData.setJobName(jobKey.getName());
         taskData.setTriggerGroup(triggerKey.getGroup());
         taskData.setTriggerName(triggerKey.getName());
-        GlobalEnv.getApplicationContext().publishEvent(new TaskEvent(this, taskData, data.getValue(Constants.DEAL_KEY)));
+        SpringEnv.getApplicationContext().publishEvent(new TaskEvent(this, taskData, data.getValue(Constants.DEAL_KEY)));
     }
 }

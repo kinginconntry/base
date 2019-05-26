@@ -2,6 +2,7 @@ package com.needto.keyvalue;
 
 import com.google.common.collect.Lists;
 import com.needto.common.entity.Target;
+import com.needto.tool.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

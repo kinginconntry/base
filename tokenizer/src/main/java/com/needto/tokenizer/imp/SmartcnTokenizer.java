@@ -2,6 +2,8 @@ package com.needto.tokenizer.imp;
 
 import com.needto.tokenizer.data.ITokenizer;
 import com.needto.tokenizer.data.Type;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.utils.Assert;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;

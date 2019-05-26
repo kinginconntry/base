@@ -1,7 +1,7 @@
 package com.needto.pay.service;
 
 
-import com.needto.httprequest.service.ApiRequest;
+import com.needto.http.utils.ApiRequest;
 import com.needto.pay.config.WechatOpen;
 import com.needto.pay.entity.CallbackData;
 import com.needto.pay.entity.Way;
@@ -9,11 +9,13 @@ import com.needto.pay.config.WechatConfig;
 import com.needto.pay.entity.WechatPayData;
 import com.needto.pay.event.PayFailtureEvent;
 import com.needto.pay.event.PaySuccessEvent;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.utils.Assert;
+import com.needto.tool.utils.CryptoUtil;
+import com.needto.tool.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -84,9 +86,9 @@ public class WechatPay implements Deal<WechatPayData> {
 
         String sign = getSign(param);
         param.put("sign", sign);
-        ResponseEntity<String> rest = ApiRequest.requestString("https://api.mch.weixin.qq.com/pay/unifiedorder", HttpMethod.POST, Utils.objectToXml(param));
+        String rest = ApiRequest.post("https://api.mch.weixin.qq.com/pay/unifiedorder", null, Utils.objectToXml(param), null);
         Dict res = new Dict();
-        res.putAll(Utils.xmlToJson(rest.getBody()));
+        res.putAll(Utils.xmlToJson(rest));
         Assert.validateCondition(!"OK".equals(res.get("err_code")), res.getValue("result_code"), res.getValue("err_code_des"));
 
         if(!StringUtils.isEmpty(res.getValue("code_url"))){

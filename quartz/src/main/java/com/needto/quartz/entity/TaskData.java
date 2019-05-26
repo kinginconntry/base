@@ -1,5 +1,7 @@
 package com.needto.quartz.entity;
 
+import com.needto.tool.entity.Dict;
+
 public class TaskData {
     public Dict data;
     public String jobGroup;

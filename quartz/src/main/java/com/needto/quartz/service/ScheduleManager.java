@@ -6,6 +6,7 @@ import com.needto.quartz.entity.CalendarData;
 import com.needto.quartz.entity.JobData;
 import com.needto.quartz.entity.Key;
 import com.needto.quartz.entity.TriggerData;
+import com.needto.tool.utils.Assert;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

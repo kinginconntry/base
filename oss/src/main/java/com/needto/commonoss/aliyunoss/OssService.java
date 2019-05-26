@@ -6,7 +6,8 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.*;
-import com.needto.common.exception.LogicException;
+import com.needto.tool.exception.LogicException;
+import com.needto.tool.utils.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -160,7 +161,6 @@ public class OssService {
             }
         });
         LOG.debug("删除oss文件 {}", urls.toString());
-        Result<List<String>> result;
         DeleteObjectsRequest request = new DeleteObjectsRequest(ossBucket);
         request.setKeys(keys);
         try{

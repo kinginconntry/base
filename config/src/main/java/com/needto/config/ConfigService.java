@@ -2,9 +2,10 @@ package com.needto.config;
 
 import com.google.common.collect.Lists;
 import com.needto.common.entity.Target;
-import com.needto.common.exception.ValidateException;
 import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.FieldFilter;
+import com.needto.tool.exception.ValidateException;
+import com.needto.tool.utils.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,7 @@
 package com.needto.mq;
 
-import com.needto.common.context.GlobalEnv;
+import com.needto.common.context.SpringEnv;
+import com.needto.tool.entity.Dict;
 
 /**
  * @author Administrator
@@ -24,7 +25,7 @@ public class Message implements IMessage {
     public Dict data;
 
     public Message() {
-        this.client = GlobalEnv.getProperty("spring.application.name");
+        this.client = SpringEnv.getProperty("spring.application.name");
     }
 
     @Override

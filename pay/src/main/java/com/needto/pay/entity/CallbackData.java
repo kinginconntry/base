@@ -1,5 +1,7 @@
 package com.needto.pay.entity;
 
+import com.needto.tool.entity.Dict;
+
 public class CallbackData extends Dict {
     public String guid;
 

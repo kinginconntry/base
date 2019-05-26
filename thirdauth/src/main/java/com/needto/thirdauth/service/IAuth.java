@@ -1,9 +1,10 @@
 package com.needto.thirdauth.service;
 
-import com.needto.common.exception.LogicException;
 import com.needto.thirdauth.data.ThirdEvent;
 import com.needto.thirdauth.data.ThirdAuth;
 import com.needto.thirdauth.model.AccessToken;
+import com.needto.tool.exception.LogicException;
+import com.needto.tool.inter.Thing;
 
 /**
  * @author Administrator

@@ -3,6 +3,7 @@ package com.needto.pay.controller;
 
 import com.needto.pay.entity.Way;
 import com.needto.pay.service.PayService;
+import com.needto.tool.entity.Dict;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;

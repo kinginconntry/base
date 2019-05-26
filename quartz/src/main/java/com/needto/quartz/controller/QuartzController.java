@@ -1,5 +1,6 @@
 package com.needto.quartz.controller;
 
+import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
 import com.needto.quartz.entity.*;
 import com.needto.quartz.model.QuartzCalendar;
@@ -8,6 +9,7 @@ import com.needto.quartz.model.QuartzScheduler;
 import com.needto.quartz.model.QuartzTrigger;
 import com.needto.quartz.service.QuartzManagerService;
 import com.needto.quartz.service.ScheduleManager;
+import com.needto.tool.entity.Result;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

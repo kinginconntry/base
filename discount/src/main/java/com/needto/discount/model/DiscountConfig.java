@@ -2,6 +2,7 @@ package com.needto.discount.model;
 
 import com.needto.common.entity.Target;
 import com.needto.dao.models.TargetEntity;
+import com.needto.tool.entity.Dict;
 
 public class DiscountConfig extends TargetEntity {
 

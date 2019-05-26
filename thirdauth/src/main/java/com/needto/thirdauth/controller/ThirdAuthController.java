@@ -2,6 +2,7 @@ package com.needto.thirdauth.controller;
 
 import com.needto.thirdauth.data.ThirdEvent;
 import com.needto.thirdauth.service.ThirdService;
+import com.needto.tool.entity.Dict;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

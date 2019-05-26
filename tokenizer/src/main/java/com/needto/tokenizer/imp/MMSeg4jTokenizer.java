@@ -3,6 +3,8 @@ package com.needto.tokenizer.imp;
 import com.chenlb.mmseg4j.*;
 import com.needto.tokenizer.data.ITokenizer;
 import com.needto.tokenizer.data.Type;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.utils.Assert;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

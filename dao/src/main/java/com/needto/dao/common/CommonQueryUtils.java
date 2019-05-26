@@ -1,6 +1,9 @@
 package com.needto.dao.common;
 
 import com.needto.common.entity.Query;
+import com.needto.tool.entity.Filter;
+import com.needto.tool.entity.Order;
+import com.needto.tool.entity.Update;
 
 import java.util.ArrayList;
 import java.util.List;

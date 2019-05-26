@@ -1,8 +1,11 @@
 package com.needto.commonoss.aliyunoss;
 
 import com.needto.cache.frequency.FrequencyService;
-import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Target;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.entity.Result;
+import com.needto.tool.utils.Assert;
+import com.needto.web.context.WebEnv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -36,7 +39,7 @@ public class AliyunOssApi {
         if(frequencyService == null){
             return false;
         }
-        return frequencyService.filter(GlobalEnv.getiClientCache().getGuid(target), "/web/oss/build", 10, 5, 600);
+        return frequencyService.filter(WebEnv.getiClientCache().getGuid(target), "/web/oss/build", 10, 5, 600);
     }
 
     /**
@@ -61,7 +64,7 @@ public class AliyunOssApi {
     @RequestMapping(value = {"/web/oss/build"})
     @ResponseBody
     public Result<OssData> getWebParam(HttpServletRequest httpServletRequest, @RequestParam String dir){
-        if(webFilter(GlobalEnv.getClient(httpServletRequest))){
+        if(webFilter(WebEnv.getClient(httpServletRequest))){
             return Result.forError("", "系统繁忙");
         }
         return Result.forSuccessIfNotNull(ossService.getOssParam(bucket, dir, null));
@@ -97,7 +100,7 @@ public class AliyunOssApi {
         if(CollectionUtils.isEmpty(deletes)){
             return Result.forError();
         }else{
-            applicationContext.publishEvent(new OssDeleteEvent(this, deletes, GlobalEnv.getClient(httpServletRequest)));
+            applicationContext.publishEvent(new OssDeleteEvent(this, deletes, WebEnv.getClient(httpServletRequest)));
             return Result.forSuccess();
         }
     }

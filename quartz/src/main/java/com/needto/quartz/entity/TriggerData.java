@@ -1,6 +1,8 @@
 package com.needto.quartz.entity;
 
 
+import com.needto.tool.entity.Dict;
+
 /**
  * @author Administrator
  */

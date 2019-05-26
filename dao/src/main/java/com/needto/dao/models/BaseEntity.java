@@ -5,6 +5,7 @@ import com.needto.dao.inter.ICtime;
 import com.needto.dao.inter.IDelete;
 import com.needto.dao.inter.IUptime;
 import com.needto.dao.inter.Id;
+import com.needto.tool.inter.IInit;
 
 import java.io.Serializable;
 import java.util.Date;

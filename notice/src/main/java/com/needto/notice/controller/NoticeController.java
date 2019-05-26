@@ -1,9 +1,10 @@
 package com.needto.notice.controller;
 
-import com.needto.common.context.GlobalEnv;
 import com.needto.notice.model.Notice;
 import com.needto.notice.service.NoticeCache;
 import com.needto.notice.service.NoticeService;
+import com.needto.tool.entity.Result;
+import com.needto.web.context.WebEnv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +35,7 @@ public class NoticeController {
     @RequestMapping(value = {"/sys/notice/find", "/admin/notice/find", "/app/notice/find"})
     @ResponseBody
     public Result<List<Notice>> findNotice(HttpServletRequest request){
-        return Result.forSuccess(noticeCache.getNotices(GlobalEnv.getClient(request)));
+        return Result.forSuccess(noticeCache.getNotices(WebEnv.getClient(request)));
     }
 
     /**
@@ -48,6 +49,6 @@ public class NoticeController {
         if(CollectionUtils.isEmpty(ids)){
             return Result.forError("NO_ID", "");
         }
-        return Result.forSuccess(noticeService.ackNotice(GlobalEnv.getClient(request), ids));
+        return Result.forSuccess(noticeService.ackNotice(WebEnv.getClient(request), ids));
     }
 }

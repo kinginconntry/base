@@ -1,6 +1,7 @@
 package com.needto.common.entity;
 
 import com.needto.tool.entity.BaseTarget;
+import com.needto.tool.utils.Utils;
 
 /**
  * @author Administrator
@@ -112,6 +113,10 @@ public class Target extends BaseTarget {
      */
     public static boolean isRobot(Target target){
         return isPf(target) || isApp(target);
+    }
+
+    public String getTargetId(){
+        return Utils.nullToString(this.type) + "_" + Utils.nullToString(this.guid);
     }
 
 }

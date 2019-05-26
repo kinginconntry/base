@@ -1,6 +1,7 @@
 package com.needto.firewall.list;
 
 import com.needto.common.entity.Target;
+import com.needto.tool.entity.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,11 @@
 package com.needto.firewall.api;
 
 import com.needto.cache.frequency.FrequencyService;
-import com.needto.common.context.GlobalEnv;
 import com.needto.common.entity.Target;
-import com.needto.common.utils.RequestUtil;
-import com.needto.common.utils.ResponseUtil;
+import com.needto.tool.entity.Result;
+import com.needto.web.context.WebEnv;
+import com.needto.web.utils.RequestUtil;
+import com.needto.web.utils.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class ApiFreqInterceptorAdapter extends HandlerInterceptorAdapter {
                     return super.preHandle(request, response, handler);
                 }
 
-                Target target = GlobalEnv.getClient(request);
+                Target target = WebEnv.getClient(request);
                 if(target == null && !apiFreqLimit.useIp()){
                     return super.preHandle(request, response, handler);
                 }

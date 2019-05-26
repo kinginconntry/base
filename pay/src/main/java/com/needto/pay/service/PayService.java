@@ -1,10 +1,12 @@
 package com.needto.pay.service;
 
-import com.needto.common.exception.BaseException;
 import com.needto.common.service.ThingContainerService;
 import com.needto.pay.entity.IPayData;
 import com.needto.pay.event.PayPrepareAfterEvent;
 import com.needto.pay.event.PayPrepareBeforeEvent;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.exception.BaseException;
+import com.needto.tool.utils.Assert;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,10 +30,10 @@ public class PayService extends ThingContainerService<Deal> {
         }
     }
 
-    public void payCallback(String payWay, Dict Dict){
+    public void payCallback(String payWay, Dict dict){
         Assert.validateCondition(this.contain(payWay), "NO_SUPPORT", "");
         try{
-            this.get(payWay).payCallback(Dict);
+            this.get(payWay).payCallback(dict);
         }catch (BaseException e){
             e.printStackTrace();
         }

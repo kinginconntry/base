@@ -4,6 +4,7 @@ import com.needto.quartz.entity.CalendarData;
 import com.needto.quartz.entity.JobData;
 import com.needto.quartz.entity.Key;
 import com.needto.quartz.entity.TriggerData;
+import com.needto.tool.utils.Assert;
 import org.quartz.Job;
 import org.springframework.util.CollectionUtils;
 

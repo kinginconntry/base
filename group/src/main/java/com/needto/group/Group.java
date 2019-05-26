@@ -1,6 +1,8 @@
 package com.needto.group;
 
 import com.needto.dao.models.UserEntity;
+import com.needto.tool.entity.Dict;
+import com.needto.tool.inter.Itree;
 
 /**
  * 分组实体

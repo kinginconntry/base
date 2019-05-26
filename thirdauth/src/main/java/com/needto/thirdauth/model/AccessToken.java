@@ -1,6 +1,7 @@
 package com.needto.thirdauth.model;
 
 import com.needto.dao.models.BaseEntity;
+import com.needto.tool.entity.Dict;
 import org.springframework.util.StringUtils;
 
 /**
