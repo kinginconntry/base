@@ -9,7 +9,6 @@ import com.needto.tool.utils.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
