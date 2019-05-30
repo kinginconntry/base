@@ -93,28 +93,38 @@ public class MongoEventListener extends AbstractMongoEventListener {
         }
         doc.put(IUptime.UPTIME, now);
 
+        Class sourceClass = source.getClass().getSuperclass();
         try {
-            Class sourceClass = source.getClass().getSuperclass();
             Field idField = sourceClass.getDeclaredField(Id.ID);
             idField.setAccessible(true);
             idField.set(source, oid.toString());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+        }
 
-            Field confuseIdField = sourceClass.getDeclaredField(ConfuseId.CONFUSE_ID);
-            confuseIdField.setAccessible(true);
-            confuseIdField.set(source, confuseId);
-
-            Field ctimeField = sourceClass.getDeclaredField(ICtime.CTIME);
-            ctimeField.setAccessible(true);
-            ctimeField.set(source, ctime);
-
+        try {
             Field uptimeField = sourceClass.getDeclaredField(IUptime.UPTIME);
             iMongoIntercept.beforeSave((BaseEntity) source, doc);
             uptimeField.setAccessible(true);
             uptimeField.set(source, now);
 
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
         }
+
+        try {
+
+            Field confuseIdField = sourceClass.getDeclaredField(ConfuseId.CONFUSE_ID);
+            confuseIdField.setAccessible(true);
+            confuseIdField.set(source, confuseId);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+        }
+
+        try {
+            Field ctimeField = sourceClass.getDeclaredField(ICtime.CTIME);
+            ctimeField.setAccessible(true);
+            ctimeField.set(source, ctime);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+        }
+        iMongoIntercept.beforeSave((BaseEntity) source, doc);
     }
 
     /**
