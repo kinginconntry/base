@@ -51,6 +51,7 @@
         <module>es</module>
         <module>cipher</module>
         <module>web</module>
+        <module>simulate</module>
         <!--<module>asr</module>-->
     </modules>
 
