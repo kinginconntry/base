@@ -31,7 +31,6 @@
         <module>notice</module>
         <module>dynamictoken</module>
         <module>zookeeper</module>
-        <module>task</module>
         <module>log</module>
         <module>perm</module>
         <module>account</module>
