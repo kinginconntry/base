@@ -127,7 +127,11 @@ public class BrowserService {
             response = new Response();
             response.setStatuscode(Response.FAILTURE);
             response.setError(e.getErrCode());
-        } finally {
+        } catch (Exception e){
+            response = new Response();
+            response.setStatuscode(Response.FAILTURE);
+            response.setError(e.getMessage());
+        }finally {
             if(driver != null){
                 driver.stop();
             }
