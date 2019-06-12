@@ -1,6 +1,6 @@
 package com.needto.simulate.service;
 
-import com.needto.common.entity.Cookie;
+import com.needto.http.entity.Cookie;
 import com.needto.simulate.data.JsResultCons;
 import com.needto.simulate.data.SimulateResponseEvent;
 import com.needto.simulate.entity.*;

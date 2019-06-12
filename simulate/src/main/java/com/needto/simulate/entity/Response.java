@@ -1,6 +1,6 @@
 package com.needto.simulate.entity;
 
-import com.needto.common.entity.Cookie;
+import com.needto.http.entity.Cookie;
 import com.needto.http.entity.HttpHeader;
 import com.needto.tool.entity.Dict;
 import org.apache.commons.lang3.StringUtils;
