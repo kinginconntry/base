@@ -15,9 +15,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +35,16 @@ public class BrowserService {
 
     @Autowired
     private ValidateCodeContainer validateCodeContainer;
+
+    @Autowired
+    private Environment environment;
+
+    private String driverPath;
+
+    @PostConstruct
+    public void init(){
+        this.driverPath = environment.getProperty("selenium.chrome.path", "D:\\chromedriver.exe");
+    }
 
 
     public void asyncExecute(Request request){
@@ -69,7 +81,7 @@ public class BrowserService {
         Driver driver = null;
         try {
             driver = new Driver();
-            WebDriver webDriver = driver.init(request.getHeaders(), request.getProxyData(), browserConfig.isLoadImage()).getDriver();
+            WebDriver webDriver = driver.init(driverPath, request.getHeaders(), request.getProxyData(), browserConfig.isLoadImage()).getDriver();
             webDriver.manage().window().setSize(browserConfig.getWindowSize());
             response = new Response();
 

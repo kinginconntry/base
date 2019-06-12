@@ -15,13 +15,12 @@ public class Driver {
 
     private WebDriver driver;
 
-    public Driver init(HttpHeader headers, ProxyData proxyData, boolean loadImage){
+    public Driver init(String driverPath, HttpHeader headers, ProxyData proxyData, boolean loadImage){
         HttpHeader headerMap = DEFAULT_HEADERS;
         if(headers != null){
             headerMap = headers;
         }
-        String chromePath = SpringEnv.getProperty("selenium.chrome.path", "D:\\chromedriver.exe");
-        WebDriverBuilder webDriverBuilder = WebDriverBuilder.of(chromePath);
+        WebDriverBuilder webDriverBuilder = WebDriverBuilder.of(driverPath);
         String ua = headerMap.getUserAgent();
         if(StringUtils.isEmpty(ua)){
             webDriverBuilder.setUserAgent(WebDriverBuilder.DEFAULT_WEB_UA);
