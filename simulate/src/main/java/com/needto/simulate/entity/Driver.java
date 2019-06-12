@@ -1,6 +1,5 @@
 package com.needto.simulate.entity;
 
-import com.needto.common.context.SpringEnv;
 import com.needto.http.entity.HttpHeader;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.Proxy;
@@ -15,7 +14,7 @@ public class Driver {
 
     private WebDriver driver;
 
-    public Driver init(String driverPath, HttpHeader headers, ProxyData proxyData, boolean loadImage){
+    public Driver init(String driverPath, HttpHeader headers, ProxyData proxyData, boolean loadImage, boolean debug){
         HttpHeader headerMap = DEFAULT_HEADERS;
         if(headers != null){
             headerMap = headers;
@@ -29,6 +28,7 @@ public class Driver {
         }
 
         webDriverBuilder.setDisableImage(!loadImage);
+        webDriverBuilder.setDebug(debug);
 
         if(proxyData != null){
             Proxy proxyTemp = new Proxy();

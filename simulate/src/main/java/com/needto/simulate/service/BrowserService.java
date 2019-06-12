@@ -41,9 +41,12 @@ public class BrowserService {
 
     private String driverPath;
 
+    private boolean debug;
+
     @PostConstruct
     public void init(){
         this.driverPath = environment.getProperty("selenium.chrome.path", "D:\\chromedriver.exe");
+        this.debug = Boolean.valueOf(environment.getProperty("debug", "false"));
     }
 
 
@@ -81,7 +84,7 @@ public class BrowserService {
         Driver driver = null;
         try {
             driver = new Driver();
-            WebDriver webDriver = driver.init(driverPath, request.getHeaders(), request.getProxyData(), browserConfig.isLoadImage()).getDriver();
+            WebDriver webDriver = driver.init(driverPath, request.getHeaders(), request.getProxyData(), browserConfig.isLoadImage(), debug).getDriver();
             webDriver.manage().window().setSize(browserConfig.getWindowSize());
             response = new Response();
 

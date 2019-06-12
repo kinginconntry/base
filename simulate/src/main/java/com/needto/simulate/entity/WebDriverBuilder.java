@@ -32,6 +32,11 @@ public class WebDriverBuilder {
     private Proxy proxy;
 
     /**
+     * debug模式
+     */
+    private boolean debug;
+
+    /**
      * 可执行文件路径
      */
     private String path;
@@ -91,6 +96,42 @@ public class WebDriverBuilder {
         return this;
     }
 
+    public Proxy getProxy() {
+        return proxy;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public boolean isDisableImage() {
+        return disableImage;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public boolean isDisableSandbox() {
+        return disableSandbox;
+    }
+
+    public boolean isDisableJs() {
+        return disableJs;
+    }
+
     public WebDriver buildChrome(){
 
         System.setProperty(CHROME_DRIVER_EXE_PROPERTY, path);
@@ -110,7 +151,9 @@ public class WebDriverBuilder {
         options.addArguments("disable-infobars");
         // 允许浏览器重定向，Framebusting requires same-origin or a user gesture
         options.addArguments("disable-web-security");
-//        options.addArguments("--headless");
+        if(!this.debug){
+            options.addArguments("--headless");
+        }
         options.addArguments("--user-agent="+this.userAgent);
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("credentials_enable_service", false);
