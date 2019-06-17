@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * 异步api结果处理容器
  */
 @Service
-public class AsyncApiResultService {
+public class AsyncApiResultService<T> {
 
     /**
      * 异步结果前缀
@@ -20,7 +20,7 @@ public class AsyncApiResultService {
     public final static String ASYNC_RES = "ASYNC_RES";
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisCache<AsyncResult<T>> redisCache;
 
     public String getKey(String guid){
         return redisCache.buildKey(ASYNC_RES + ":" + guid);
@@ -29,10 +29,9 @@ public class AsyncApiResultService {
     /**
      * 获取结果
      * @param guid
-     * @param <T>
      * @return
      */
-    public <T> AsyncResult<T> getResult(String guid){
+    public AsyncResult<T> getResult(String guid){
         Assert.validateStringEmpty(guid, "guid can not be null");
         String key = this.getKey(guid);
         AsyncResult<T> res = redisCache.get(key);
@@ -45,10 +44,9 @@ public class AsyncApiResultService {
     /**
      * 设置任务进度
      * @param guid
-     * @param <T>
      * @return
      */
-    public synchronized <T> AsyncResult<T> incPercent(String guid, int inc, Long expire){
+    public synchronized AsyncResult<T> incPercent(String guid, int inc, Long expire){
         Assert.validateStringEmpty(guid, "guid can not be null");
         if(inc < 0){
             throw new ValidateException("inc can not less than 0");
@@ -68,10 +66,9 @@ public class AsyncApiResultService {
      * @param guid
      * @param res
      * @param expire
-     * @param <T>
      * @return
      */
-    public <T> boolean setResult(String guid, T res, Long expire){
+    public boolean setResult(String guid, T res, Long expire){
         return this.setResult(guid, res, expire, true);
     }
 
@@ -96,10 +93,9 @@ public class AsyncApiResultService {
      * @param res
      * @param expire
      * @param replace
-     * @param <T>
      * @return
      */
-    public <T> boolean setResult(String guid, T res, Long expire, Long estimatedTime, boolean replace){
+    public boolean setResult(String guid, T res, Long expire, Long estimatedTime, boolean replace){
         Assert.validateStringEmpty(guid, "guid can not be null");
         String key = this.getKey(guid);
         AsyncResult<T> cache;
@@ -116,7 +112,7 @@ public class AsyncApiResultService {
         return redisCache.set(key, cache, expire);
     }
 
-    public <T> boolean setResult(String guid, T res, Long expire, boolean replace){
+    public boolean setResult(String guid, T res, Long expire, boolean replace){
         return this.setResult(guid, res, expire, replace);
     }
 }

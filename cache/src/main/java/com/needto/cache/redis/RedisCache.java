@@ -1,85 +1,85 @@
 package com.needto.cache.redis;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.util.concurrent.UncheckedExecutionException;
+import com.google.common.collect.Lists;
 import com.needto.cache.entity.CacheData;
-import com.needto.tool.exception.ValidateException;
+import com.needto.tool.exception.LogicException;
 import com.needto.tool.utils.Assert;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Administrator
+ * 设置，更新，删除数据时，发送redis消息，通知其他机器也删除本地缓存
  */
 @Component
-public class RedisCache{
+public class RedisCache<V> {
 
-    /**
-     * 本地缓存
-     */
-    private final Cache<String, Object> M_LOCAL_CACHE = CacheBuilder.newBuilder()
-            .maximumSize(2000)
-            .expireAfterWrite(10, TimeUnit.MINUTES)
-            .build();
+    private static final String KEY_NAMESPACE_DELIMTER = ":";
 
-    public static final String KEY_NAMESPACE_DELIMTER = ":";
-    public static final String KEY_DELIMTER = ".";
+    private static final String KEY_DELIMTER = ".";
 
-    @Autowired
+    @Resource
     private Environment environment;
 
     @Resource
-    public RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, V> redisTemplate;
 
     private String prefix;
 
     private long defaultTtl;
 
+    private String topic;
+
     @PostConstruct
     public void init(){
-        /**
-         * 默认时间600秒
-         */
-        defaultTtl = Long.valueOf(environment.getProperty("cache.ttl", "600"));
-        /**
-         * 默认前缀
-         */
-        prefix = environment.getProperty("cache.prefix", "D");
+        // 默认时间600秒
+        defaultTtl = Long.valueOf(environment.getProperty("rediscache.ttl", "600"));
+        // 默认前缀
+        prefix = environment.getProperty("rediscache.prefix", "D");
+        // 默认的消息topic
+        topic = environment.getProperty("rediscache.topic", "TOPIC:REDIS_CACHE");
+    }
+
+    public String getTopic(){
+        return topic;
+    }
+
+    /**
+     * 删除key消息（发布者）
+     * @param keys 键
+     */
+    public void optDeleteKeys(Collection<String> keys){
+        if(!CollectionUtils.isEmpty(keys)){
+            redisTemplate.convertAndSend(topic, new RedisInvalidMessage(Lists.newArrayList(keys)));
+        }
     }
 
     /**
      * 获取某个应用下的key
-     * @param keys
-     * @return
+     * @param  keys 键
+     * @return 数据
      */
     public String buildKey(String... keys) {
         Objects.requireNonNull(keys);
         if (keys.length == 0) {
-            throw new RuntimeException("缓存必须指定keys");
+            throw new LogicException("NO_KEYS", "keys can not be empty");
         }
 
         StringBuilder sb = new StringBuilder(this.prefix);
         sb.append(KEY_NAMESPACE_DELIMTER);
         boolean prevIsDelim = true;
-        for (int i = 0; i < keys.length; i++) {
-            String s = keys[i];
+        for (String s : keys) {
             boolean isDelim = KEY_DELIMTER.equals(s) || KEY_NAMESPACE_DELIMTER.equals(s);
             //不能有连续两个分隔符
             if (isDelim && prevIsDelim) {
@@ -95,20 +95,25 @@ public class RedisCache{
         return sb.toString();
     }
 
-    // 公共
+    /**
+     *
+     * @param key 键
+     * @return 数据
+     */
     public boolean hasKey(String key){
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return redisTemplate.hasKey(key);
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Boolean flag =  redisTemplate.hasKey(key);
+        return flag != null && flag;
     }
 
     /**
      * 获取缓存过期时间
-     * @param key
-     * @param timeUnit
-     * @return
+     * @param key 键
+     * @param timeUnit 时间类型
+     * @return 数据
      */
     public Long getExpire(String key, TimeUnit timeUnit){
-        Assert.validateStringEmpty(key, "key can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
         return redisTemplate.getExpire(key, timeUnit);
     }
 
@@ -170,36 +175,45 @@ public class RedisCache{
     /**
      * 删除
      * @param key 键
-     * @return
+     * @return 数据
      */
     public Boolean remove(String key) {
-        Assert.validateStringEmpty(key, "key can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
         if(!this.hasKey(key)){
             return true;
         }
-        return redisTemplate.delete(key);
+        Boolean flag = redisTemplate.delete(key);
+        if(flag != null && flag){
+            optDeleteKeys(Lists.newArrayList(key));
+        }
+        return flag;
     }
 
     /**
      * 删除多个
      * @param keys 键
-     * @return
+     * @return 数据
      */
     public Long remove(Collection<String> keys) {
-        Assert.validateCollectionEmpty(keys, "keys can not be empty");
-       return redisTemplate.delete(keys);
+        Assert.validateCollectionEmpty(keys, "NO_KEYS", "keys can not be empty");
+        Long flag = redisTemplate.delete(keys);
+        if(flag != null && flag > 0){
+            optDeleteKeys(Lists.newArrayList(keys));
+        }
+        return flag;
     }
 
     // hash操作
 
     /**
      * 获取hash下的多个key
-     * @param key
-     * @return
+     * @param key 键
+     * @return 数据
      */
     public Set<String> hashKeys(String key) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return redisTemplate.<String, String>opsForHash().keys(key);
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        HashOperations<String, String, V> operations = redisTemplate.opsForHash();
+        return operations.keys(key);
     }
 
     /**
@@ -208,21 +222,22 @@ public class RedisCache{
      * @param key hash键
      * @param object 对象
      * @param expire 过期时间
-     * @return
+     * @return 数据
      */
     public boolean setHash(String prefix, String key, Object object, Long expire) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateStringEmpty(key, "key can not be empty");
-        Assert.validateNull(object, "object can not be null");
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Assert.validateNull(object, "NO_DATA", "object can not be null");
         redisTemplate.opsForHash().put(prefix, key, object);
         this.setExpire(prefix, expire);
+        this.optDeleteKeys(Lists.newArrayList(prefix));
         return true;
     }
 
     public boolean setHash(String prefix, String key, Object object) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateStringEmpty(key, "key can not be empty");
-        Assert.validateNull(object, "object can not be null");
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Assert.validateNull(object, "NO_DATA", "object can not be null");
         return setHash(prefix, key, object, null);
     }
 
@@ -231,19 +246,20 @@ public class RedisCache{
      * @param prefix hash名
      * @param data 数据map
      * @param expire 过期时间
-     * @return
+     * @return 数据
      */
-    public boolean setHash(String prefix, Map<String, Object> data, Long expire) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateNull(data, "object can not be null");
+    public boolean setHash(String prefix, Map<String, V> data, Long expire) {
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateNull(data, "NO_DATA", "object can not be null");
         redisTemplate.opsForHash().putAll(prefix, data);
         this.setExpire(prefix, expire);
+        this.optDeleteKeys(Lists.newArrayList(prefix));
         return true;
     }
 
-    public boolean setHash(String prefix, Map<String, Object> data) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateNull(data, "object can not be null");
+    public boolean setHash(String prefix, Map<String, V> data) {
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateNull(data, "NO_DATA", "object can not be null");
         return setHash(prefix, data, null);
     }
 
@@ -251,90 +267,88 @@ public class RedisCache{
      * 获取hash
      * @param prefix hash名
      * @param key hash键
-     * @param <T>
-     * @return
+     * @return 数据
      */
-    public <T> T getHash(String prefix, String key) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return (T) redisTemplate.opsForHash().get(prefix, key);
+    public V getHash(String prefix, String key) {
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        HashOperations<String, String, V> operations = redisTemplate.opsForHash();
+        return operations.get(prefix, key);
     }
 
-    public <T> T getHash(String prefix, String key, CacheData<T> cacheData) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateStringEmpty(key, "key can not be empty");
+    public V getHash(String prefix, String key, CacheData<V> cacheData) {
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
         return this.getHash(prefix, key, defaultTtl, cacheData);
     }
 
-    public boolean hasHashValue(String prefix, String key){
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateStringEmpty(key, "key can not be empty");
-        if(this.getHash(prefix, key) == null){
-            return false;
-        }else{
-            return true;
-        }
+    public boolean existsHashValue(String prefix, String key){
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        return this.getHash(prefix, key) != null;
     }
 
     /**
      * 注意ttl是对整个hash，而不是单个hashkey
-     * @param prefix
-     * @param key
-     * @param ttl
-     * @param cacheData
-     * @param <T>
-     * @return
+     * @param prefix 键
+     * @param key hash key
+     * @param ttl 过期时间
+     * @param cacheData 回调
+     * @return 数据
      */
-    public <T> T getHash(String prefix, String key, long ttl, CacheData<T> cacheData) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateStringEmpty(key, "key can not be empty");
-        Type type = ((ParameterizedType) cacheData.getClass().getGenericSuperclass())
-                .getActualTypeArguments()[0];
-        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
-        String val = (String) hashOperations.get(prefix, key);
+    public V getHash(String prefix, String key, long ttl, CacheData<V> cacheData) {
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        HashOperations<String, String, V> hashOperations = redisTemplate.opsForHash();
+        V val =  hashOperations.get(prefix, key);
         if (val == null) {
-            T data = cacheData.get();
+            V data = cacheData.get();
             this.setHash(prefix, key, data, ttl);
             return data;
+        }else{
+            return val;
         }
-        return JSON.parseObject(val, type);
     }
 
     /**
      * 增加值,注意：如果原先不存在，则从initValueLoader中取值放入缓存并返回该值+delta
-     * @param prefix
-     * @param delta
-     * @return
+     * @param prefix 键
+     * @param delta 步长
+     * @return 数据
      */
     public long hashInc(String prefix, String key, long delta, long ttl, CacheData<Long> initValueLoader) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateStringEmpty(key, "key can not be empty");
-        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        HashOperations<String, String, Long> hashOperations = redisTemplate.opsForHash();
         if (hashOperations.hasKey(prefix, key)) {
-            return hashOperations.increment(prefix, key, delta);
+            Long flag = hashOperations.increment(prefix, key, delta);
+            setExpire(prefix, ttl);
+            this.optDeleteKeys(Lists.newArrayList(prefix));
+            return flag;
         } else {
-            Long value = initValueLoader.get() + delta;
+            Long value = initValueLoader.get();
             hashOperations.put(prefix, key, value);
             setExpire(prefix, ttl);
+            this.optDeleteKeys(Lists.newArrayList(prefix));
             return value;
         }
     }
 
     public long hashInc(String prefix, String key, long delta) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateStringEmpty(key, "key can not be empty");
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
         return this.hashInc(prefix, key, delta, defaultTtl);
     }
 
     /**
      * 增加值,注意：必须有先调用hashPut,不然默认从0开始增长哦
-     * @param prefix
-     * @param delta
-     * @return
+     * @param prefix 键
+     * @param delta 步长
+     * @return 数据
      */
     public long hashInc(String prefix, String key, long delta, long ttl) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateStringEmpty(key, "key can not be empty");
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
         return this.hashInc(prefix, key, delta, ttl, new CacheData<Long>() {
             @Override
             public Long get() {
@@ -344,8 +358,8 @@ public class RedisCache{
     }
 
     public long hashInc(String prefix, String key, long delta, CacheData<Long> initValueLoader) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateStringEmpty(key, "key can not be empty");
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
         return this.hashInc(prefix, key, delta, defaultTtl, initValueLoader);
     }
 
@@ -353,183 +367,158 @@ public class RedisCache{
      * 删除hash
      * @param prefix hash名
      * @param keys hash键集合
-     * @return
+     * @return 数据
      */
     public long removeHash(String prefix, List<String> keys) {
-        Assert.validateStringEmpty(prefix, "prefix can not be empty");
-        Assert.validateNull(keys, "keys can not be null");
+        Assert.validateStringEmpty(prefix, "NO_PREFIX", "prefix can not be empty");
+        Assert.validateNull(keys, "NO_KEYS", "keys can not be null");
         if(StringUtils.isEmpty(prefix) || CollectionUtils.isEmpty(keys)){
             return 0;
         }
-        return redisTemplate.opsForHash().delete(prefix, keys.toArray());
+        Long flag = redisTemplate.opsForHash().delete(prefix, keys.toArray());
+        if(flag > 0){
+            this.optDeleteKeys(keys);
+        }
+        return flag;
     }
 
     // 对象操作
 
     /**
      * 设置对象
-     * @param key
+     * @param key 键
      * @param object 对象
      * @param expire 过期时间
-     * @return
+     * @return 数据
      */
-    public boolean set(String key, Object object, Long expire) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        Assert.validateNull(object, "object can not be null");
+    public boolean set(String key, V object, Long expire) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Assert.validateNull(object, "NO_DATA", "object can not be null");
         redisTemplate.opsForValue().set(key, object);
         this.setExpire(key, expire);
+        this.optDeleteKeys(Lists.newArrayList(key));
         return true;
     }
 
-    public boolean set(String key, Object object) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        Assert.validateNull(object, "object can not be null");
+    public boolean set(String key, V object) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Assert.validateNull(object, "NO_DATA", "object can not be null");
         return set(key, object, null);
     }
 
     /**
      * 获取对象
-     * @param key
-     * @param <T>
-     * @return
+     * @param key 键
+     * @return 数据
      */
-    public <T> T get(String key) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return (T) redisTemplate.opsForValue().get(key);
+    public V get(String key) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        return redisTemplate.opsForValue().get(key);
     }
 
-    /**
-     * 从缓存中获取值，缓存不存在时通过CacheData获取值
-     *
-     * @param key       要获取值的key
-     * @param ttl       缓存key的过期时间
-     * @param cacheData 缓存不存在时获取值的方法
-     * @param force     强制刷新，即使缓存存在也重新获取值。
-     * @param <T>       缓存值类型
-     * @return 缓存中的值。
-     */
-    @SuppressWarnings("unchecked")
-    private <T> T get(final String key, final long ttl, final CacheData<T> cacheData, final boolean force) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        T result;
-        try {
-            if (force) {
-                remove(key);
-            }
-            //增加到本地内存缓存
-            if (cacheData.cacheToLocal()) {
-                result = (T) M_LOCAL_CACHE.get(key, (Callable<T>) () -> {
-                    if (!hasKey(key)) {
-                        T data = cacheData.get();
-                        set(key, data, ttl);
-                        return data;
-                    }
-                    return this.get(key);
-                });
-                //只缓存到redis
-            } else {
-                if (!hasKey(key) || force) {
-                    T data = cacheData.get();
-                    if(data != null) {
-                        set(key, data, ttl);
-                    }
-                    result = data;
-                } else {
-                    result = this.get(key);
-                }
-            }
-        } catch (ExecutionException e) {
-            throw new UncheckedExecutionException(e);
+    public V get(String key, long ttl, CacheData<V> callable) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        V obj = redisTemplate.opsForValue().get(key);
+        if(obj == null){
+            obj = callable.get();
+            this.set(key, obj);
+            this.setExpire(key, ttl);
+            this.optDeleteKeys(Lists.newArrayList(key));
         }
-        return result;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T get(final String key, final long ttl, final CacheData<T> cacheData) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return get(key, ttl, cacheData, false);
-    }
-
-    public <T> T get(String key, final CacheData<T> cacheData) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return get(key, defaultTtl, cacheData);
+        return obj;
     }
 
     /**
      * 增加值,注意：如果实现不存在，则从initValueLoader中取值放入缓存并返回该值+delta
-     * @param key
-     * @param delta
-     * @return
+     * @param key 键
+     * @param delta 步长
+     * @return 数据
      */
     public long inc(String key, long delta, long ttl, CacheData<Long> initValueLoader) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        long incred = redisTemplate.opsForValue().increment(key, delta);
-        if(delta == incred) {
-            //此时说明缓存的值增长前为0，要么就是0， 要么没有。对于大部分情况都是没有，则取值设置之
-            Long value = initValueLoader.get() + delta;
-            redisTemplate.opsForValue().set(key, value);
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+
+        if(this.hasKey(key)) {
+            Long value = redisTemplate.opsForValue().increment(key, delta);
+            redisTemplate.opsForValue().set(key, (V) value);
             setExpire(key, ttl);
-            incred = value;
+            this.optDeleteKeys(Lists.newArrayList(key));
+            return value;
+        }else{
+            Long value = initValueLoader.get();
+            redisTemplate.opsForValue().set(key, (V) value);
+            setExpire(key, ttl);
+            this.optDeleteKeys(Lists.newArrayList(key));
+            return value;
         }
-        return incred;
     }
 
     public long inc(String key, long delta, CacheData<Long> initValueLoader) {
-        Assert.validateStringEmpty(key, "key can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
         return this.inc(key, delta, defaultTtl, initValueLoader);
     }
 
-    public long inc(String key, long delta) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return redisTemplate.opsForValue().increment(key, delta);
+    public Long inc(String key, long delta, long ttl) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Long value = redisTemplate.opsForValue().increment(key, delta);
+        this.setExpire(key, ttl);
+        this.optDeleteKeys(Lists.newArrayList(key));
+        return value;
     }
 
-    public long inc(String key) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return redisTemplate.opsForValue().increment(key, 1);
+    public Long inc(String key, long ttl) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        return this.inc(key, 1, ttl);
     }
 
     // list
 
     /**
      * 设置list
-     * @param key
+     * @param key 键
      * @param object 对象
      * @param expire 过期时间
-     * @return
+     * @return 数据
      */
-    public boolean setList(String key, Object object, Long expire) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        Assert.validateNull(object, "object can not be null");
-        redisTemplate.opsForList().rightPush(key, object);
-        this.setExpire(key, expire);
-        return true;
+    public boolean setList(String key, V object, Long expire) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Assert.validateNull(object, "NO_DATA", "object can not be null");
+        Long flag = redisTemplate.opsForList().rightPush(key, object);
+        if(flag != null && flag > 0){
+            this.setExpire(key, expire);
+            this.optDeleteKeys(Lists.newArrayList(key));
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public boolean setList(String key, Object object) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        Assert.validateNull(object, "object can not be null");
+    public boolean setList(String key, V object) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Assert.validateNull(object, "NO_DATA", "object can not be null");
         return setList(key, object, null);
     }
 
     /**
      * 设置list多个值
-     * @param key
+     * @param key 键
      * @param objects 对象集合
      * @param expire 过期时间
-     * @return
+     * @return 数据
      */
-    public Long setList(String key, Collection<Object> objects, Long expire) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        Assert.validateNull(objects, "collection can not be null");
+    public Long setList(String key, Collection<V> objects, Long expire) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Assert.validateNull(objects, "NO_DATA", "collection can not be null");
         Long n = redisTemplate.opsForList().rightPushAll(key, objects);
-        this.setExpire(key, expire);
+        if(n != null && n > 0){
+            this.setExpire(key, expire);
+            this.optDeleteKeys(Lists.newArrayList(key));
+        }
         return n;
     }
 
-    public Long setList(String key, Collection<Object> objects) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        Assert.validateNull(objects, "collection can not be null");
+    public Long setList(String key, Collection<V> objects) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Assert.validateNull(objects, "NO_DATA", "collection can not be null");
         return setList(key, objects, null);
     }
 
@@ -538,28 +527,28 @@ public class RedisCache{
      * @param key 键
      * @param index 元素位置
      * @param newObj 新对象
-     * @return
+     * @return 数据
      */
-    public boolean replaceList(String key, long index, Object newObj){
-        Assert.validateStringEmpty(key, "key can not be empty");
-        if(!redisTemplate.hasKey(key)){
+    public boolean replaceList(String key, long index, V newObj){
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        if(!this.hasKey(key)){
             return false;
         }
         redisTemplate.opsForList().set(key, index, newObj);
+        this.optDeleteKeys(Lists.newArrayList(key));
         return true;
     }
 
     /**
      * 获取list
-     * @param key
+     * @param key 键
      * @param index 位置(从0开始)
-     * @param <T>
-     * @return
+     * @return 数据
      */
-    public <T> T getList(String key, long index) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        List<T> list = (List<T>) redisTemplate.opsForList().range(key, index, index);
-        if(list.size() > 0){
+    public V getList(String key, long index) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        List<V> list = redisTemplate.opsForList().range(key, index, index);
+        if(!CollectionUtils.isEmpty(list)){
             return list.get(0);
         }else{
             return null;
@@ -568,68 +557,80 @@ public class RedisCache{
 
     /**
      * 获取list多个值
-     * @param key
+     * @param key 键
      * @param start 开始位置（从0开始）
      * @param end 结束位置
-     * @param <T>
-     * @return
+     * @return 数据
      */
-    public <T> List<T> getList(String key, long start, long end){
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return (List<T>) redisTemplate.opsForList().range(key, start, end);
+    public List<V> getList(String key, long start, long end){
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        return redisTemplate.opsForList().range(key, start, end);
     }
 
 
     /**
      * 获取list长度
-     * @param key
-     * @return
+     * @param key 键
+     * @return 数据
      */
     public Long listSize(String key) {
-        Assert.validateStringEmpty(key, "key can not be empty");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
         return redisTemplate.opsForList().size(key);
     }
 
     /**
      * 删除1个或多个list的值
-     * @param key
+     * @param key 键
      * @param count 要删除前几个
      * @param object 删除的对象是什么
-     * @return
+     * @return 数据
      */
     public Long removeList(String key, long count, Object object){
-        Assert.validateStringEmpty(key, "key can not be empty");
-        Assert.validateNull(object, "object can not be null");
-        if(count < 0){
-            throw new ValidateException("count can not less than 0");
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        Assert.validateNull(object, "NO_DATA", "object can not be null");
+        Assert.validateCondition(count < 0, "count can not less than 0");
+        Long value = redisTemplate.opsForList().remove(key, count, object);
+        if(value != null && value > 0){
+            this.optDeleteKeys(Lists.newArrayList(key));
         }
-       return redisTemplate.opsForList().remove(key, count, object);
+        return value;
     }
 
     /**
      * 从前面弹出元素
-     * @param key
-     * @param <T>
-     * @return
+     * @param key 键
+     * @return 数据
      */
-    public <T> T leftPop(String key){
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return (T) redisTemplate.opsForList().leftPop(key);
+    public V leftPop(String key){
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        V obj = redisTemplate.opsForList().leftPop(key);
+        if(obj != null){
+            this.optDeleteKeys(Lists.newArrayList(key));
+        }
+        return obj;
     }
 
     /**
      * 从尾部弹出元素
-     * @param key
-     * @param <T>
-     * @return
+     * @param key 键
+     * @return 数据
      */
-    public <T> T rightPop(String key){
-        Assert.validateStringEmpty(key, "key can not be empty");
-        return (T) redisTemplate.opsForList().rightPop(key);
+    public V rightPop(String key){
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
+        V obj = redisTemplate.opsForList().rightPop(key);
+        if(obj != null){
+            this.optDeleteKeys(Lists.newArrayList(key));
+        }
+        return obj;
     }
 
-    public long size(String key) {
-        Assert.validateStringEmpty(key, "key can not be empty");
+    /**
+     * 获取某个key的对应值得个数
+     * @param key 键
+     * @return
+     */
+    public Long size(String key) {
+        Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
         DataType dataType = redisTemplate.type(key);
         if (dataType == DataType.HASH) {
             return redisTemplate.opsForHash().size(key);
@@ -640,23 +641,29 @@ public class RedisCache{
         }
     }
 
-    public Set<String> localKeys() {
-        return M_LOCAL_CACHE.asMap().keySet();
-    }
-
     /**
-     * 仅删除本地缓存
-     *
-     * @param key key
+     * 正则查找符合条件的key
+     * @param pattern 正则
+     * @return
      */
-    public void deleteLocal(String key) {
-        Assert.validateStringEmpty(key, "key can not be empty");
-        M_LOCAL_CACHE.invalidate(key);
-    }
-
     public Set<String> keys(String pattern) {
-        Assert.validateNull(pattern, "pattern can not be null");
+        Assert.validateNull(pattern, "NO_PATTERN", "pattern can not be null");
         return redisTemplate.keys(pattern);
     }
 
+    /**
+     * 执行lua脚本
+     * @param scriptStr 脚本字符串
+     * @param objClass 返回值类型
+     * @param keys 键key
+     * @param args 脚本可使用的参数
+     * @param <T> 返回值泛型
+     * @return 返回值
+     */
+    public <T> T executeScript(String scriptStr, Class<T> objClass, List<String> keys, Object... args){
+        DefaultRedisScript<T> script = new DefaultRedisScript<>();
+        script.setResultType(objClass);
+        script.setScriptText(scriptStr);
+        return redisTemplate.execute(script, keys, args);
+    }
 }

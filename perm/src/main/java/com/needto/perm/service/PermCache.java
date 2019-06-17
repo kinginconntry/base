@@ -33,7 +33,7 @@ public class PermCache {
     private Environment environment;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisCache<CacheWrap<PermData>> redisCache;
 
     @Autowired
     private RoleService roleService;

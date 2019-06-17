@@ -44,7 +44,7 @@ public class ListCache {
     private FilterListService filterListService;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisCache<CacheWrap<Data>> redisCache;
 
     public Long getExpire() {
         // 小幅度改变缓存过期时间，防止缓存同时失效，幅度 0 - 600 秒

@@ -1,4 +1,4 @@
-package com.needto.cache.frequency;
+package com.needto.firewall.frequency;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -43,7 +43,7 @@ public class FrequencyService {
             .build();
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisCache<Long> redisCache;
 
     /**
      * 检查单位时间内源对目标的访问次数，达到max就进行禁用，禁用一段时间后自动解封
@@ -75,7 +75,7 @@ public class FrequencyService {
                     return false;
                 }else{
                     LOG.debug("开始进入禁用期间，source：{}，target：{}，max {}， second {}，forbidTime {}", source, target, max, second, forbidTime);
-                    redisCache.set(redisCache.buildKey(CACHE_PREFIX_KEY , source, target), 1, forbidTime);
+                    redisCache.set(redisCache.buildKey(CACHE_PREFIX_KEY , source, target), 1L, forbidTime);
                     redisCache.remove(redisCache.buildKey(CACHE_PREFIX_KEY_INC , source, target));
                     return true;
                 }

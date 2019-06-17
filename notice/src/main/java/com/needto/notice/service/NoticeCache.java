@@ -28,7 +28,7 @@ public class NoticeCache {
     private Environment environment;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisCache<CacheWrap<List<Notice>>> redisCache;
 
     @Autowired
     private NoticeService noticeService;
