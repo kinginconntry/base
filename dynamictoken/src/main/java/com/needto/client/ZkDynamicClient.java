@@ -1,7 +1,7 @@
 package com.needto.client;
 
 
-import com.needto.zk.ZkClient;
+import com.needto.zk.entity.ZkClient;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.slf4j.Logger;

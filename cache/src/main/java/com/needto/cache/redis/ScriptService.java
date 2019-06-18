@@ -23,11 +23,11 @@ public class ScriptService {
      * @param key 键
      * @return
      */
-    public Long buildNo(String key, long startNo){
+    public String buildNo(String key, long startNo){
         Assert.validateStringEmpty(key, "NO_KEY", "key can not be empty");
-        return (Long) redisCache.executeScript("local temp = redis.call('get', KEYS[1]) " +
-                        "if temp then redis.call('set', KEYS[1], temp + 1) return temp + 1  else redis.call('set', KEYS[1], ARGV[1]) return ARGV[1] end",
-                Long.class,
+        return (String) redisCache.executeScript("local temp = redis.call('get', KEYS[1]) " +
+                        "if temp then redis.call('set', KEYS[1], temp + 1) return tostring(temp + 1)  else redis.call('set', KEYS[1], ARGV[1]) return tostring(ARGV[1]) end",
+                String.class,
                 Lists.newArrayList(key),
                 startNo);
     }

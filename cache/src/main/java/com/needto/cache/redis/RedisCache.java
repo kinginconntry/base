@@ -8,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -622,6 +623,96 @@ public class RedisCache<V> {
             this.optDeleteKeys(Lists.newArrayList(key));
         }
         return obj;
+    }
+
+    // set
+
+    // zset
+
+    /**
+     * 添加zset数据
+     * @param key
+     * @param data
+     * @param score
+     * @param expire
+     * @return
+     */
+    public boolean setZset(String key, V data, double score, Long expire){
+        redisTemplate.opsForZSet().add(key, data, score);
+        this.setExpire(key, expire);
+        this.optDeleteKeys(Lists.newArrayList(key));
+        return true;
+    }
+
+    /**
+     * 获取数据
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public List<V> getZset(String key, long start, long end){
+        return Lists.newArrayList(Objects.requireNonNull(redisTemplate.opsForZSet().range(key, start, end)));
+    }
+
+    /**
+     * 按照分数排名
+     * @param key key
+     * @param start 开始位置
+     * @param end 结束位置
+     * @param desc 逆序排
+     * @return
+     */
+    public List<V> getRank(String key, long start, long end, boolean desc){
+        Set<ZSetOperations.TypedTuple<V>> set;
+        if(desc){
+            set = redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
+        }else{
+            set = redisTemplate.opsForZSet().rangeWithScores(key, start, end);
+        }
+        List<V> list = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(set)){
+            set.forEach(v -> list.add(v.getValue()));
+        }
+        return list;
+    }
+
+    /**
+     * 删除某些数据
+     * @param key
+     * @param datas
+     * @return
+     */
+    public Long deleteZset(String key, List<V> datas){
+        Long c = redisTemplate.opsForZSet().remove(key, datas);
+        this.optDeleteKeys(Lists.newArrayList(key));
+        return c;
+    }
+
+    /**
+     * 删除某个索引段的数据
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public Long deleteZset(String key, long start, long end){
+        Long c = redisTemplate.opsForZSet().removeRange(key, start, end);
+        this.optDeleteKeys(Lists.newArrayList(key));
+        return c;
+    }
+
+    /**
+     * 删除某个分数段的数据
+     * @param key
+     * @param min
+     * @param max
+     * @return
+     */
+    public Long deleteZset(String key, double min, double max){
+        Long c = redisTemplate.opsForZSet().removeRangeByScore(key, min, max);
+        this.optDeleteKeys(Lists.newArrayList(key));
+        return c;
     }
 
     /**
