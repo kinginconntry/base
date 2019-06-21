@@ -42,7 +42,6 @@
         <module>chatpush</module>
         <module>pay</module>
         <module>mq</module>
-        <module>tokenizer</module>
         <module>thirdauth</module>
         <module>order</module>
         <module>discount</module>
@@ -51,7 +50,7 @@
         <module>cipher</module>
         <module>web</module>
         <module>simulate</module>
-        <!--<module>asr</module>-->
+        <module>cluster</module>
     </modules>
 
     <dependencies>
