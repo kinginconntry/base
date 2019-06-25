@@ -172,11 +172,6 @@ public class DataPerm extends UserEntity {
     }
 
     /**
-     * 主用户id
-     */
-    protected String owner;
-
-    /**
      * 名称
      */
     protected String name;
@@ -189,14 +184,6 @@ public class DataPerm extends UserEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
     }
 
     public DataPermEntity getDataPermData() {

@@ -1,12 +1,12 @@
 package com.needto.notice.service;
 
-import com.needto.cache.entity.CacheData;
-import com.needto.cache.entity.CacheWrap;
-import com.needto.cache.redis.RedisCache;
+import com.needto.common.entity.CacheData;
+import com.needto.common.entity.CacheWrap;
 import com.needto.common.entity.Target;
 import com.needto.notice.data.Constant;
 import com.needto.notice.event.NoticeChangeEvent;
 import com.needto.notice.model.Notice;
+import com.needto.redis.service.RedisCache;
 import com.needto.tool.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;

@@ -13,11 +13,7 @@ public class WebHook extends BaseEntity {
     public static final String TABLE = "_webhook";
 
     /**
-     *
-     */
-    public String owner;
-    /**
-     *
+     * 事件名
      */
     public String event;
 
@@ -137,14 +133,6 @@ public class WebHook extends BaseEntity {
 
     public void setEncryKey(String encryKey) {
         this.encryKey = encryKey;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
     }
 
     public String getEvent() {

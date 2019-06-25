@@ -1,7 +1,8 @@
 package com.needto.perm.model;
 
 
-import com.needto.dao.models.UserEntity;
+
+import com.needto.dao.models.BaseEntity;
 
 import java.util.List;
 
@@ -10,14 +11,9 @@ import java.util.List;
  * @author Administrator
  * 用户角色
  */
-public class Role extends UserEntity {
+public class Role extends BaseEntity {
 
     public static final String TABLE = "_role";
-
-    /**
-     * 主用户id
-     */
-    private String owner;
 
     /**
      * 角色名
@@ -58,14 +54,6 @@ public class Role extends UserEntity {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
     }
 
     public String getIcon() {

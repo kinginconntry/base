@@ -1,6 +1,6 @@
 package com.needto.keyvalue;
 
-import com.needto.common.entity.Target;
+import com.needto.tool.entity.Dict;
 
 import java.util.List;
 
@@ -23,8 +23,9 @@ public interface IKeyValueService {
 
     /**
      * 获取结果list
-     * @param client
      * @return
      */
-    List<KeyValue> getValue(Target client);
+    List<KeyValue> getValue(Dict condition);
+
+    default List<KeyValue> getValue(){ return getValue(null); }
 }

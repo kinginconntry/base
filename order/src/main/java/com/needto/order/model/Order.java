@@ -15,12 +15,10 @@ public class Order extends TargetEntity {
 
     public static final String TABLE = "_order";
 
-    public String owner;
-
     /**
      * 订单号
      */
-    public String orderId;
+    public String orderNo;
 
     /**
      * 购买产品
@@ -78,17 +76,12 @@ public class Order extends TargetEntity {
      */
     public Date ftime;
 
-    /**
-     * 支付失败原因
-     */
-    public String freason;
-
-    public String getOrderId() {
-        return orderId;
+    public String getOrderNo() {
+        return orderNo;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 
     public List<Product> getProducts() {
@@ -162,14 +155,6 @@ public class Order extends TargetEntity {
         this.ftime = ftime;
     }
 
-    public String getFreason() {
-        return freason;
-    }
-
-    public void setFreason(String freason) {
-        this.freason = freason;
-    }
-
     public String getThirdOrderCode() {
         return thirdOrderCode;
     }
@@ -186,11 +171,4 @@ public class Order extends TargetEntity {
         this.sum = sum;
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
 }

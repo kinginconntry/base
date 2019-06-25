@@ -1,19 +1,15 @@
 package com.needto.order.controller;
 
-import com.needto.common.entity.PageResult;
-import com.needto.common.entity.Query;
-import com.needto.order.data.OrderData;
+import com.needto.order.data.DiscountData;
 import com.needto.order.data.OrderStatus;
 import com.needto.order.model.Order;
 import com.needto.order.service.OrderService;
 import com.needto.tool.entity.Result;
-import com.needto.web.context.WebEnv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.math.BigDecimal;
 
 /**
  * @author Administrator
@@ -26,37 +22,13 @@ public class AppController {
     protected OrderService orderService;
 
     /**
-     * 保存app订单，返回订单信息
-     * @param order
+     * 获取折扣
      * @return
      */
-    @RequestMapping("/app/order/save")
+    @RequestMapping("/app/order/discount/prepare")
     @ResponseBody
-    public Result<OrderData> buy(HttpServletRequest request, @RequestBody Order order){
-        // 保存订单
-        order.setOwner(WebEnv.getOwner());
-        return Result.forSuccessIfNotNull(OrderData.get(orderService.create(order, WebEnv.getClient(request))));
-    }
-
-    /**
-     * 查询账户的订单
-     * @param id
-     * @return
-     */
-    @RequestMapping("/app/order/find/{id}")
-    @ResponseBody
-    public Result<OrderData> findOne(@PathVariable String id){
-        return Result.forSuccessIfNotNull(OrderData.get(orderService.findById(id, WebEnv.getOwnerTarget())));
-    }
-
-    /**
-     * 查询订单
-     * @return
-     */
-    @RequestMapping("/app/order/page")
-    @ResponseBody
-    public PageResult<List<Order>> findByPage(@RequestBody Query query){
-        return orderService.findByPage(query, WebEnv.getOwnerTarget());
+    public Result<BigDecimal> discount(@RequestBody DiscountData discountData){
+        return orderService.discount(discountData.discountConfig, discountData.fee);
     }
 
     /**
@@ -67,7 +39,7 @@ public class AppController {
     @ResponseBody
     public Result<Boolean> finish(@RequestParam String id){
 
-        Order order = orderService.checkById(id);
+        Order order = orderService.findById(id, Order.class);
         if(order == null){
             return Result.forError("NO_ORDER", "");
         }

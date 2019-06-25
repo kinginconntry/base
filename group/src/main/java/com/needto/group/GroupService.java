@@ -1,15 +1,14 @@
 package com.needto.group;
 
-import com.google.common.collect.Lists;
+import com.needto.dao.common.CommonQueryUtils;
 import com.needto.dao.inter.CommonDao;
-import com.needto.dao.common.FieldFilter;
-import com.needto.dao.common.Op;
+import com.needto.tool.entity.Filter;
+import com.needto.tool.entity.Order;
 import com.needto.tool.entity.TreeData;
 import com.needto.tool.utils.Assert;
 import com.needto.tool.utils.TreeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -23,32 +22,22 @@ public class GroupService {
     @Autowired
     private CommonDao mongoDao;
 
-    public String getTable(String table){
-        Assert.validateStringEmpty(table, "table can not be empty");
-        return "_group_" + table;
-    }
-
     /**
      * 根据主账户信息与所属获取所有分组
-     * @param owner
      * @param table
      * @return
      */
-    public List<Group> findByOwner(String owner, String table){
-        Assert.validateStringEmpty(owner, "");
-        return this.mongoDao.find(Lists.newArrayList(
-                new FieldFilter("owner", owner)
-        ), Group.class, getTable(table));
+    public <T extends Group> List<T> find(List<Filter> filters, List<Order> orders, Class<T> obj, String table){
+        return this.mongoDao.find(CommonQueryUtils.getFilters(filters), CommonQueryUtils.getOrders(orders), obj, table);
     }
 
     /**
      * 获取分组水平结构
-     * @param owner
      * @param table
      * @return
      */
-    public List<TreeData> getHorizontal(String owner, String table){
-        return TreeUtils.getHorizontal(findByOwner(owner, table));
+    public <T extends Group> List<TreeData> getHorizontal(List<Filter> filters, List<Order> orders, Class<T> obj, String table){
+        return TreeUtils.getHorizontal(find(filters, orders, obj, table));
     }
 
     /**
@@ -57,31 +46,20 @@ public class GroupService {
      * @param table
      * @return
      */
-    public Group save(Group group, String table){
+    public <T extends Group> T save(T group, String table){
         Assert.validateNull(group, "NO_GROUP");
-        Assert.validateStringEmpty(group.getOwner(), "NO_OWNER");
         Assert.validateStringEmpty(group.getName(), "NO_NAME", "");
-        String combineTable = getTable(table);
-        Assert.validateCondition(!StringUtils.isEmpty(group.getPcode()) && this.mongoDao.findOne(Lists.newArrayList(
-                new FieldFilter("owner", group.getOwner())
-        ), Group.class, combineTable) == null, "PCODE_NOT_EXISTS", "");
-        return this.mongoDao.save(group, combineTable);
+        return this.mongoDao.save(group, table);
     }
 
     /**
      * 删除分组
-     * @param owner
+     * @param filters
      * @param table
-     * @param ids
      * @return
      */
-    public Long deleteByIds(String owner, List<String> ids, String table){
-        Assert.validateStringEmpty(owner);
-        Assert.validateNull(ids);
-        return this.mongoDao.delete(Lists.newArrayList(
-                new FieldFilter("owner", owner),
-                new FieldFilter("id", Op.IN.name(), ids)
-        ), getTable(table));
+    public Long deleteByIds(List<Filter> filters, String table){
+        return this.mongoDao.delete(CommonQueryUtils.getFilters(filters), table);
     }
 
 }

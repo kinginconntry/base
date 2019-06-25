@@ -1,8 +1,6 @@
 package com.needto.cipher.model;
 
-
-import com.needto.common.entity.Target;
-import com.needto.dao.models.UserEntity;
+import com.needto.dao.models.BaseEntity;
 import com.needto.tool.entity.Dict;
 import com.needto.tool.utils.Assert;
 import com.needto.tool.utils.CryptoUtil;
@@ -14,14 +12,9 @@ import java.util.List;
  * @author Administrator
  * api调用凭证信息
  */
-public class ApiAccess extends UserEntity {
+public class ApiAccess extends BaseEntity {
 
     public static final String TABLE = "apiaccess";
-
-    /**
-     * 所属
-     */
-    private Target belongto;
 
     /**
      * 名称
@@ -80,14 +73,6 @@ public class ApiAccess extends UserEntity {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public Target getBelongto() {
-        return belongto;
-    }
-
-    public void setBelongto(Target belongto) {
-        this.belongto = belongto;
     }
 
     public String getName() {

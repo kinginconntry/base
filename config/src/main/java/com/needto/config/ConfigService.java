@@ -1,18 +1,18 @@
 package com.needto.config;
 
 import com.google.common.collect.Lists;
-import com.needto.common.entity.Target;
+import com.needto.dao.common.CommonQueryUtils;
 import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.FieldFilter;
+import com.needto.tool.entity.Filter;
+import com.needto.tool.entity.Order;
 import com.needto.tool.exception.ValidateException;
-import com.needto.tool.utils.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,9 +37,6 @@ public class ConfigService {
         if(StringUtils.isEmpty(config.getKey())){
             throw new ValidateException("NO_KEY", "");
         }
-        if(this.findConfigCatByKey(config.getCatId(), ConfigCat.class) == null){
-            throw new ValidateException("NO_CAT", "");
-        }
         if(this.findConfigByKey(config.getCatId(), config.getKey(), config.getClass()) != null){
             throw new ValidateException("EXISTED", "");
         }
@@ -57,20 +54,14 @@ public class ConfigService {
         ), objClass, Config.TABLE);
     }
 
-    public <T extends Config> List<T> findConfigs(String catId, Class<T> objClass){
-        if(StringUtils.isEmpty(catId)){
-            return new ArrayList<>(0);
-        }
-        return this.mongoDao.find(FieldFilter.single("catId", catId), objClass, Config.TABLE);
+    public <T extends Config> List<T> findConfig(List<Filter> filters, List<Order> orders, Class<T> objClass){
+
+        return this.mongoDao.find(CommonQueryUtils.getFilters(filters), CommonQueryUtils.getOrders(orders), objClass, Config.TABLE);
     }
 
-    public long deleteConfigByKey(String catId, String key){
-        if(StringUtils.isEmpty(catId) || StringUtils.isEmpty(key)){
-            return 0L;
-        }
-        List<FieldFilter> fieldFilters = Lists.newArrayList(new FieldFilter("catId", catId), new FieldFilter("key", key));
+    public long deleteConfig(List<Filter> filters){
         LOG.debug("删除配置");
-        return this.mongoDao.delete(fieldFilters, Config.TABLE);
+        return this.mongoDao.delete(CommonQueryUtils.getFilters(filters), Config.TABLE);
     }
 
     public <T extends ConfigCat> T saveConfigCat(T configCat){
@@ -91,21 +82,8 @@ public class ConfigService {
         return this.mongoDao.findById(id, objClass, Config.TABLE);
     }
 
-    public <T extends ConfigCat> List<T> findConfigCats(Target belongto, Class<T> objClass){
-        Assert.validateNull(belongto);
-        Assert.validateStringEmpty(belongto.getGuid());
-        Assert.validateStringEmpty(belongto.getType());
-        return this.mongoDao.find(Lists.newArrayList(
-            new FieldFilter("belongto.guid", belongto.getGuid()),
-            new FieldFilter("belongto.type", belongto.getType())
-        ), objClass, Config.TABLE);
-    }
-
-    public long deleteConfigCat(String id){
-        if(StringUtils.isEmpty(id)){
-            return 0L;
-        }
+    public long deleteConfigCat(List<Filter> filters){
         LOG.debug("删除配置分类");
-        return this.mongoDao.deleteById(id, ConfigCat.TABLE);
+        return this.mongoDao.delete(CommonQueryUtils.getFilters(filters), ConfigCat.TABLE);
     }
 }

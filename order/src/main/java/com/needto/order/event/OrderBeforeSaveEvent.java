@@ -8,9 +8,9 @@ import org.springframework.context.ApplicationEvent;
  * @author Administrator
  * 订单保存事件
  */
-public class OrderBeforeSaveEvent extends ApplicationEvent {
+public class OrderBeforeSaveEvent<T extends Order> extends ApplicationEvent {
 
-    public Order order;
+    public T order;
 
     public Target client;
     /**
@@ -18,7 +18,7 @@ public class OrderBeforeSaveEvent extends ApplicationEvent {
      *
      * @param source the object on which the event initially occurred (never {@code null})
      */
-    public OrderBeforeSaveEvent(Object source, Order order, Target client) {
+    public OrderBeforeSaveEvent(Object source, T order, Target client) {
         super(source);
         this.order = order;
         this.client = client;

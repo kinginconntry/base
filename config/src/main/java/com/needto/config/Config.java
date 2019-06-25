@@ -1,19 +1,15 @@
 package com.needto.config;
 
 import com.needto.common.entity.Target;
-import com.needto.dao.models.UserEntity;
+import com.needto.dao.models.BaseEntity;
 import com.needto.tool.inter.IOrder;
 
 /**
  * @author Administrator
  */
-public class Config extends UserEntity implements IOrder {
-    public static final String TABLE = "_config";
+public class Config extends BaseEntity implements IOrder {
 
-    /**
-     * 配置所属
-     */
-    public Target belongto;
+    public static final String TABLE = "_config";
 
     /**
      * 归属分类
@@ -50,14 +46,6 @@ public class Config extends UserEntity implements IOrder {
      * 排序号
      */
     private int order;
-
-    public Target getBelongto() {
-        return belongto;
-    }
-
-    public void setBelongto(Target belongto) {
-        this.belongto = belongto;
-    }
 
     public String getCatId() {
         return catId;

@@ -1,8 +1,8 @@
 package com.needto.discount.service;
 
+import com.needto.discount.entity.DiscountUnit;
+import com.needto.discount.entity.DiscountUnitResult;
 import com.needto.tool.inter.Thing;
-
-import java.math.BigDecimal;
 
 /**
  * @author Administrator
@@ -11,12 +11,8 @@ import java.math.BigDecimal;
 public interface IDiscount extends Thing {
 
     /**
-     *
-     * @param key 折扣编号
-     * @param fee 花费
-     * @param auth 校验码
      * @return 若打折成功，返回折扣后的金额，否则抛出异常会
      */
-    BigDecimal cal(String key, BigDecimal fee, String auth);
+    DiscountUnitResult cal(DiscountUnit discountUnit);
 
 }

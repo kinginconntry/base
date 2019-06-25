@@ -1,6 +1,6 @@
 package com.needto.group;
 
-import com.needto.dao.models.UserEntity;
+import com.needto.dao.models.BaseEntity;
 import com.needto.tool.entity.Dict;
 import com.needto.tool.inter.Itree;
 
@@ -8,12 +8,7 @@ import com.needto.tool.inter.Itree;
  * 分组实体
  * @author Administrator
  */
-public class Group extends UserEntity implements Itree {
-
-    /**
-     * 主用户id
-     */
-    private String owner;
+public class Group extends BaseEntity implements Itree {
 
     /**
      * 父节点id
@@ -54,14 +49,6 @@ public class Group extends UserEntity implements Itree {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
     }
 
     public String getPid() {

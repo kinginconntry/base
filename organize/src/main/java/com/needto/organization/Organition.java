@@ -1,6 +1,6 @@
 package com.needto.organization;
 
-import com.needto.dao.models.UserEntity;
+import com.needto.dao.models.BaseEntity;
 import com.needto.tool.entity.Link;
 
 import java.util.Map;
@@ -9,14 +9,9 @@ import java.util.Map;
  * 组织实体
  * @author Administrator
  */
-public class Organition extends UserEntity {
+public class Organition extends BaseEntity {
 
     public static final String TABLE = "_organition";
-
-    /**
-     * 主用户id
-     */
-    private String owner;
 
     /**
      * 组织名
@@ -82,14 +77,6 @@ public class Organition extends UserEntity {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
     }
 
     public String getLogo() {

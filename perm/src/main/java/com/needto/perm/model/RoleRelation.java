@@ -14,11 +14,6 @@ public class RoleRelation extends BaseEntity {
     public static final String TABLE = "_rolerelation";
 
     /**
-     * 主账户id
-     */
-    public String owner;
-
-    /**
      * 角色所属
      */
     public Target belongto;
@@ -27,14 +22,6 @@ public class RoleRelation extends BaseEntity {
      * 角色id集合
      */
     public List<String> roles;
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
 
     public Target getBelongto() {
         return belongto;

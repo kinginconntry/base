@@ -8,9 +8,9 @@ import org.springframework.context.ApplicationEvent;
  * @author Administrator
  * 订单删除事件
  */
-public class OrderDeleteEvent extends ApplicationEvent {
+public class OrderDeleteEvent<T extends Order> extends ApplicationEvent {
 
-    public Order order;
+    public T order;
 
     public Target client;
     /**
@@ -18,7 +18,7 @@ public class OrderDeleteEvent extends ApplicationEvent {
      *
      * @param source the object on which the event initially occurred (never {@code null})
      */
-    public OrderDeleteEvent(Object source, Order order, Target client) {
+    public OrderDeleteEvent(Object source, T order, Target client) {
         super(source);
         this.order = order;
         this.client = client;
