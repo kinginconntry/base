@@ -1,4 +1,4 @@
-package com.needto.web.context;
+package com.needto.web.event;
 
 import com.needto.common.entity.Target;
 import org.springframework.context.ApplicationEvent;

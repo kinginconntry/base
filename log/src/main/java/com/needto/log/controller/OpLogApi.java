@@ -1,8 +1,10 @@
-package com.needto.user;
+package com.needto.log.controller;
 
 import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Query;
+import com.needto.log.entity.OpLog;
 import com.needto.tool.entity.Result;
+import com.needto.log.service.OpLogService;
 import com.needto.web.context.WebEnv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

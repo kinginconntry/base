@@ -10,7 +10,6 @@ import com.sun.javafx.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
@@ -86,12 +85,7 @@ public class IClientFilter extends CommonFilter {
                 return;
             }
             if(!initFlag){
-                Environment environment = this.applicationContext.getEnvironment();
-                try{
-                    this.iClientInit = (IClientInit) this.applicationContext.getBean(environment.getProperty("iclient.cache", "guavaClientCache"));
-                }catch (Exception e){
-                    this.iClientInit = (target, httpServletRequest1) -> {};
-                }
+                this.iClientInit = this.applicationContext.getBean(IClientInit.class);
                 this.iClientCache = this.applicationContext.getBean(IClientCache.class);
                 WebEnv.setiClientCache(iClientCache);
                 initFlag = true;

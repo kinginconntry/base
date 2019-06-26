@@ -1,6 +1,5 @@
-package com.needto.web.webconfig;
+package com.needto.web.config;
 
-import com.needto.web.context.MessageConvert;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

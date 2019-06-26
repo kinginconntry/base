@@ -1,4 +1,4 @@
-package com.needto.web.context;
+package com.needto.web.config;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.ExecutionException;
@@ -21,7 +20,6 @@ import java.util.concurrent.TimeUnit;
  * 客户端缓存，基于guava 缓存
  * @author Administrator
  */
-@Component
 public class GuavaClientCache implements IClientCache {
 
     private static final Logger LOG = LoggerFactory.getLogger(GuavaClientCache.class);
