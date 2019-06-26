@@ -1,8 +1,9 @@
 package com.needto.order.model;
 
 import com.needto.dao.models.TargetEntity;
+import com.needto.discount.entity.DiscountMultiResult;
+import com.needto.discount.entity.DiscountUnit;
 import com.needto.order.data.Product;
-import com.needto.tool.entity.Dict;
 
 import java.util.Date;
 import java.util.List;
@@ -15,66 +16,67 @@ public class Order extends TargetEntity {
 
     public static final String TABLE = "_order";
 
+    // 支付订单的基本信息
     /**
      * 订单号
      */
     public String orderNo;
-
     /**
      * 购买产品
      */
     public List<Product> products;
-
     /**
      * 订单附加信息
      */
     public String info;
-
-    /**
-     * 总金额
-     */
-    public long sum;
-
-    /**
-     * 折扣钱
-     */
-    public long discountSum;
-
-    /**
-     * 订单备注， 可选
-     */
-    public String remark;
-
     /**
      * 支付方式、途径：支付宝、微信等
      */
     public String way;
-
     /**
-     * 第三方订单编号，通过此id查询第三方订单数据
+     * 订单备注， 可选
      */
-    public String thirdOrderCode;
-
+    public String remark;
     /**
      * 订单状态
      * @see com.needto.order.data.OrderStatus
      */
-    public int status;
-
+    public String status;
     /**
      * 订单业务标识
      */
     public String biz;
-
     /**
-     * 额外配置信息
+     * 整体折扣
      */
-    public Dict extra;
+    public List<DiscountUnit> discountUnits;
 
+
+    // 支付完成时的时间（成功或失败）
     /**
      * 订单完成时间
      */
-    public Date ftime;
+    public Date time;
+    // 订单支付成功时的信息
+    /**
+     * 总金额
+     */
+    public long sum;
+    /**
+     * 第三方订单编号，通过此id查询第三方订单数据
+     */
+    public String thirdOrderCode;
+    /**
+     * 订单完成时折扣结果
+     */
+    public DiscountMultiResult discountMultiResult;
+
+    // 订单支付失败时的信息
+    /**
+     * 支付失败原因
+     */
+    public String freason;
+
 
     public String getOrderNo() {
         return orderNo;
@@ -92,12 +94,12 @@ public class Order extends TargetEntity {
         this.products = products;
     }
 
-    public long getDiscountSum() {
-        return discountSum;
+    public List<DiscountUnit> getDiscountUnits() {
+        return discountUnits;
     }
 
-    public void setDiscountSum(long discountSum) {
-        this.discountSum = discountSum;
+    public void setDiscountUnits(List<DiscountUnit> discountUnits) {
+        this.discountUnits = discountUnits;
     }
 
     public String getInfo() {
@@ -123,11 +125,11 @@ public class Order extends TargetEntity {
         this.way = way;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -139,20 +141,12 @@ public class Order extends TargetEntity {
         this.biz = biz;
     }
 
-    public Dict getExtra() {
-        return extra;
+    public long getSum() {
+        return sum;
     }
 
-    public void setExtra(Dict extra) {
-        this.extra = extra;
-    }
-
-    public Date getFtime() {
-        return ftime;
-    }
-
-    public void setFtime(Date ftime) {
-        this.ftime = ftime;
+    public void setSum(long sum) {
+        this.sum = sum;
     }
 
     public String getThirdOrderCode() {
@@ -163,12 +157,27 @@ public class Order extends TargetEntity {
         this.thirdOrderCode = thirdOrderCode;
     }
 
-    public long getSum() {
-        return sum;
+    public Date getTime() {
+        return time;
     }
 
-    public void setSum(long sum) {
-        this.sum = sum;
+    public void setTime(Date time) {
+        this.time = time;
     }
 
+    public DiscountMultiResult getDiscountMultiResult() {
+        return discountMultiResult;
+    }
+
+    public void setDiscountMultiResult(DiscountMultiResult discountMultiResult) {
+        this.discountMultiResult = discountMultiResult;
+    }
+
+    public String getFreason() {
+        return freason;
+    }
+
+    public void setFreason(String freason) {
+        this.freason = freason;
+    }
 }

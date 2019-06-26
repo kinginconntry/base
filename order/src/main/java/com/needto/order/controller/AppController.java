@@ -1,6 +1,6 @@
 package com.needto.order.controller;
 
-import com.needto.order.data.DiscountData;
+import com.needto.discount.entity.DiscountMultiResult;
 import com.needto.order.data.OrderStatus;
 import com.needto.order.model.Order;
 import com.needto.order.service.OrderService;
@@ -8,8 +8,6 @@ import com.needto.tool.entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.math.BigDecimal;
 
 /**
  * @author Administrator
@@ -27,8 +25,8 @@ public class AppController {
      */
     @RequestMapping("/app/order/discount/prepare")
     @ResponseBody
-    public Result<BigDecimal> discount(@RequestBody DiscountData discountData){
-        return orderService.discount(discountData.discountConfig, discountData.fee);
+    public Result<DiscountMultiResult> discount(@RequestBody Order order){
+        return Result.forSuccessIfNotNull(orderService.discount(order, null));
     }
 
     /**
@@ -41,20 +39,26 @@ public class AppController {
 
         Order order = orderService.findById(id, Order.class);
         if(order == null){
+            // 没有查到订单
             return Result.forError("NO_ORDER", "");
         }
 
-        if(OrderStatus.SUCCESS.key == order.getStatus()){
+        if(OrderStatus.SUCCESS.key.equals(order.getStatus())){
             // 支付成功
             return Result.forSuccess(true);
-        }else if(OrderStatus.PAYFAILED.key == order.getStatus()){
+        }else if(OrderStatus.PAYFAILED.key.equals(order.getStatus())){
             // 支付失败
             Result<Boolean> res = new Result<>();
             res.setData(false);
             res.setMessage(order.getFreason());
+            res.setSuccess(true);
             return res;
-        }else{
+        }else if(OrderStatus.NEEDPAY.key.equals(order.getStatus())){
+            // 还未支付
             return Result.forSuccess(false);
+        }else{
+            // 支付出现问题
+            return Result.forError();
         }
     }
 }
