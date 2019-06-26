@@ -1,23 +1,21 @@
 package com.needto.chatpush.email;
 
 import com.needto.chatpush.email.config.EmailSessionContainer;
-import com.needto.chatpush.email.entity.EmailData;
-import com.needto.chatpush.email.entity.IBodyBuilder;
 import com.needto.chatpush.email.event.EmailAfterSendErrorEvent;
 import com.needto.chatpush.email.event.EmailAfterSendSuccessEvent;
-import com.needto.chatpush.email.util.EmailUtil;
+import com.needto.email.entity.EmailData;
+import com.needto.email.utils.EmailUtil;
 import com.needto.tool.exception.BaseException;
 import com.needto.tool.exception.LogicException;
 import com.needto.tool.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.mail.*;
-import javax.mail.internet.*;
 import java.util.List;
-import java.util.Map;
+
+import static com.needto.email.utils.EmailUtil.createEmail;
 
 /**
  * @author Administrator
@@ -43,7 +41,7 @@ public class EmailService {
         Assert.validateNull(session, "NO_SESSION", "");
         Assert.validateStringEmpty(username, "NO_USERNAME", "");
         Assert.validateStringEmpty(password, "NO_PASSWORD", "");
-        checkEmailData(emailDatas);
+        EmailUtil.checkEmailData(emailDatas);
         Transport ts = null;
         try {
             ts = session.getTransport();

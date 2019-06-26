@@ -1,6 +1,6 @@
 package com.needto.chatpush.email.event;
 
-import com.needto.chatpush.email.entity.EmailData;
+import com.needto.email.entity.EmailData;
 import org.springframework.context.ApplicationEvent;
 
 import javax.mail.Session;
@@ -17,6 +17,22 @@ public class EmailAfterSendSuccessEvent extends ApplicationEvent {
     public EmailAfterSendSuccessEvent(Object source, EmailData emailData, Session session) {
         super(source);
         this.emailData = emailData;
+        this.session = session;
+    }
+
+    public EmailData getEmailData() {
+        return emailData;
+    }
+
+    public void setEmailData(EmailData emailData) {
+        this.emailData = emailData;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
         this.session = session;
     }
 }
