@@ -26,7 +26,7 @@ public class AccountResource {
     /**
      * 总资源数
      */
-    public int total;
+    public Integer total;
 
     public int getCurrent() {
         return current;
@@ -36,11 +36,11 @@ public class AccountResource {
         this.current = current;
     }
 
-    public int getTotal() {
+    public Integer getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(Integer total) {
         this.total = total;
     }
 

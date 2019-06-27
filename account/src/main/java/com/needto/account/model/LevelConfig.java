@@ -45,7 +45,7 @@ public class LevelConfig extends BaseEntity implements IOrder {
         /**
          * 最大值
          */
-        public Long max;
+        public Integer max;
 
         /**
          * 有效时间
@@ -89,7 +89,7 @@ public class LevelConfig extends BaseEntity implements IOrder {
     public Long maxMemberNum;
 
     /**
-     * 基于某个版本
+     * 基于某个版本(用于特性说明继承)
      */
     public String plevel;
 

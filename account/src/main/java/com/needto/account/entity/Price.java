@@ -15,6 +15,11 @@ public class Price {
     public Integer min;
 
     /**
+     * 最大购买量
+     */
+    public Integer max;
+
+    /**
      * 价格描述
      */
     public String desc;
@@ -67,5 +72,13 @@ public class Price {
 
     public void setDiscountConfig(Dict discountConfig) {
         this.discountConfig = discountConfig;
+    }
+
+    public Integer getMax() {
+        return max;
+    }
+
+    public void setMax(Integer max) {
+        this.max = max;
     }
 }
