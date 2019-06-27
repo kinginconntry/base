@@ -17,19 +17,6 @@ public class AccountService {
     @Autowired
     private CommonDao commonDao;
 
-    public Account init(Account account){
-        Assert.validateNull(account);
-        Assert.validateStringEmpty(account.getOwner());
-        Account old = this.commonDao.findOne(FieldFilter.single("owner", account.getOwner()), Account.class, Account.TABLE);
-        if(old == null){
-            account.setId(null);
-            account = this.commonDao.save(account, Account.TABLE);
-        }else{
-            account = old;
-        }
-        return account;
-    }
-
     public Account save(Account account){
         Assert.validateNull(account);
         Assert.validateStringEmpty(account.getId());

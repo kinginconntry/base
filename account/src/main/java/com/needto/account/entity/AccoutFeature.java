@@ -1,5 +1,7 @@
 package com.needto.account.entity;
 
+import com.needto.tool.entity.Dict;
+
 import java.util.Date;
 
 /**
@@ -21,7 +23,7 @@ public class AccoutFeature {
     /**
      * 特性值
      */
-    public Object value;
+    public Dict value;
 
     public Date getBegin() {
         return begin;
@@ -39,11 +41,11 @@ public class AccoutFeature {
         this.end = end;
     }
 
-    public Object getValue() {
+    public Dict getValue() {
         return value;
     }
 
-    public void setValue(Object value) {
+    public void setValue(Dict value) {
         this.value = value;
     }
 }
