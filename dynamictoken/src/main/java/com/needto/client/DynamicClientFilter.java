@@ -25,12 +25,12 @@ public class DynamicClientFilter extends CommonFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamicClientFilter.class);
 
-    private IDynamicClient iDynamicService;
+    private DynamicClient iDynamicService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if(iDynamicService == null){
-            iDynamicService = this.applicationContext.getBean(IDynamicClient.class);
+            iDynamicService = this.applicationContext.getBean(DynamicClient.class);
         }
 
         String clientGuid = ((HttpServletRequest)request).getHeader(Constant.CLIENT_IDENTIFYING);

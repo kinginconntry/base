@@ -5,7 +5,6 @@ import com.needto.cluster.entity.Node;
 import com.needto.cluster.service.ClusterService;
 import com.needto.tool.utils.Utils;
 import org.apache.zookeeper.CreateMode;
-import org.springframework.stereotype.Service;
 
 import java.net.UnknownHostException;
 
@@ -13,7 +12,6 @@ import java.net.UnknownHostException;
  * @author Administrator
  * 客户端节点服务
  */
-@Service
 public class ClientService extends ClusterService {
 
     /**

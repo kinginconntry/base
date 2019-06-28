@@ -1,16 +1,10 @@
 package com.needto.web.context;
 
 import com.needto.common.entity.Target;
-import com.needto.tool.entity.Dict;
-import com.needto.tool.utils.Assert;
-import com.needto.web.data.Constant;
-import com.needto.web.inter.IClientCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.env.Environment;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Administrator
@@ -24,57 +18,48 @@ public class WebEnv {
     private static final Logger LOG = LoggerFactory.getLogger(WebEnv.class);
 
     /**
-     * 登录用户的主用户id
+     * 客户端已经进行初始化的标识（true， false， null）
      */
-    public static final String OWNER_KEY = "__owner";
+    public static final String CLIENT_INIT = "_CI";
+
+    /**
+     * 登录主用户id
+     * owner转化成Target 时的类型
+     */
+    public static final String OWNER_TYPE = "_OWNER";
+
+    /**
+     * 登录用户唯一key
+     */
+    public static final String OWNER_KEY = "_WNK";
+
+    /**
+     * guid转化成Target 时的类型
+     */
+    public static final String GUID_TYPE = "_GUID";
+
+    /**
+     * 客户端唯一key，在分布式环境下通用
+     */
+    public static final String GUID_KEY = "_GDK";
 
     /**
      * 当前线程的客户端信息
      */
-    private static final ThreadLocal<Dict> CURRENT_CLIENT_CACHE = new ThreadLocal<>();
+    private static final ThreadLocal<HttpSession> CURRENT_CLIENT_CACHE = new ThreadLocal<>();
 
-    /**
-     * 环境上下文
-     */
-    private static ApplicationContext applicationContext = null;
 
-    /**
-     * 全局配置属性
-     */
-    private static Environment environment = null;
-
-    /**
-     * 客户端缓存
-     */
-    private static IClientCache iClientCache;
-
-    /**
-     * 获取容器环境上下文
-     * @return
-     */
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
-
-    /**
-     * 设置容器环境上下文
-     * @param applicationContext
-     */
-    public static void setApplicationContext(ApplicationContext applicationContext) {
-        WebEnv.applicationContext = applicationContext;
-    }
-
-    public static void setClientCache(Dict dict){
-        if(dict != null){
-            CURRENT_CLIENT_CACHE.set(dict);
+    public static void setHttpSession(HttpSession httpSession){
+        if(httpSession != null){
+            CURRENT_CLIENT_CACHE.set(httpSession);
         }
     }
 
-    public static void removeClientCache(){
+    public static void removeHttpSession(){
         CURRENT_CLIENT_CACHE.remove();
     }
 
-    public static Dict getClientCache(){
+    public static HttpSession getHttpSession(){
         return CURRENT_CLIENT_CACHE.get();
     }
 
@@ -84,65 +69,61 @@ public class WebEnv {
      * @param <T>
      * @return
      */
-    public static <T> T getClientData(String key){
-        Assert.validateNull(key);
-        Dict dict = getClientCache();
-        if(dict == null){
-            return null;
+    public static <T> T getSessionData(String key, T defaultVal){
+        HttpSession httpSession = getHttpSession();
+        T v =  (T) httpSession.getAttribute(key);
+        if(v == null){
+            return defaultVal;
+        }else{
+            return v;
         }
-        return dict.getValue(key);
     }
 
-    public static String getOwner(){
-        return getClientData(OWNER_KEY);
+    public static <T> T getSessionData(String key){
+        return getSessionData(key, null);
     }
 
-    public static Target getOwnerTarget(){
-        String owner = getOwner();
-        Target target = new Target();
-        target.setGuid(owner);
-        target.setType(OWNER_KEY);
-        return target;
+    public static void setSessionData(String key, Object o){
+        HttpSession httpSession = getHttpSession();
+        httpSession.setAttribute(key, o);
     }
 
     public static void setOwner(String key){
-        Dict dict = getClientCache();
-        if(dict != null){
-            dict.put(OWNER_KEY, key);
-        }
+        setSessionData(OWNER_KEY, key);
+    }
+
+    public static String getOwner(){
+        return getSessionData(OWNER_KEY);
+    }
+
+    public static Target getOwnerTarget(){
+        return new Target(OWNER_TYPE, getOwner());
+    }
+
+    public static void setGuid(String key){
+        setSessionData(GUID_KEY, key);
+    }
+
+    public static String getGuid(){
+        return getSessionData(GUID_KEY);
+    }
+
+    public static Target getGuidTarget(){
+        return new Target(GUID_TYPE, getGuid());
     }
 
     /**
-     * 获取环境对象
+     * 初始化客户端
+     */
+    public static void setInit(){
+        setSessionData(CLIENT_INIT, true);
+    }
+
+    /**
+     * 客户端是否已经初始化
      * @return
      */
-    public static Environment getEnvironment() {
-        return environment;
+    public static boolean isInit(){
+        return getSessionData(CLIENT_INIT, false);
     }
-
-    /**
-     * 设置环境对象
-     * @param environment
-     */
-    public static void setEnvironment(Environment environment) {
-        WebEnv.environment = environment;
-    }
-
-    public static IClientCache getiClientCache() {
-        return WebEnv.iClientCache;
-    }
-
-    public static void setiClientCache(IClientCache iClientCache) {
-        WebEnv.iClientCache = iClientCache;
-    }
-
-    /**
-     * 获取客户端标识信息
-     * @param httpServletRequest
-     * @return
-     */
-    public static Target getClient(HttpServletRequest httpServletRequest){
-        return (Target) httpServletRequest.getAttribute(Constant.FINGER_KEY);
-    }
-
 }

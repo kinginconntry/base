@@ -35,7 +35,7 @@ public class NoticeController {
     @RequestMapping(value = {"/sys/notice/find", "/admin/notice/find", "/app/notice/find"})
     @ResponseBody
     public Result<List<Notice>> findNotice(HttpServletRequest request){
-        return Result.forSuccess(noticeCache.getNotices(WebEnv.getClient(request)));
+        return Result.forSuccess(noticeCache.getNotices(WebEnv.getGuidTarget()));
     }
 
     /**
@@ -49,6 +49,6 @@ public class NoticeController {
         if(CollectionUtils.isEmpty(ids)){
             return Result.forError("NO_ID", "");
         }
-        return Result.forSuccess(noticeService.ackNotice(WebEnv.getClient(request), ids));
+        return Result.forSuccess(noticeService.ackNotice(WebEnv.getGuidTarget(), ids));
     }
 }

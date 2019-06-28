@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 public class DynamicRequestConfig {
 
     @Resource
-    private IDynamicClient iDynamicService;
+    private DynamicClient iDynamicService;
 
     @Bean
     public RequestInterceptor headerInterceptor() {

@@ -1,14 +1,12 @@
 package com.needto.web.config;
 
-import com.needto.common.entity.Target;
-import com.needto.web.inter.IClientCache;
-import com.needto.web.inter.IClientInit;
+import com.needto.web.inter.ClientIntercepter;
+import com.needto.web.session.HeaderCookieHttpSessionIdResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.core.env.Environment;
 
 /**
  * @author Administrator
@@ -19,30 +17,31 @@ public class WebConfig {
     @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
+    private Environment environment;
+
+    /**
+     * 客户端初始化拦截器
+     * @return
+     */
     @Bean
-    public IClientCache iClientCache(){
-        IClientCache iClientCache;
+    public ClientIntercepter clientIntercepter(){
+        ClientIntercepter clientIntercepter;
         try {
-            iClientCache = applicationContext.getBean(IClientCache.class);
+            clientIntercepter = applicationContext.getBean(ClientIntercepter.class);
         }catch (Exception e){
-            iClientCache = applicationContext.getAutowireCapableBeanFactory().createBean(GuavaClientCache.class);
+            clientIntercepter = new ClientIntercepter() {};
         }
-        return iClientCache;
+        return clientIntercepter;
     }
 
+    /**
+     * session 策略
+     * @return
+     */
     @Bean
-    public IClientInit iClientInit(){
-        IClientInit iClientInit;
-        try {
-            iClientInit = applicationContext.getBean(IClientInit.class);
-        }catch (Exception e){
-            iClientInit = new IClientInit() {
-                @Override
-                public void init(Target target, HttpServletRequest httpServletRequest) {
-
-                }
-            };
-        }
-        return iClientInit;
+    public HeaderCookieHttpSessionIdResolver headerCookieHttpSessionIdResolver(){
+        String clientKey = environment.getProperty("client.key", HeaderCookieHttpSessionIdResolver.TOKEN_KEY);
+        return new HeaderCookieHttpSessionIdResolver(clientKey);
     }
 }

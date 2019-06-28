@@ -14,8 +14,6 @@ public class HttpUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(HttpUtil.class);
 
-    private static final String DEFAULT_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
-
     /**
      * 生成普通二维码
      */

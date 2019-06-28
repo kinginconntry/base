@@ -1,22 +1,18 @@
 package com.needto.web.utils;
 
-import com.needto.common.entity.Target;
 import com.needto.tool.exception.ValidateException;
-import com.needto.tool.utils.Assert;
 import com.needto.tool.utils.SignUtils;
 import com.needto.tool.utils.Utils;
 import com.needto.tool.utils.ValidateUtils;
-import com.needto.web.data.ClientType;
 import com.needto.web.data.Constant;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Administrator
@@ -106,15 +102,34 @@ public class RequestUtil {
         }
     }
 
+    public static List<String> getHeaders(HttpServletRequest request, String headerName){
+        Enumeration<String> headers = request.getHeaders(headerName);
+        List<String> headerList = new ArrayList<>();
+        while (headers.hasMoreElements()){
+            headerList.add(headers.nextElement());
+        }
+        return headerList;
+    }
+
     /**
      * 编码url
      *
-     * @param redirect
+     * @param url
      * @return
      * @throws UnsupportedEncodingException
      */
-    public static String encodeUrl(String redirect) throws UnsupportedEncodingException {
-        return URLEncoder.encode(redirect, "utf-8");
+    public static String encodeUrl(String url) throws UnsupportedEncodingException {
+        return URLEncoder.encode(url, "utf-8");
+    }
+
+    /**
+     * 解码url
+     * @param url
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    public static String decodeUrl(String url) throws UnsupportedEncodingException {
+        return URLDecoder.decode(url, "utf-8");
     }
 
     /**
@@ -124,16 +139,20 @@ public class RequestUtil {
      * @param token
      * @return
      */
-    public static String setUrlToken(String url, String token) {
+    public static String setToken(String url, String tokenKey, String token) {
         if (ValidateUtils.isUrl(url)) {
             throw new ValidateException("", "illegal url");
         }
         if (url.contains("?")) {
-            url = String.format("%s&%s=%s", url, Constant.TOKEN_KEY, token);
+            url = String.format("%s&%s=%s", url, tokenKey, token);
         } else {
-            url = String.format("%s?%s=%s", url, Constant.TOKEN_KEY, token);
+            url = String.format("%s?%s=%s", url, tokenKey, token);
         }
         return url;
+    }
+
+    public static String setToken(String url, String token) {
+        return setToken(url, Constant.TOKEN_KEY, token);
     }
 
     /**
@@ -143,17 +162,21 @@ public class RequestUtil {
      * @param request
      * @return
      */
-    public static String getToken(HttpServletRequest request) {
+    public static String getToken(HttpServletRequest request, String tokenKey) {
         Map<String, Object> param = getRequestParam(request);
-        String token = Utils.nullToString(param.get(Constant.TOKEN_KEY));
+        String token = Utils.nullToString(param.get(tokenKey));
         if (!StringUtils.isEmpty(token)) {
             return token;
         }
-        token = CookieUtils.getCookieValue(request, Constant.TOKEN_KEY);
+        token = CookieUtils.getCookieValue(request, tokenKey);
         if (!StringUtils.isEmpty(token)) {
             return token;
         }
-        return request.getHeader(Constant.TOKEN_KEY);
+        return request.getHeader(tokenKey);
+    }
+
+    public static String getToken(HttpServletRequest request) {
+        return getToken(request, Constant.TOKEN_KEY);
     }
 
     /**
@@ -187,54 +210,7 @@ public class RequestUtil {
      * @return
      */
     public static String getUserAgent(HttpServletRequest request) {
-        return Utils.nullToString(request.getHeader(Constant.USER_AGENT_HEADER)).toLowerCase();
-    }
-
-    /**
-     * 获取客户端指纹
-     * 1 先获取token
-     * 2 若都没有就获取客户端生成的key
-     * 3 若都没有则根据请求特性生成指纹信息(ip + ua + 其他信息)
-     * @param request
-     * @return
-     */
-    public static Target getRequestFingerPrint(HttpServletRequest request){
-        Map<String, Object> param = getRequestParam(request);
-
-        /**
-         * 获取用户token指纹
-         */
-        String fingerPrint = Utils.nullToString(param.get(Constant.TOKEN_KEY));
-        if (!StringUtils.isEmpty(fingerPrint)) {
-            return new Target(ClientType.TOKEN.name(), fingerPrint);
-        }
-        fingerPrint = CookieUtils.getCookieValue(request, Constant.TOKEN_KEY);
-        if(!StringUtils.isEmpty(fingerPrint)){
-            return new Target(ClientType.TOKEN.name(), fingerPrint);
-        }
-        fingerPrint = request.getHeader(Constant.TOKEN_KEY);
-        if(!StringUtils.isEmpty(fingerPrint)){
-            return new Target(ClientType.TOKEN.name(), fingerPrint);
-        }
-
-        // 获取设置的客户端指纹信息
-        fingerPrint = request.getHeader(Constant.FINGER_KEY);
-        if(!StringUtils.isEmpty(fingerPrint)){
-            String type = request.getHeader(Constant.CLIENT_TYPE_KEY);
-            Assert.validateCondition(!ClientType.contain(type), "UNKNOW_CLIENT");
-            return new Target(type, fingerPrint);
-        }
-
-        // 获取cookie中的指纹信息
-        fingerPrint = CookieUtils.getCookieValue(request, Constant.FINGER_KEY);
-        if(!StringUtils.isEmpty(fingerPrint)){
-            String type = CookieUtils.getCookieValue(request, Constant.CLIENT_TYPE_KEY);
-            Assert.validateCondition(!ClientType.contain(type), "UNKNOW_CLIENT");
-            return new Target(type, fingerPrint);
-        }
-
-        // 没有则产生一个指纹信息
-        return new Target(ClientType.NO_AUTH.name(), Utils.getGuid());
+        return Utils.nullToString(request.getHeader("User-Agent")).toLowerCase();
     }
 
     /**

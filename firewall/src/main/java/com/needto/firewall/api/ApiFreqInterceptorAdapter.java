@@ -6,6 +6,7 @@ import com.needto.tool.entity.Result;
 import com.needto.web.context.WebEnv;
 import com.needto.web.utils.RequestUtil;
 import com.needto.web.utils.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +42,14 @@ public class ApiFreqInterceptorAdapter extends HandlerInterceptorAdapter {
                     return super.preHandle(request, response, handler);
                 }
 
-                Target target = WebEnv.getClient(request);
-                if(target == null && !apiFreqLimit.useIp()){
+                Target target = WebEnv.getGuidTarget();
+                if(StringUtils.isEmpty(target.getGuid()) && !apiFreqLimit.useIp()){
                     return super.preHandle(request, response, handler);
                 }
                 String source = ((HandlerMethod) handler).getBean().getClass().getName() + "_" + ((HandlerMethod) handler).getMethod().getName();
                 String targetGuid;
-                if(target != null){
-                    targetGuid = target.getGuid();
+                if(!StringUtils.isEmpty(target.getGuid())){
+                    targetGuid = target.getTargetId();
                 }else{
                     String ip = RequestUtil.getIp(request);
                     targetGuid = "IP_" + ip;

@@ -32,7 +32,7 @@ public class PermissionIntercept implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         PermAuth validate = ((HandlerMethod) handler).getMethodAnnotation(PermAuth.class);
         if(validate != null){
-            List<String> funcPerms = WebEnv.getClientCache().getValue(Constant.RESOURCE_KEY, DEFAULT_RESOURCE_PERMS).getValue(Constant.FUNCPERM_KEY, DEFAULT_FUNC_PERMS);
+            List<String> funcPerms = WebEnv.getSessionData(Constant.RESOURCE_KEY, DEFAULT_RESOURCE_PERMS).getValue(Constant.FUNCPERM_KEY, DEFAULT_FUNC_PERMS);
             if(CollectionUtils.isEmpty(funcPerms) || !funcPerms.contains(validate.value())){
                 ResponseUtil.outJson(response, Result.forError(validate.errcode(), validate.msg()));
                 return false;

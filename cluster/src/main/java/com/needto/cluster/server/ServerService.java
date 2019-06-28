@@ -8,7 +8,6 @@ import com.needto.tool.utils.ScheduleUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
-import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +21,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author Administrator
  * 服务端节点管理服务
  */
-@Service
 public class ServerService extends ClusterService implements Watcher {
 
     private Map<String, Node> map = new ConcurrentHashMap<>();

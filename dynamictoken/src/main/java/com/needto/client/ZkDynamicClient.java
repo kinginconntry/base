@@ -8,16 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
 /**
  * @author Administrator
- * 内部服务动态签名调用
+ * 内部服务动态签名调用，负责接口动态
  */
-@Service
-public class ZkDynamicClient implements Watcher, IDynamicClient {
+public class ZkDynamicClient implements Watcher, DynamicClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(ZkDynamicClient.class);
 

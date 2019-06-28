@@ -1,5 +1,6 @@
 package com.needto.common.context;
 
+import com.needto.common.entity.SystemState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -23,6 +24,11 @@ public class SpringEnv {
      * 日志
      */
     private static final Logger LOG = LoggerFactory.getLogger(SpringEnv.class);
+
+    /**
+     * 系统状态
+     */
+    private static SystemState status = SystemState.NO;
 
     /**
      * 环境上下文
@@ -139,5 +145,14 @@ public class SpringEnv {
             return null;
         }
         return environment.getProperty(key, defaultVal);
+    }
+
+
+    public static SystemState getStatus() {
+        return status;
+    }
+
+    public static void setStatus(SystemState status) {
+        SpringEnv.status = status;
     }
 }

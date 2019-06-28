@@ -1,7 +1,5 @@
 package com.needto.keyvalue;
 
-import com.google.common.collect.Lists;
-import com.needto.common.entity.Target;
 import com.needto.tool.entity.Dict;
 import com.needto.tool.utils.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -2,18 +2,23 @@ package com.needto.common.entity;
 
 /**
  * 系统服务状态
+ * @author Administrator
  */
 public enum SystemState {
+    /**
+     * 容器未开始
+     */
+    NO,
     /**
      * 正在启动
      */
     INITIATING,
     /**
-     * 已就绪
+     * 已停止
      */
-    READY,
+    STOP,
     /**
-     * 已调度重启
+     * 运行中
      */
-    REBOOT_SCHEDULED
+    RUNNING;
 }

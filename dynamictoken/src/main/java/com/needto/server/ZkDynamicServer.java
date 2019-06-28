@@ -7,14 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 /**
  * @author Administrator
+ * 负责发送动态密钥
  */
-@Component
 public class ZkDynamicServer implements IDynamicServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(ZkDynamicServer.class);

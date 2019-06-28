@@ -42,22 +42,9 @@ public class Constant {
     public static final String SIGN_KEY = "sg";
 
     /**
-     * user-agent key
-     */
-    public static final String USER_AGENT_HEADER = "User-Agent";
-
-    /**
-     * 客户端指纹key
-     */
-    public static final String FINGER_KEY = "finger";
-
-    /**
-     *  客户端类型key
-     */
-    public static final String CLIENT_TYPE_KEY = "clienttype";
-
-    /**
      * token键
      */
     public static final String TOKEN_KEY = "tk";
+
+
 }
