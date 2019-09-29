@@ -34,7 +34,7 @@
 
         <dependency>
             <groupId>com.needto</groupId>
-            <artifactId>cache</artifactId>
+            <artifactId>redis</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

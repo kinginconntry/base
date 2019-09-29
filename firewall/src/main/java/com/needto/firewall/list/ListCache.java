@@ -1,9 +1,9 @@
 package com.needto.firewall.list;
 
-import com.needto.cache.entity.CacheWrap;
-import com.needto.cache.entity.CacheData;
-import com.needto.cache.redis.RedisCache;
+import com.needto.common.entity.CacheData;
+import com.needto.common.entity.CacheWrap;
 import com.needto.common.entity.Target;
+import com.needto.redis.service.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

@@ -2,8 +2,8 @@ package com.needto.firewall.frequency;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.needto.cache.entity.CacheData;
-import com.needto.cache.redis.RedisCache;
+import com.needto.common.entity.CacheData;
+import com.needto.redis.service.RedisCache;
 import com.needto.tool.utils.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
