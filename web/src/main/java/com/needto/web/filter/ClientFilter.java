@@ -97,20 +97,14 @@ public class ClientFilter extends CommonFilter {
                 LOG.debug("客户端过滤器初始化，clientIntercepter {}", clientIntercepter);
             }
 
-            // 这里需要判断是否已经初始化
-            if(WebEnv.isInit()){
-                Boolean flag = clientIntercepter.init(httpServletRequest, httpServletResponse);
-                if(flag != null && !flag){
-                    return;
-                }
-                WebEnv.setGuid(clientIntercepter.guid(httpServletRequest, httpServletResponse));
-                WebEnv.setInit();
-            }else{
-                Boolean flag = clientIntercepter.filter(httpServletRequest, httpServletResponse);
-                if(flag != null && !flag){
-                    return;
-                }
+            if(!clientIntercepter.auth(httpServletRequest, httpServletResponse)){
+                // 没有授权则返回；
+                return;
             }
+
+            // 初始化
+            clientIntercepter.init(httpServletRequest, httpServletResponse);
+
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (ServletException | IOException e) {
             e.printStackTrace();

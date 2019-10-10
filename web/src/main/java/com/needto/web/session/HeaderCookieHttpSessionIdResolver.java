@@ -1,6 +1,7 @@
 package com.needto.web.session;
 
 import com.google.common.collect.Lists;
+import com.needto.web.data.Constant;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 import org.springframework.util.CollectionUtils;
@@ -19,15 +20,6 @@ import java.util.List;
  */
 public class HeaderCookieHttpSessionIdResolver implements HttpSessionIdResolver {
 
-    /**
-     * 客户端指纹key
-     */
-    public static final String FINGER_KEY = "finger";
-
-    /**
-     * token键
-     */
-    public static final String TOKEN_KEY = "tk";
 
     private static final String WRITTEN_SESSION_ID_ATTR = HeaderCookieHttpSessionIdResolver.class
             .getName().concat(".WRITTEN_SESSION_ID_ATTR");
@@ -41,23 +33,11 @@ public class HeaderCookieHttpSessionIdResolver implements HttpSessionIdResolver 
      * @return
      */
     public static HeaderCookieHttpSessionIdResolver token(CookieSerializer cookieSerializer){
-        return new HeaderCookieHttpSessionIdResolver(TOKEN_KEY, cookieSerializer);
+        return new HeaderCookieHttpSessionIdResolver(Constant.TOKEN_KEY, cookieSerializer);
     }
 
     public static HeaderCookieHttpSessionIdResolver token(){
         return token(null);
-    }
-
-    /**
-     * 指纹key
-     * @return
-     */
-    public static HeaderCookieHttpSessionIdResolver fingerPrint(CookieSerializer cookieSerializer){
-        return new HeaderCookieHttpSessionIdResolver(FINGER_KEY, cookieSerializer);
-    }
-
-    public static HeaderCookieHttpSessionIdResolver fingerPrint(){
-        return fingerPrint(null);
     }
 
     public HeaderCookieHttpSessionIdResolver(String key) {

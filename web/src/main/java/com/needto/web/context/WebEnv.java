@@ -1,6 +1,5 @@
 package com.needto.web.context;
 
-import com.needto.common.entity.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,32 +15,6 @@ public class WebEnv {
      * 日志
      */
     private static final Logger LOG = LoggerFactory.getLogger(WebEnv.class);
-
-    /**
-     * 客户端已经进行初始化的标识（true， false， null）
-     */
-    public static final String CLIENT_INIT = "_CI";
-
-    /**
-     * 登录主用户id
-     * owner转化成Target 时的类型
-     */
-    public static final String OWNER_TYPE = "_OWNER";
-
-    /**
-     * 登录用户唯一key
-     */
-    public static final String OWNER_KEY = "_WNK";
-
-    /**
-     * guid转化成Target 时的类型
-     */
-    public static final String GUID_TYPE = "_GUID";
-
-    /**
-     * 客户端唯一key，在分布式环境下通用
-     */
-    public static final String GUID_KEY = "_GDK";
 
     /**
      * 当前线程的客户端信息
@@ -88,42 +61,9 @@ public class WebEnv {
         httpSession.setAttribute(key, o);
     }
 
-    public static void setOwner(String key){
-        setSessionData(OWNER_KEY, key);
+    public static void removeSessionData(String key){
+        HttpSession httpSession = getHttpSession();
+        httpSession.removeAttribute(key);
     }
 
-    public static String getOwner(){
-        return getSessionData(OWNER_KEY);
-    }
-
-    public static Target getOwnerTarget(){
-        return new Target(OWNER_TYPE, getOwner());
-    }
-
-    public static void setGuid(String key){
-        setSessionData(GUID_KEY, key);
-    }
-
-    public static String getGuid(){
-        return getSessionData(GUID_KEY);
-    }
-
-    public static Target getGuidTarget(){
-        return new Target(GUID_TYPE, getGuid());
-    }
-
-    /**
-     * 初始化客户端
-     */
-    public static void setInit(){
-        setSessionData(CLIENT_INIT, true);
-    }
-
-    /**
-     * 客户端是否已经初始化
-     * @return
-     */
-    public static boolean isInit(){
-        return getSessionData(CLIENT_INIT, false);
-    }
 }

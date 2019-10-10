@@ -1,5 +1,6 @@
 package com.needto.web.config;
 
+import com.needto.web.data.Constant;
 import com.needto.web.inter.ClientIntercepter;
 import com.needto.web.session.HeaderCookieHttpSessionIdResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +39,28 @@ public class WebConfig {
     }
 
     /**
+     * 默认的页面构造器
+     * @return
+     */
+    @Bean
+    public ErrorPageProducer errorPageProducer(){
+        ErrorPageProducer errorPageProducer;
+        try {
+            errorPageProducer = applicationContext.getBean(ErrorPageProducer.class);
+        }catch (Exception e){
+            errorPageProducer = new ErrorPageProducer() {};
+        }
+        return errorPageProducer;
+    }
+
+
+    /**
      * session 策略
      * @return
      */
     @Bean
     public HeaderCookieHttpSessionIdResolver headerCookieHttpSessionIdResolver(){
-        String clientKey = environment.getProperty("client.key", HeaderCookieHttpSessionIdResolver.TOKEN_KEY);
+        String clientKey = environment.getProperty("client.key", Constant.TOKEN_KEY);
         return new HeaderCookieHttpSessionIdResolver(clientKey);
     }
 
