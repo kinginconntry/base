@@ -1,22 +1,25 @@
 package com.needto.firewall.list;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.needto.common.entity.PageResult;
 import com.needto.common.entity.Target;
+import com.needto.dao.common.Op;
 import com.needto.dao.inter.CommonDao;
 import com.needto.dao.common.CommonQuery;
 import com.needto.dao.common.PageDataResult;
 import com.needto.dao.common.FieldFilter;
+import com.needto.tool.entity.Dict;
 import com.needto.tool.utils.Assert;
 import com.needto.tool.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class FilterListService {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private CommonDao mongoDao;
+    private CommonDao commonDao;
 
     /**
      * 保存黑名单
@@ -53,7 +56,7 @@ public class FilterListService {
             Assert.validateCondition(filterList.getEnd().getTime() <= System.currentTimeMillis(), "end can not be less than currentTime");
         }
 
-        FilterList temp = this.mongoDao.findOne(Lists.newArrayList(
+        FilterList temp = this.commonDao.findOne(Lists.newArrayList(
                 new FieldFilter("mode", filterList.getMode()),
                 new FieldFilter("target.type", filterList.getTarget().getType()),
                 new FieldFilter("target.guid", filterList.getTarget().getGuid())
@@ -62,7 +65,7 @@ public class FilterListService {
             temp.setEnd(filterList.getEnd());
             temp.setStart(filterList.getStart());
         }
-        temp = this.mongoDao.save(filterList, FilterList.TABLE);
+        temp = this.commonDao.save(filterList, FilterList.TABLE);
         if(temp != null){
             applicationContext.publishEvent(new SetListEvent(this, temp));
         }
@@ -75,10 +78,10 @@ public class FilterListService {
      * @return
      */
     public long deleteByFilter(List<FieldFilter> filterList){
-        List<FilterList> filterLists = this.mongoDao.find(filterList, FilterList.class, FilterList.TABLE);
+        List<FilterList> filterLists = this.commonDao.find(filterList, FilterList.class, FilterList.TABLE);
         if(!CollectionUtils.isEmpty(filterLists)){
             applicationContext.publishEvent(new RemoveListEvent(this, filterLists));
-            return this.mongoDao.delete(filterList, FilterList.TABLE);
+            return this.commonDao.delete(filterList, FilterList.TABLE);
         }
         return 0L;
     }
@@ -89,7 +92,7 @@ public class FilterListService {
      * @return
      */
     public PageResult<List<FilterList>> findByPage(CommonQuery commonQuery){
-        PageDataResult<FilterList> res = this.mongoDao.findByPage(commonQuery, FilterList.class, FilterList.TABLE);
+        PageDataResult<FilterList> res = this.commonDao.findByPage(commonQuery, FilterList.class, FilterList.TABLE);
         return PageResult.forSuccess(res.getTotal(), res.getPage(), res.getData());
     }
 
@@ -100,9 +103,20 @@ public class FilterListService {
      * @return
      */
     public FilterList findValid(String mode, Target target){
-        Criteria or0 = Criteria.where("end").exists(false);
-        Criteria or1 = Criteria.where("end").gte(new Date());
-        Criteria criteria = Criteria.where("mode").is(mode).and("target.type").is(target.getType()).and("target.guid").is(target.getGuid()).and("start").gte(DateUtils.getBeginDate(0)).lt(DateUtils.getBeginDate(1)).orOperator(or0, or1);
-        return this.mongoDao.findOne(criteria.getCriteriaObject().toJson(), FilterList.class, FilterList.TABLE);
+        Dict dict = new Dict();
+        dict.put("mode", mode);
+        dict.put("target.type", target.getType());
+        dict.put("target.guid", target.getGuid());
+        Dict startMap = new Dict();
+        startMap.put("$gte", DateUtils.getBeginDate(0));
+        startMap.put("$lt", DateUtils.getBeginDate(1));
+        dict.put("start", startMap);
+
+        dict.put("$or", Lists.newArrayList(
+            Dict.of("end", Dict.of("$exist", false)),
+            Dict.of("end", new Date())
+        ));
+        return this.commonDao.findOne(JSON.toJSONString(dict), FilterList.class, FilterList.TABLE);
+
     }
 }

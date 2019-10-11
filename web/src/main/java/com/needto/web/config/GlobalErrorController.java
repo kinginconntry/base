@@ -3,14 +3,13 @@ package com.needto.web.config;
 import com.needto.common.context.SpringEnv;
 import com.needto.tool.entity.Result;
 import com.needto.tool.exception.BaseException;
-import com.needto.tool.exception.LogicException;
 import com.needto.tool.utils.ValidateUtils;
 import com.needto.web.utils.RequestUtil;
 import com.needto.web.utils.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,7 +27,25 @@ public class GlobalErrorController{
     private static final Logger LOG = LoggerFactory.getLogger(GlobalErrorController.class);
 
     @Autowired
+    private ApplicationContext applicationContext;
+
     private ErrorPageProducer errorPageProducer;
+
+    private ErrorPageProducer getErrorPageProducer(){
+        if(errorPageProducer == null){
+            synchronized (this){
+                if(errorPageProducer == null){
+                    try {
+                        errorPageProducer = applicationContext.getBean(ErrorPageProducer.class);
+                    }catch (Exception e){
+                        errorPageProducer = new ErrorPageProducer() {};
+                    }
+                }
+            }
+
+        }
+        return errorPageProducer;
+    }
 
     @ExceptionHandler(Exception.class)
     public ModelAndView error(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {

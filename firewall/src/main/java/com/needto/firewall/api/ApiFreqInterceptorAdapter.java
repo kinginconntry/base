@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 public class ApiFreqInterceptorAdapter extends HandlerInterceptorAdapter {
 
+    public static final String FREQ_TARGET = "_FREQ_TARGET";
+
     private static final Logger LOG = LoggerFactory.getLogger(ApiFreqInterceptorAdapter.class);
 
     @Autowired
@@ -42,7 +44,7 @@ public class ApiFreqInterceptorAdapter extends HandlerInterceptorAdapter {
                     return super.preHandle(request, response, handler);
                 }
 
-                Target target = WebEnv.getGuidTarget();
+                Target target = WebEnv.getSessionData(FREQ_TARGET);
                 if(StringUtils.isEmpty(target.getGuid()) && !apiFreqLimit.useIp()){
                     return super.preHandle(request, response, handler);
                 }

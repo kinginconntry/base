@@ -34,11 +34,6 @@ public class ClientFilter extends CommonFilter {
     public static final int ORDER = Integer.MAX_VALUE + 100;
 
     /**
-     * 是否已经进行过初始化
-     */
-    private boolean initFlag = false;
-
-    /**
      * 客户端初始化
      */
     private ClientIntercepter clientIntercepter;
@@ -91,10 +86,17 @@ public class ClientFilter extends CommonFilter {
             }
 
             // 初始化拦截器
-            if(!initFlag){
-                this.clientIntercepter = this.applicationContext.getBean(ClientIntercepter.class);
-                initFlag = true;
-                LOG.debug("客户端过滤器初始化，clientIntercepter {}", clientIntercepter);
+            if(this.clientIntercepter == null){
+                synchronized (this){
+                    if(this.clientIntercepter ==null){
+                        try {
+                            this.clientIntercepter = applicationContext.getBean(ClientIntercepter.class);
+                        }catch (Exception e){
+                            this.clientIntercepter = new ClientIntercepter() {};
+                        }
+                        LOG.debug("客户端过滤器初始化，clientIntercepter {}", clientIntercepter);
+                    }
+                }
             }
 
             if(!clientIntercepter.auth(httpServletRequest, httpServletResponse)){
