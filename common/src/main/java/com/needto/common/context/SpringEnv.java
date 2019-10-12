@@ -119,7 +119,7 @@ public class SpringEnv {
     }
 
     public static boolean isDebug(){
-        return "debug".equalsIgnoreCase(environment.getProperty("debug", "false"));
+        return Boolean.parseBoolean(environment.getProperty("debug", "false"));
     }
 
     /**

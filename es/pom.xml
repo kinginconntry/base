@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>es</artifactId>
-    <name>dao</name>
+    <name>es</name>
     <description>数据库</description>
 
     <dependencies>
