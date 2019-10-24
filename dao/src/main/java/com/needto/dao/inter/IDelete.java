@@ -7,7 +7,7 @@ public interface IDelete {
      */
     String DELETED = "deleted";
 
-    boolean isDeleted();
+    Boolean isDeleted();
 
     void setDeleted(boolean deleted);
 }

@@ -51,7 +51,7 @@ public class BaseEntity implements Serializable, IInit, Id, ICtime, IUptime, IDe
     /**
      * 删除标记
      */
-    protected boolean deleted;
+    protected Boolean deleted;
 
     public String getConfuseId() {
         return confuseId;
@@ -92,7 +92,7 @@ public class BaseEntity implements Serializable, IInit, Id, ICtime, IUptime, IDe
     }
 
     @Override
-    public boolean isDeleted() {
+    public Boolean isDeleted() {
         return deleted;
     }
 
